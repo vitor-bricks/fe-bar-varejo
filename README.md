@@ -68,6 +68,21 @@ output lives.
 
 ---
 
+## Live resources (the integrated journey, deployed)
+
+| Stage | Resource | Identifier |
+|-------|----------|------------|
+| Landing | UC Volume | `serverless_stable_xpbmim_catalog.fe_bar_varejo_bronze.landing` |
+| Lakeflow | Declarative Pipeline | `fe_bar_varejo_pipeline` (`733e5172-5f51-404b-a790-b40cce95f015`) |
+| Unity Catalog | Schemas | `fe_bar_varejo_{bronze,silver,gold}` |
+| ML | UC-registered model | `serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_risk` |
+| GenAI | Foundation Model | `databricks-claude-sonnet-5` |
+| Lakebase | Postgres (Autoscaling) | `projects/fe-bar-varejo` · db `retail` |
+| Genie | Genie Space | `01f1b906cf2d15b4b1c72c3b25ddb2f0` |
+| App | Databricks App | `fe-bar-varejo-tower` |
+
+**App URL:** https://fe-bar-varejo-tower-7474654865387615.aws.databricksapps.com
+
 ## Isolation note
 
 This build is **fully isolated** and does not modify any pre-existing asset in the
