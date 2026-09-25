@@ -6,7 +6,7 @@ output is committed.
 
 | Stage | Evidence artifact | Status |
 |-------|-------------------|--------|
-| S1 Synthetic data | `01_data_generation_output.md` (row counts, samples) | pending |
+| S1 Synthetic data | `01_data_generation_output.md` (row counts, samples) | ✅ done |
 | S2 Lakeflow medallion | `02_lakeflow_run_output.md` (pipeline run + gold `SELECT`) | pending |
 | S3 ML model | `03_ml_metrics_output.md` (AUC/precision, sample predictions) | pending |
 | S3 GenAI rationale | `03_genai_rationale_output.md` (sample NL reorder rationale) | pending |

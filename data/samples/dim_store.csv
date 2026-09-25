@@ -1,0 +1,21 @@
+store_id,store_name,region,city,store_format,size_sqm,open_date
+L100,LojaBR Recife 00,Nordeste,Recife,Supermercado,3491,2019-01-01
+L101,LojaBR Florianopolis 01,Sul,Florianopolis,Express,291,2019-01-01
+L102,LojaBR Goiania 02,Centro-Oeste,Goiania,Supermercado,2141,2019-01-01
+L103,LojaBR Salvador 03,Nordeste,Salvador,Supermercado,2134,2019-01-01
+L104,LojaBR Sao Paulo 04,Sudeste,Sao Paulo,Supermercado,2161,2019-01-01
+L105,LojaBR Belem 05,Norte,Belem,Hipermercado,7413,2019-01-01
+L106,LojaBR Salvador 06,Nordeste,Salvador,Hipermercado,4138,2019-01-01
+L107,LojaBR Fortaleza 07,Nordeste,Fortaleza,Supermercado,1584,2019-01-01
+L108,LojaBR Belo Horizonte 08,Sudeste,Belo Horizonte,Hipermercado,7286,2019-01-01
+L109,LojaBR Florianopolis 09,Sul,Florianopolis,Supermercado,1252,2019-01-01
+L110,LojaBR Campinas 10,Sudeste,Campinas,Supermercado,1444,2019-01-01
+L111,LojaBR Brasilia 11,Centro-Oeste,Brasilia,Express,578,2019-01-01
+L112,LojaBR Salvador 12,Nordeste,Salvador,Supermercado,2974,2019-01-01
+L113,LojaBR Brasilia 13,Centro-Oeste,Brasilia,Supermercado,2861,2019-01-01
+L114,LojaBR Porto Alegre 14,Sul,Porto Alegre,Express,775,2019-01-01
+L115,LojaBR Sao Paulo 15,Sudeste,Sao Paulo,Express,252,2019-01-01
+L116,LojaBR Porto Alegre 16,Sul,Porto Alegre,Supermercado,2849,2019-01-01
+L117,LojaBR Sao Paulo 17,Sudeste,Sao Paulo,Supermercado,1570,2019-01-01
+L118,LojaBR Goiania 18,Centro-Oeste,Goiania,Supermercado,3271,2019-01-01
+L119,LojaBR Fortaleza 19,Nordeste,Fortaleza,Hipermercado,7135,2019-01-01
