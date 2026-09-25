@@ -3,6 +3,16 @@ import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
 import htm from "https://esm.sh/htm@3.1.1";
 const html = htm.bind(React.createElement);
 
+// htm passes attributes straight to React.createElement, and React requires `style` to be an
+// OBJECT, not a string. s() turns a CSS string into a React style object.
+const s = (str) => Object.fromEntries(
+  str.split(";").filter((x) => x.trim()).map((kv) => {
+    const i = kv.indexOf(":");
+    const k = kv.slice(0, i).trim().replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    return [k, kv.slice(i + 1).trim()];
+  })
+);
+
 const brl = (v) => "R$ " + Number(v || 0).toLocaleString("pt-BR", { maximumFractionDigits: 0 });
 const pct = (v) => (Number(v || 0) * 100).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "%";
 const api = (p, o) => fetch(p, o).then((r) => r.json());
@@ -32,7 +42,6 @@ function KPIs({ k }) {
 function TrendChart({ data }) {
   if (!data || !data.length) return null;
   const W = 640, H = 190, pad = 34;
-  const xs = data.map((_, i) => i);
   const rates = data.map((d) => d.stockout_rate);
   const maxR = Math.max(...rates) * 1.15 || 0.1;
   const x = (i) => pad + (i * (W - pad * 2)) / (data.length - 1);
@@ -40,26 +49,26 @@ function TrendChart({ data }) {
   const line = rates.map((v, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
   const area = `${line} L${x(data.length - 1).toFixed(1)},${H - pad} L${x(0).toFixed(1)},${H - pad} Z`;
   const ticks = [0, Math.floor(data.length / 2), data.length - 1];
-  return html`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto">
+  return html`<svg viewBox="0 0 ${W} ${H}" style=${s("width:100%;height:auto")}>
     <defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0%" stop-color="#ff3621" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#ff3621" stop-opacity="0"/></linearGradient></defs>
+      <stop offset="0%" stopColor="#ff3621" stopOpacity="0.35"/>
+      <stop offset="100%" stopColor="#ff3621" stopOpacity="0"/></linearGradient></defs>
     ${[0, maxR / 2, maxR].map((v) => html`<g key=${v}>
       <line x1=${pad} x2=${W - pad} y1=${y(v)} y2=${y(v)} stroke="#2b3340"/>
-      <text x=${4} y=${y(v) + 4} fill="#9aa7b4" font-size="10">${(v * 100).toFixed(0)}%</text></g>`)}
+      <text x=${4} y=${y(v) + 4} fill="#9aa7b4" fontSize="10">${(v * 100).toFixed(0)}%</text></g>`)}
     <path d=${area} fill="url(#g)"/>
-    <path d=${line} fill="none" stroke="#ff3621" stroke-width="2"/>
-    ${ticks.map((i) => html`<text key=${i} x=${x(i)} y=${H - 10} fill="#9aa7b4" font-size="10" text-anchor="middle">${data[i].date.slice(5)}</text>`)}
+    <path d=${line} fill="none" stroke="#ff3621" strokeWidth="2"/>
+    ${ticks.map((i) => html`<text key=${i} x=${x(i)} y=${H - 10} fill="#9aa7b4" fontSize="10" textAnchor="middle">${data[i].date.slice(5)}</text>`)}
   </svg>`;
 }
 
 function RegionBars({ rows }) {
   if (!rows || !rows.length) return null;
   const max = Math.max(...rows.map((r) => r.expected_lost_revenue_7d)) || 1;
-  return html`<div>${rows.map((r) => html`<div key=${r.region} style="margin-bottom:10px">
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+  return html`<div>${rows.map((r) => html`<div key=${r.region} style=${s("margin-bottom:10px")}>
+    <div style=${s("display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px")}>
       <span>${r.region}</span><span class="mono">${brl(r.expected_lost_revenue_7d)}</span></div>
-    <div style="height:8px;background:#1c2230;border-radius:6px;overflow:hidden">
+    <div style=${s("height:8px;background:#1c2230;border-radius:6px;overflow:hidden")}>
       <div style=${{ width: (r.expected_lost_revenue_7d / max) * 100 + "%", height: "100%", background: "linear-gradient(90deg,#ff3621,#ff6b35)" }}></div></div>
   </div>`)}</div>`;
 }
@@ -69,12 +78,12 @@ function Worklist({ stores }) {
   const [d, setD] = useState(null);
   useEffect(() => { api(`/api/worklist?limit=20${store ? "&store=" + store : ""}`).then(setD); }, [store]);
   return html`<div class="card">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-      <div style="flex:1"><h3>Worklist de reposição — priorizado por receita em risco</h3>
+    <div style=${s("display:flex;align-items:center;gap:12px;margin-bottom:10px")}>
+      <div style=${s("flex:1")}><h3>Worklist de reposição — priorizado por receita em risco</h3>
         <div class="hint">Ranking do modelo de risco de ruptura (próximos 7 dias) com pedido sugerido</div></div>
       <select value=${store} onChange=${(e) => setStore(e.target.value)}>
         <option value="">Todas as lojas</option>
-        ${(stores || []).map((s) => html`<option key=${s} value=${s}>${s}</option>`)}
+        ${(stores || []).map((st) => html`<option key=${st} value=${st}>${st}</option>`)}
       </select>
     </div>
     ${!d ? html`<div class="loading">Carregando…</div>` : html`<table>
@@ -157,18 +166,18 @@ function GenieTab() {
   return html`<div class="card">
     <h3>Pergunte ao Genie — em linguagem natural</h3>
     <div class="hint">Genie Space governado sobre as tabelas gold · responde em português com o SQL gerado</div>
-    <div style="display:flex;gap:8px;margin:12px 0">
+    <div style=${s("display:flex;gap:8px;margin:12px 0")}>
       <input class="q" value=${q} onChange=${(e) => setQ(e.target.value)}
         onKeyDown=${(e) => e.key === "Enter" && ask(q)} placeholder="Ex.: quais lojas perderam mais receita?" />
       <button class="primary" disabled=${busy} onClick=${() => ask(q)}>${busy ? "Perguntando…" : "Perguntar"}</button>
     </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-      ${suggestions.map((s) => html`<span key=${s} class="chip" style="cursor:pointer" onClick=${() => { setQ(s); ask(s); }}>${s}</span>`)}
+    <div style=${s("display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px")}>
+      ${suggestions.map((sg) => html`<span key=${sg} class="chip" style=${s("cursor:pointer")} onClick=${() => { setQ(sg); ask(sg); }}>${sg}</span>`)}
     </div>
     ${busy && html`<div class="loading">Genie está gerando o SQL e consultando os dados…</div>`}
     ${res && res.answer && html`<div class="answer">${res.answer}</div>`}
     ${res && res.sql && html`<div><div class="hint">SQL gerado pelo Genie</div><pre class="sql">${res.sql}</pre></div>`}
-    ${res && res.columns && html`<table style="margin-top:12px"><thead><tr>${res.columns.map((c) => html`<th key=${c}>${c}</th>`)}</tr></thead>
+    ${res && res.columns && html`<table style=${s("margin-top:12px")}><thead><tr>${res.columns.map((c) => html`<th key=${c}>${c}</th>`)}</tr></thead>
       <tbody>${(res.rows || []).slice(0, 10).map((row, i) => html`<tr key=${i}>${row.map((v, j) => html`<td key=${j}>${v}</td>`)}</tr>`)}</tbody></table>`}
     ${res && res.error && html`<div class="loading">Não foi possível responder: ${res.error}</div>`}
   </div>`;
@@ -190,7 +199,7 @@ function App() {
         <div class=${"tab " + (tab === "genie" ? "active" : "")} onClick=${() => setTab("genie")}>Pergunte ao Genie</div>
       </div>
     </div></header>
-    <div class="wrap" style="padding-top:8px;border-left:1px solid var(--border);border-right:1px solid var(--border)">
+    <div class="wrap" style=${s("padding-top:8px;border-left:1px solid #2b3340;border-right:1px solid #2b3340")}>
       ${tab === "torre" ? html`<${Dashboard} />` : html`<${GenieTab} />`}
     </div>
   </div>`;

@@ -6,8 +6,7 @@ async function validateUI() {
   let browser;
   try {
     browser = await chromium.launch();
-    const context = await browser.createBrowserContext();
-    const page = await context.newPage();
+    const page = await browser.newPage();
 
     console.log('\n=== Part 1: Main Dashboard (Torre de Controle tab) ===\n');
 
@@ -159,7 +158,7 @@ async function validateUI() {
       });
     }
 
-    await context.close();
+    await page.close();
   } catch (error) {
     console.error('Test error:', error);
     process.exit(1);
