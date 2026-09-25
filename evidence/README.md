@@ -10,7 +10,7 @@ output is committed.
 | S2 Lakeflow medallion | `02_lakeflow_run_output.md` (pipeline run + gold `SELECT`) | ✅ done |
 | S3 ML model | `03_ml_metrics_output.md` (AUC/precision, sample predictions) | ✅ done |
 | S3 GenAI rationale | `03_genai_rationale_output.md` (sample NL reorder rationale) | ✅ done |
-| S4 Lakebase | `04_lakebase_query_output.md` (Postgres query results) | pending |
+| S4 Lakebase | `04_lakebase_query_output.md` (Postgres query results) | ✅ done |
 | S5 Genie | `05_genie_qa_output.md` (NL questions → SQL/answers) | pending |
 | S6 App | `06_app_deploy_output.md` (deploy status, endpoints, smoke test) | pending |
 
