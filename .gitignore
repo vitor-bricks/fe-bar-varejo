@@ -18,3 +18,9 @@ data/raw/*.csv
 
 # OS
 .DS_Store
+
+# stray test tooling
+package.json
+package-lock.json
+ui-validation*.js
+node_modules/
