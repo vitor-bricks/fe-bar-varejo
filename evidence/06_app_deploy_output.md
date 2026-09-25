@@ -59,3 +59,15 @@ GET /static/styles.css-> http=200  4741 bytes
 The app surfaces the whole journey to the business: KPI tiles, stockout-rate trend, region
 risk, the ranked reorder worklist (ML), the AI rationale (GenAI), and a live natural-language
 Genie tab — all reading the governed data, served operationally from Lakebase.
+
+## UI validation (browser, Chrome DevTools)
+
+Validated interactively in a browser. Result: **no JavaScript/React errors**; all elements
+render — 4 KPI tiles (5,0% · R$ 3.260.886 · 2.393 · R$ 82.717.301), the stockout-rate SVG
+trend, the region bars, the reorder worklist table, and the AI rationale cards. The
+"Pergunte ao Genie" tab returns a live answer + generated SQL + result table
+(*"Atualmente há 2.393 itens com risk_flag = 1…"*).
+
+> Fixed during validation: `style` was passed to htm as a string, which React rejects
+> (React error #62). Converted all inline styles to objects via a small CSS-string→object
+> helper; redeployed and re-validated clean.
