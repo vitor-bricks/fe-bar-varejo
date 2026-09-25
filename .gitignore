@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+*.egg-info/
+
+# Node
+node_modules/
+06_app/frontend/dist/
+06_app/frontend/build/
+
+# Data (large / regenerable) — keep samples + schema only
+data/raw/*.parquet
+data/raw/*.csv
+!data/samples/
+
+# OS
+.DS_Store
