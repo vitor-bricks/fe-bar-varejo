@@ -1,0 +1,15 @@
+{
+  "name": "fe_bar_varejo_e2e",
+  "description": "LojaBR Centro de Abastecimento — end-to-end journey: raw data -> Lakeflow medallion -> early-warning model + action queue -> replenishment agent -> Lakebase serving",
+  "tags": {"project": "fe_bar_varejo"},
+  "max_concurrent_runs": 1,
+  "queue": {"enabled": true},
+  "tasks": [
+    {"task_key": "01_generate_raw_data",
+     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/01_generate_synthetic_data"}},
+    {"task_key": "02_lakeflow_medallion", "depends_on": [{"task_key": "01_generate_raw_data"}],
+     "pipeline_task": {"pipeline_id": "733e5172-5f51-404b-a790-b40cce95f015", "full_refresh": true}},
+    {"task_key": "03_early_warning_model", "depends_on": [{"task_key": "02_lakeflow_medallion"}],
+     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/03_stockout_model_and_genai"}}
+  ]
+}
