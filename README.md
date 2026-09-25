@@ -54,6 +54,13 @@ Raw synthetic data ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML + Gen
 
 ---
 
+## Decisions, trade-offs & how it was built
+
+- **[`DECISIONS.md`](DECISIONS.md)** — the key choices and trade-offs (scenario scope, synthetic
+  simulation, serverless execution, medallion pipeline, ranking by money, Lakebase + warehouse, …).
+- **[`AI_USAGE.md`](AI_USAGE.md)** — how AI (Claude Code + harness engineering) was used as a
+  teammate: planner/generator/evaluator roles, the bugs it caught and fixed, and the tooling.
+
 ## How to read the execution evidence (for the evaluator)
 
 This build commits **execution output as text**, not screenshots:
