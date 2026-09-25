@@ -1,0 +1,23 @@
+command:
+  - "python"
+  - "-m"
+  - "uvicorn"
+  - "app:app"
+  - "--host"
+  - "0.0.0.0"
+  - "--port"
+  - "8000"
+
+env:
+  - name: PGHOST
+    value: "ep-royal-silence-d24b1cks.database.us-east-1.cloud.databricks.com"
+  - name: PGPORT
+    value: "5432"
+  - name: PGDATABASE
+    value: "retail"
+  - name: PGUSER
+    value: "4f387a6d-76c2-49f8-bd49-d98039ff024d"
+  - name: WAREHOUSE_ID
+    value: "38762a7d9e9e5b33"
+  - name: GENIE_SPACE_ID
+    value: "01f1b906cf2d15b4b1c72c3b25ddb2f0"
