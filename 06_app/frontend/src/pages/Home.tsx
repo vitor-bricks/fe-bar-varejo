@@ -138,7 +138,7 @@ export default function Home() {
           <Kpi tone="amber" label="Em risco · próximos 7 dias" value={brl(o.revenue_at_risk_7d)}
             sub={`${num(o.queue_size)} itens na fila · ${num(o.queue_critical)} críticos`} />
           <Kpi tone="emerald" label="Protegido hoje" value={brl(o.protected_today)}
-            sub={`${o.approved_today} ações aprovadas · de ${brl(o.revenue_protectable_7d)} possíveis`} />
+            sub={`${o.approved_today} ${o.approved_today === 1 ? 'ação aprovada' : 'ações aprovadas'} · de ${brl(o.revenue_protectable_7d)} possíveis`} />
           <Kpi label="Lojas em alerta" value={<>{o.stores_in_alert}<span className="text-zinc-500 text-lg"> / {o.stores_total}</span></>}
             sub={`ruptura hoje ${pct(o.stockout_rate_today)} · 7d ${pct(o.stockout_rate_7d)}`} />
         </div>

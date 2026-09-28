@@ -17,7 +17,7 @@ const IW = 700, IH = 330;
 /** Zoomed view of the dense Sudeste cluster (São Paulo / Rio / BH), with every store labelled. */
 function SudesteInset({ stores, routes, selected, onSelect }: { stores: Store[]; routes: Route[]; selected?: string | null; onSelect: (id: string) => void }) {
   const sud = stores.filter((s) => s.region === 'Sudeste');
-  const { path, pts } = useMemo(() => {
+  const { path, pts, labels } = useMemo(() => {
     const proj = geoMercator().fitExtent([[90, 34], [IW - 90, IH - 30]], { type: 'MultiPoint', coordinates: sud.map((s) => [s.lon, s.lat]) } as any);
     const maxRisk = Math.max(1, ...sud.map((s) => s.revenue_at_risk));
     const placed: { id: string; x: number; y: number; r: number; s: Store }[] = [];
@@ -32,7 +32,35 @@ function SudesteInset({ stores, routes, selected, onSelect }: { stores: Store[];
       }
       placed.push({ id: s.store_id, x, y, r, s });
     });
-    return { path: geoPath(proj)(brazil as any) || '', pts: Object.fromEntries(placed.map((p) => [p.id, p])) };
+    // greedy label placement: try 8 spots around the bubble; if all collide, push out with a leader line
+    type Box = { x0: number; y0: number; x1: number; y1: number };
+    const boxes: Box[] = placed.map((p) => ({ x0: p.x - p.r, y0: p.y - p.r, x1: p.x + p.r, y1: p.y + p.r }));
+    const hit = (b: Box) => b.x0 < 2 || b.x1 > IW - 2 || b.y0 < 18 || b.y1 > IH - 2 || boxes.some((o) => b.x0 < o.x1 && b.x1 > o.x0 && b.y0 < o.y1 && b.y1 > o.y0);
+    type Label = { id: string; text: string; tx: number; ty: number; anchor: 'start' | 'end' | 'middle'; leader: boolean; ax: number; ay: number; lx: number; ly: number };
+    const labels = placed.map((p): Label => {
+      const text = p.s.store_name.replace('LojaBR ', '');
+      const w = text.length * 6.9, h = 14, g = p.r + 4;
+      const spots: [number, number, 'start' | 'end' | 'middle'][] = [
+        [p.x + g, p.y + 4, 'start'], [p.x - g, p.y + 4, 'end'], [p.x, p.y - g - 2, 'middle'], [p.x, p.y + g + 11, 'middle'],
+        [p.x + g, p.y - g, 'start'], [p.x + g, p.y + g + 8, 'start'], [p.x - g, p.y - g, 'end'], [p.x - g, p.y + g + 8, 'end']];
+      const boxOf = (tx: number, ty: number, a: string): Box => {
+        const x0 = a === 'start' ? tx : a === 'end' ? tx - w : tx - w / 2;
+        return { x0, y0: ty - 11, x1: x0 + w, y1: ty + 3 };
+      };
+      for (const [tx, ty, anchor] of spots) {
+        const b = boxOf(tx, ty, anchor);
+        if (!hit(b)) { boxes.push(b); return { id: p.id, text, tx, ty, anchor, leader: false, ax: 0, ay: 0, lx: 0, ly: 0 }; }
+      }
+      for (let k = 1; k < 30; k++) {           // spiral outwards until free, then draw a leader line
+        const ang = (k * 47 * Math.PI) / 180, d = g + 10 + k * 5;
+        const tx = p.x + Math.cos(ang) * d, ty = p.y + Math.sin(ang) * d;
+        const anchor: 'start' | 'end' = Math.cos(ang) >= 0 ? 'start' : 'end';
+        const b = boxOf(tx, ty, anchor);
+        if (!hit(b)) { boxes.push(b); return { id: p.id, text, tx, ty, anchor, leader: true, ax: p.x, ay: p.y, lx: tx, ly: ty - 4 }; }
+      }
+      return { id: p.id, text, tx: p.x + g, ty: p.y + 4, anchor: 'start' as const, leader: false, ax: 0, ay: 0, lx: 0, ly: 0 };
+    });
+    return { path: geoPath(proj)(brazil as any) || '', pts: Object.fromEntries(placed.map((p) => [p.id, p])), labels };
   }, [stores]);
   return (
     <div className="mt-4 rounded-lg border border-zinc-800 bg-zinc-950/70 overflow-hidden">
@@ -48,16 +76,14 @@ function SudesteInset({ stores, routes, selected, onSelect }: { stores: Store[];
         })}
         {Object.values(pts).map(({ id, x, y, r, s }) => {
           const c = healthColor(s.stockout_rate_7d); const sel = selected === id;
-          const left = x > IW * 0.62;
-          return (
-            <g key={id} onClick={() => onSelect(id)} className="cursor-pointer">
-              <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.9} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2 : 1} />
-              <text x={left ? x - r - 4 : x + r + 4} y={y + 3.5} textAnchor={left ? 'end' : 'start'} fill={sel ? '#fde68a' : '#a1a1aa'} fontSize={12.5} fontWeight={sel ? 700 : 500}>
-                {s.store_name.replace('LojaBR ', '')}
-              </text>
-            </g>
-          );
+          return <circle key={id} onClick={() => onSelect(id)} className="cursor-pointer" cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.9} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2 : 1} />;
         })}
+        {labels.map((l) => (
+          <g key={l.id} onClick={() => onSelect(l.id)} className="cursor-pointer">
+            {l.leader && <line x1={l.ax} y1={l.ay} x2={l.lx} y2={l.ly} stroke="#52525b" strokeWidth={0.8} />}
+            <text x={l.tx} y={l.ty} textAnchor={l.anchor} fill={selected === l.id ? '#fde68a' : '#a1a1aa'} fontSize={12.5} fontWeight={selected === l.id ? 700 : 500}>{l.text}</text>
+          </g>
+        ))}
       </svg>
     </div>
   );
@@ -117,7 +143,7 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
             <g key={id} onMouseEnter={() => setHover(id)} onMouseLeave={() => setHover(null)} onClick={() => onSelect(id)} className="cursor-pointer">
               <circle cx={x} cy={y} r={r + 6} fill={c.ring} opacity={sel || hover === id ? 1 : 0.55} />
               <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.85} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2.5 : 1.2} />
-              {(sel || hover === id) && (
+              {(hover === id || (sel && s.region !== 'Sudeste')) && (
                 <text x={x + r + 6} y={y + 4} fill="#d4d4d8" fontSize={12} fontWeight={600} className="pointer-events-none">{s.store_name.replace('LojaBR ', '')}</text>
               )}
             </g>
