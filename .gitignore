@@ -24,3 +24,4 @@ package.json
 package-lock.json
 ui-validation*.js
 node_modules/
+06_app/frontend/node_modules/
