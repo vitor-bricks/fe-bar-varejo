@@ -12,6 +12,57 @@ export function healthColor(rate: number) {
   return { fill: '#10b981', ring: 'rgba(16,185,129,0.3)' };
 }
 
+
+const IW = 700, IH = 330;
+/** Zoomed view of the dense Sudeste cluster (São Paulo / Rio / BH), with every store labelled. */
+function SudesteInset({ stores, routes, selected, onSelect }: { stores: Store[]; routes: Route[]; selected?: string | null; onSelect: (id: string) => void }) {
+  const sud = stores.filter((s) => s.region === 'Sudeste');
+  const { path, pts } = useMemo(() => {
+    const proj = geoMercator().fitExtent([[90, 34], [IW - 90, IH - 30]], { type: 'MultiPoint', coordinates: sud.map((s) => [s.lon, s.lat]) } as any);
+    const maxRisk = Math.max(1, ...sud.map((s) => s.revenue_at_risk));
+    const placed: { id: string; x: number; y: number; r: number; s: Store }[] = [];
+    [...sud].sort((a, b) => b.revenue_at_risk - a.revenue_at_risk).forEach((s) => {
+      let [x, y] = proj([s.lon, s.lat]) as [number, number];
+      const r = 6 + 10 * Math.sqrt(s.revenue_at_risk / maxRisk);
+      for (let k = 0; k < 10; k++) {
+        const hit = placed.find((p) => Math.hypot(p.x - x, p.y - y) < p.r + r + 3);
+        if (!hit) break;
+        const ang = (k * 137.5 * Math.PI) / 180;
+        x = hit.x + Math.cos(ang) * (hit.r + r + 4); y = hit.y + Math.sin(ang) * (hit.r + r + 4);
+      }
+      placed.push({ id: s.store_id, x, y, r, s });
+    });
+    return { path: geoPath(proj)(brazil as any) || '', pts: Object.fromEntries(placed.map((p) => [p.id, p])) };
+  }, [stores]);
+  return (
+    <div className="mt-4 rounded-lg border border-zinc-800 bg-zinc-950/70 overflow-hidden">
+      <div className="px-3 pt-2.5 text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold">zoom · Sudeste · {sud.length} lojas · clique para abrir</div>
+      <svg viewBox={`0 0 ${IW} ${IH}`} className="w-full h-auto">
+        <defs><clipPath id="inset-clip"><rect width={IW} height={IH} /></clipPath></defs>
+        <path d={path} fill="#1c1c20" stroke="#3f3f46" strokeWidth={1} clipPath="url(#inset-clip)" />
+        {routes.map((r) => {
+          const a = pts[r.from_id], b = pts[r.store_id];
+          if (!a || !b) return null;
+          const done = r.decision === 'APPROVED';
+          return <line key={r.action_id} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={done ? '#34d399' : '#fbbf24'} strokeOpacity={done ? 0.9 : 0.5} strokeWidth={done ? 1.8 : 1.1} className={done ? '' : 'route-flow'} />;
+        })}
+        {Object.values(pts).map(({ id, x, y, r, s }) => {
+          const c = healthColor(s.stockout_rate_7d); const sel = selected === id;
+          const left = x > IW * 0.62;
+          return (
+            <g key={id} onClick={() => onSelect(id)} className="cursor-pointer">
+              <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.9} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2 : 1} />
+              <text x={left ? x - r - 4 : x + r + 4} y={y + 3.5} textAnchor={left ? 'end' : 'start'} fill={sel ? '#fde68a' : '#a1a1aa'} fontSize={12.5} fontWeight={sel ? 700 : 500}>
+                {s.store_name.replace('LojaBR ', '')}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 export default function BrazilMap({ stores, routes, selected, onSelect }: {
   stores: Store[]; routes: Route[]; selected?: string | null; onSelect: (id: string) => void;
 }) {
@@ -24,7 +75,7 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
     const placed: { id: string; x: number; y: number; r: number; s: Store }[] = [];
     [...stores].sort((a, b) => b.revenue_at_risk - a.revenue_at_risk).forEach((s) => {
       let [x, y] = proj([s.lon, s.lat]) as [number, number];
-      const r = 5 + 15 * Math.sqrt(s.revenue_at_risk / maxRisk);
+      const r = 4 + 9 * Math.sqrt(s.revenue_at_risk / maxRisk);
       for (let k = 0; k < 12; k++) {
         const hit = placed.find((p) => Math.hypot(p.x - x, p.y - y) < p.r + r + 2);
         if (!hit) break;
@@ -37,10 +88,10 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
     return { path, pts: Object.fromEntries(placed.map((p) => [p.id, p])) };
   }, [stores]);
 
-  const top = new Set([...stores].sort((a, b) => b.revenue_at_risk - a.revenue_at_risk).slice(0, 5).map((s) => s.store_id));
   const tip = hover ? pts[hover] : null;
 
   return (
+    <>
     <div className="relative">
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
         <defs>
@@ -66,7 +117,7 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
             <g key={id} onMouseEnter={() => setHover(id)} onMouseLeave={() => setHover(null)} onClick={() => onSelect(id)} className="cursor-pointer">
               <circle cx={x} cy={y} r={r + 6} fill={c.ring} opacity={sel || hover === id ? 1 : 0.55} />
               <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.85} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2.5 : 1.2} />
-              {(top.has(id) || sel) && (
+              {(sel || hover === id) && (
                 <text x={x + r + 6} y={y + 4} fill="#d4d4d8" fontSize={12} fontWeight={600} className="pointer-events-none">{s.store_name.replace('LojaBR ', '')}</text>
               )}
             </g>
@@ -85,12 +136,14 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
       <div className="absolute left-3 bottom-3 rounded-lg border border-zinc-800 bg-zinc-950/90 px-3 py-2 text-[10.5px] text-zinc-400 space-y-1">
         <div className="text-[9.5px] uppercase tracking-[0.2em] text-zinc-500 font-semibold mb-1">Legenda</div>
         <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> ruptura 7d &lt; 6%</div>
-        <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" / 6% – 7,5%</div>
+        <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> 6% – 7,5%</div>
         <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /> ≥ 7,5% · em alerta</div>
         <div className="flex items-center gap-2"><span className="w-4 border-t-2 border-dashed border-amber-400" /> transferência sugerida</div>
         <div className="flex items-center gap-2"><span className="w-4 border-t-2 border-emerald-400" /> transferência aprovada</div>
         <div className="text-zinc-600">tamanho = R$ em risco (7 dias)</div>
       </div>
     </div>
+    <SudesteInset stores={stores} routes={routes} selected={selected} onSelect={onSelect} />
+    </>
   );
 }

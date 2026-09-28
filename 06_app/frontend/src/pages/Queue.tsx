@@ -12,7 +12,8 @@ export default function Queue() {
   const [type, setType] = useState<ActionType | ''>('');
   const [sev, setSev] = useState<Severity | ''>('');
   const [bulk, setBulk] = useState(false);
-  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, limit: 60 }), 20000, [type, sev]);
+  const [limit, setLimit] = useState(24);
+  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, limit }), 20000, [type, sev, limit]);
   const [decs, reloadDecs] = usePoll(api.decisions, 20000);
   const refresh = () => { reload(); reloadDecs(); };
 
@@ -48,9 +49,12 @@ export default function Queue() {
               {items.map((it) => <ActionCard key={it.action_id} it={it} onDecided={refresh} />)}
             </div>
           )}
+          {items && items.length >= limit && (
+            <button onClick={() => setLimit(limit + 24)} className="mt-5 w-full py-2.5 rounded-lg border border-zinc-800 text-[11px] uppercase tracking-[0.18em] text-zinc-400 hover:text-zinc-200 hover:border-zinc-600">carregar mais ações</button>
+          )}
         </div>
-        <Panel title="Decisões já tomadas" hint="app.replenishment_actions · Lakebase" right={<ProductTag>escrita</ProductTag>} pad={false}>
-          <div className="max-h-[900px] overflow-y-auto scrollbar-thin">
+        <Panel className="xl:sticky xl:top-32 self-start" title="Decisões já tomadas" hint="app.replenishment_actions · Lakebase" right={<ProductTag>escrita</ProductTag>} pad={false}>
+          <div className="max-h-[70vh] overflow-y-auto scrollbar-thin">
             {(decs ?? []).length === 0 && <div className="px-5 py-6 text-[12px] text-zinc-500">Nenhuma decisão ainda. Aprove uma ação ao lado.</div>}
             {(decs ?? []).map((d) => (
               <div key={`${d.action_id}-${d.decided_at}`} className="px-5 py-3 border-b border-zinc-800/60">

@@ -29,7 +29,7 @@ function JourneyStrip({ j }: { j: Journey }) {
                   <CheckCircle2 className={`w-3.5 h-3.5 ${['ok', 'completed'].includes(s.status) ? 'text-emerald-400' : 'text-amber-400'}`} />
                 </div>
                 <div className="text-[12.5px] font-semibold text-zinc-100 mt-2">{s.stage}</div>
-                <ProductTag>{s.product}</ProductTag>
+                <div className="text-[10.5px] text-amber-300/80 font-medium leading-snug">{s.product}</div>
                 <div className="text-[11px] text-zinc-400 mt-1.5 leading-snug">{s.detail}</div>
               </div>
             </div>
@@ -91,7 +91,7 @@ function Mix({ o }: { o: Overview }) {
 
 function ModelCard({ m }: { m: Record<string, number> }) {
   const items = [
-    ['AUC (teste, datas futuras)', dec1((m.test_auc ?? 0) * 100) + '%', 'separa bem quem vai romper de quem não vai'],
+    ['AUC (teste, datas futuras)', (m.test_auc ?? 0).toFixed(2).replace('.', ','), 'separa bem quem vai romper de quem não vai'],
     ['Acerto no top-K diário', pct(m.precision_at_k_daily, 0), `vs ${pct(m.naive_precision, 0)} da regra "cobertura < lead time"`],
     ['Antecedência do alerta', `${dec1(m.avg_warning_lead_days)} dias`, `${pct(m.share_warned_2plus_days, 0)} dos alertas com ≥ 2 dias`],
     ['Fila / sortimento', pct(m.queue_share_of_assortment, 1), `${num(m.queue_size)} de ${num(m.in_stock_scored)} itens em gôndola`],

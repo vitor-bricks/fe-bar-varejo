@@ -86,7 +86,7 @@ journey = [
     ("05", "Agente", "Foundation Model API · tool-calling", "ok",
      f"{int(agent['items_reviewed'])} itens revisados · {agent['avg_tool_calls']:.1f} ferramentas/item"),
     ("06", "Serving", "Lakebase · Postgres", "ok", "worklist, rede e aprovações em Postgres"),
-    ("07", "Linguagem natural", "Genie", "ok", f"space {GENIE_SPACE[:8]}…"),
+    ("07", "Linguagem natural", "Genie", "ok", "espaço curado · 5 SQL certificados · entity matching"),
 ]
 
 # COMMAND ----------

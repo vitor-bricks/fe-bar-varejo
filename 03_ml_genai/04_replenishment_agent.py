@@ -182,17 +182,27 @@ for _, it in queue.head(TOP_N).iterrows():
 
 # COMMAND ----------
 
+def br(x, d=1):
+    """pt-BR number: 6,9 · 1.234"""
+    return f"{x:,.{d}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def dias(n):
+    n = int(round(n))
+    return f"{n} dia" if n == 1 else f"{n} dias"
+
+
 def rule_rationale(r):
-    base = (f"{r['product_name']} em {r['store_name']}: {r['days_of_cover']:.1f} dias de cobertura e "
+    base = (f"{r['product_name']} em {r['store_name']}: {br(r['days_of_cover'])} dias de cobertura e "
             f"{r['risk_probability']:.0%} de risco de ruptura em 7 dias.")
     if r["action_type"] == "TRANSFER":
-        return base + (f" {r['from_store_name']} ({int(r['transfer_km'])} km) tem {r['donor_days_of_cover']:.0f} dias de "
-                       f"cobertura — transferir {r['units']} un, chegada em {r['eta_days']} dia(s).")
+        return base + (f" A {r['from_store_name']}, a {int(r['transfer_km'])} km, tem {br(r['donor_days_of_cover'], 0)} dias de "
+                       f"cobertura: transferir {r['units']} un, com chegada em {dias(r['eta_days'])}.")
     sup = otif.at[r["supplier_id"], "supplier_name"]
     if r["action_type"] == "EXPEDITE":
-        return base + (f" O pedido de {r['inbound_units']} un de {sup} chega só em ~{r['eta_adjusted_days']:.0f} dias "
-                       f"(pontualidade {r['supplier_on_time_rate']:.0%}) — cobrar antecipação para {r['eta_days']} dia(s).")
-    return base + f" Sem pedido a caminho nem loja próxima com excedente — pedido emergencial de {r['units']} un a {sup}."
+        return base + (f" O pedido de {r['inbound_units']} un de {sup} chega só em ~{dias(r['eta_adjusted_days'])} "
+                       f"(pontualidade de {r['supplier_on_time_rate']:.0%}): cobrar a antecipação para {dias(r['eta_days'])}.")
+    return base + f" Não há pedido a caminho nem loja próxima com excedente: pedido emergencial de {r['units']} un a {sup}."
 
 
 rows = []

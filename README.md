@@ -54,7 +54,7 @@ raw feeds ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML model ──�
 | Resource | Identifier |
 |---|---|
 | App | https://fe-bar-varejo-tower-7474654865387615.aws.databricksapps.com |
-| Job | `fe_bar_varejo_e2e` (id `384370635751593`) — evidence run `65058701919960` |
+| Job | `fe_bar_varejo_e2e` (id `384370635751593`) — evidence run `204235693781766` |
 | Lakeflow pipeline | `fe_bar_varejo_pipeline` (`733e5172-5f51-404b-a790-b40cce95f015`) |
 | UC schemas | `serverless_stable_xpbmim_catalog.fe_bar_varejo_{bronze,silver,gold}` |
 | Model | `…fe_bar_varejo_gold.stockout_early_warning` |

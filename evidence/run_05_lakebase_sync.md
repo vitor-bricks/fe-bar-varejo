@@ -1,6 +1,6 @@
-# Executed notebook — 7e60cf72-e5ac-40c8-8fc7-7671aee1a1c9
+# Executed notebook — 71093714-52c5-42e1-91e0-f7ed01701659
 
-Job task run `779487797705611` · exported with cell outputs (`databricks jobs export-run`).
+Job task run `2570986112247` · exported with cell outputs (`databricks jobs export-run`).
 
 # LojaBR · Centro de Abastecimento — Lakebase Operational Serving (v2)
 
@@ -97,7 +97,7 @@ journey = [
     ("05", "Agente", "Foundation Model API · tool-calling", "ok",
      f"{int(agent['items_reviewed'])} itens revisados · {agent['avg_tool_calls']:.1f} ferramentas/item"),
     ("06", "Serving", "Lakebase · Postgres", "ok", "worklist, rede e aprovações em Postgres"),
-    ("07", "Linguagem natural", "Genie", "ok", f"space {GENIE_SPACE[:8]}…"),
+    ("07", "Linguagem natural", "Genie", "ok", "espaço curado · 5 SQL certificados · entity matching"),
 ]
 ```
 
@@ -203,7 +203,7 @@ serving.kpi_daily                 120 rows
 serving.supplier_otif               9 rows
 serving.model_card                 17 rows
 serving.journey_status              7 rows
-app.replenishment_actions           0 rows (kept across runs)
+app.replenishment_actions           1 rows (kept across runs)
 
 top of the worklist:
    [1, 'EXPEDITE', 'LojaBR Moema', 'Sabão em Pó Omo Lavagem Perfeita 1,6kg', 26, Decimal('580')]
@@ -214,10 +214,10 @@ top of the worklist:
 
 journey status:
    ['01', 'Ingestão', 'Lakeflow · Auto Loader', 'ok', '7 feeds brutos (POS, estoque, pedidos, cadastros) no Volume landing']
-   ['02', 'Medallion', 'Lakeflow Declarative Pipelines', 'completed', 'bronze → silver → gold · update 4ac6abfd']
+   ['02', 'Medallion', 'Lakeflow Declarative Pipelines', 'completed', 'bronze → silver → gold · update 22ab32bf']
    ['03', 'Governança', 'Unity Catalog', 'ok', '3 schemas · 28 tabelas · lineage + expectations']
-   ['04', 'Modelo', 'MLflow · UC Model Registry', 'ok', 'stockout_early_warning v5 · AUC 0.85']
-   ['05', 'Agente', 'Foundation Model API · tool-calling', 'ok', '12 itens revisados · 3.9 ferramentas/item']
+   ['04', 'Modelo', 'MLflow · UC Model Registry', 'ok', 'stockout_early_warning v6 · AUC 0.85']
+   ['05', 'Agente', 'Foundation Model API · tool-calling', 'ok', '12 itens revisados · 4.0 ferramentas/item']
    ['06', 'Serving', 'Lakebase · Postgres', 'ok', 'worklist, rede e aprovações em Postgres']
-   ['07', 'Linguagem natural', 'Genie', 'ok', 'space 01f1b906…']
+   ['07', 'Linguagem natural', 'Genie', 'ok', 'espaço curado · 5 SQL certificados · entity matching']
 ```

@@ -1,6 +1,6 @@
-# Executed notebook — 9f544d67-ef7e-4b23-a9ad-46228c5e4349
+# Executed notebook — 5cf75b73-a0f1-46a3-8ae5-39c8394d507c
 
-Job task run `964742422001706` · exported with cell outputs (`databricks jobs export-run`).
+Job task run `779570241607253` · exported with cell outputs (`databricks jobs export-run`).
 
 # LojaBR · Centro de Abastecimento — Agente de Reposição (tool-calling)
 
@@ -184,44 +184,53 @@ for _, it in queue.head(TOP_N).iterrows():
 
 ```text
 #  1 LojaBR Moema             Sabão em Pó Omo Lavagem Perfeita 1 motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → Não há loja doadora em até 450 km, e o estoque de 5 unidades com venda média de 3,7 por dia dá cobertura de apenas 1,3 dia, insuficiente até a chegada do pedido em 5 dias. Como o fornecedor Limpa Mais Distribuidora tem pontualidade de apenas 62,7% (atraso médio de 3,91 dias), recomenda-se expedir as 26 unidades já em trânsito para evitar ruptura.
-#  2 LojaBR Campinas          Café Torrado e Moído Pilão 500g    motor=TRANSFER     agente=TRANSFER     tools=get_item_position,find_donor_stores,submit_decision
-      → A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias, insuficiente para evitar ruptura. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades e cobertura de 18,2 dias, permitindo transferir 46 unidades sem comprometer seu próprio estoque.
+      → A loja Moema tem apenas 5 unidades em estoque, com venda média de 3,7 por dia e cobertura de 1,3 dias, enquanto o pedido de 26 unidades já em trânsito só chega em 5 dias; não há lojas doadoras a até 450 km. Recomendo expedir esse pedido, mesmo com o fornecedor Limpa Mais Distribuidora tendo pontualidade de 62,7% e atraso médio de 3,91 dias.
+#  2 LojaBR Campinas          Café Torrado e Moído Pilão 500g    motor=TRANSFER     agente=TRANSFER     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
+      → A loja Campinas tem apenas 9 unidades em estoque, cobertura de 0,6 dia e o pedido do fornecedor Atacado Central (95 unidades) só chega em 2 dias, com esse fornecedor apresentando 83% de pontualidade e atraso médio de 2 dias quando falha. A loja Ribeirão Preto tem excedente de 61 unidades e 18,2 dias de cobertura, permitindo transferir 46 unidades rapidamente e evitar a ruptura iminente.
 #  3 LojaBR Tatuapé           Picanha Bovina Resfriada (kg)      motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → A loja Tatuapé tem apenas 2 unidades em estoque, cobertura de 1,2 dia e não há lojas doadoras em até 450 km. Já existe um pedido de 10 unidades a caminho do fornecedor Frios Paraná Logística, previsto para chegar em 4 dias, mas como a pontualidade histórica é de 74,79% (atraso médio de 2,48 dias), recomenda-se expedir esse pedido para evitar ruptura na gôndola.
+      → Não há loja doadora em até 450 km, mas já existe um pedido de 10 unidades a caminho da Frios Paraná Logística, previsto para chegar em 4 dias — tempo maior que a cobertura atual de apenas 1,2 dias com estoque de 2 unidades. Como o fornecedor tem 74,8% de pontualidade e atraso médio de 2,48 dias quando falha, recomenda-se expedir esse pedido para evitar ruptura antes da chegada.
 #  4 LojaBR Niterói           Café Torrado e Moído Pilão 500g    motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → Não há lojas doadoras em até 450 km, e o estoque atual de 13 unidades cobre apenas 1,6 dia diante de uma venda média de 8,1 unidades/dia, enquanto o pedido de 46 unidades já em trânsito só chega em 4 dias. Como a Atacado Central Distribuidora tem 83% de pontualidade e atraso médio de 2 dias, recomenda-se expedir esse pedido para evitar ruptura prolongada.
+      → Não há lojas doadoras em até 450 km, então a transferência não é viável. O estoque de 13 unidades cobre apenas 1,6 dias de venda, enquanto o pedido de 46 unidades já a caminho só chega em 4 dias; como a Atacado Central Distribuidora tem 83% de pontualidade (atraso médio de 2 dias quando falha), é essencial expedir essa entrega para evitar ruptura.
 #  5 LojaBR Pinheiros         Arroz Branco Tipo 1 Camil 5kg      motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → Estoque de 13 unidades cobre apenas 1,5 dia de venda (9 un/dia), enquanto o pedido de 44 unidades só chega em 3 dias, e não há loja doadora em até 450 km. A Atacado Central Distribuidora tem 82,96% de pontualidade histórica, então recomenda-se expedir a entrega já em trânsito para evitar a ruptura.
+      → O estoque atual de 13 unidades cobre apenas 1,5 dia de venda (9 un/dia), enquanto o pedido de 44 unidades da Atacado Central Distribuidora só chega em 3 dias, e não há loja doadora em até 450 km. Como o fornecedor tem 83% de pontualidade e atraso médio de 2 dias, recomenda-se antecipar (expedir) essa entrega para evitar ruptura na gôndola.
 #  6 LojaBR Setor Bueno       Café Torrado e Moído Pilão 500g    motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → A loja Setor Bueno tem apenas 10 unidades em estoque, cobertura de 1,1 dia, enquanto o pedido de 60 unidades só chega em 3 dias, e não há lojas doadoras em até 450 km. Como a Atacado Central Distribuidora tem 82,96% de pontualidade histórica (atraso médio de 2,04 dias quando atrasa), recomenda-se antecipar (expedite) esse pedido já em trânsito para evitar ruptura.
+      → Não há loja doadora em até 450 km, e o estoque atual de 10 unidades cobre apenas 1,1 dia de venda (média de 8,9 un/dia), enquanto o pedido de 60 unidades só chega em 3 dias. Como a Atacado Central Distribuidora tem 83% de pontualidade e atraso médio de 2,04 dias, recomenda-se expedir esse pedido para evitar ruptura na gôndola.
 #  7 LojaBR Tatuapé           Desodorante Rexona Aerosol 150ml   motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → O estoque na loja Tatuapé está em apenas 2 unidades, com cobertura de 0,5 dia frente a uma venda média de 3,7 unidades/dia, e não há lojas doadoras em até 450 km. Já existe um pedido de 23 unidades a caminho da Higiene & Cia Distribuidora com chegada prevista em 5 dias, mas como o fornecedor tem só 68% de pontualidade e atraso médio de 3,49 dias, recomenda-se expedir esse pedido para evitar ruptura prolongada.
+      → Estoque atual é de apenas 2 unidades com cobertura de 0,5 dia e venda média de 3,7 un/dia, e não há lojas doadoras em até 450 km. Já existe um pedido de 23 unidades a caminho da Higiene & Cia Distribuidora, mas como o fornecedor tem só 68% de pontualidade e atraso médio de 3,49 dias, é essencial acelerar essa entrega para evitar a ruptura.
 #  8 LojaBR Tatuapé           Sabão em Pó Omo Lavagem Perfeita 1 motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → O estoque atual de 23 unidades cobre apenas 4 dias de venda (5,8 un/dia), enquanto o pedido de 46 unidades só chegaria em 5 dias - e a Limpa Mais Distribuidora tem apenas 62,7% de pontualidade, com atraso médio de quase 4 dias quando falha. Como não há lojas doadoras a até 450 km, a melhor ação é expedir o pedido já em trânsito para evitar ruptura.
+      → Não há lojas doadoras em até 450 km, e o estoque atual de 23 unidades cobre apenas 4 dias, enquanto o pedido de 46 unidades só chegaria em 5 dias - por isso é necessário expedir. Atenção: a Limpa Mais Distribuidora tem apenas 62,7% de pontualidade e atraso médio de 3,9 dias, o que pode agravar a ruptura se não houver acompanhamento.
 #  9 LojaBR Pituba            Queijo Prato Fatiado (kg)          motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → Estoque atual é de apenas 2 unidades com cobertura de 0,4 dia, enquanto o pedido de 29 unidades da Laticínios Serra Azul só chega em 1 dia, sem lojas doadoras num raio de 450 km. Como o fornecedor tem pontualidade de 70,6% e atraso médio de 1,99 dia quando falha, recomenda-se expedir a entrega para evitar ruptura na gôndola.
+      → O estoque na loja Pituba está em apenas 2 unidades com cobertura de 0,4 dia, e não há lojas doadoras a até 450 km, portanto transferência não é viável. Já existe um pedido de 29 unidades a caminho do fornecedor Laticínios Serra Azul, com chegada prevista em 1 dia; recomenda-se expedir essa entrega, mas com atenção pois o fornecedor tem 70,6% de pontualidade histórica e atraso médio de cerca de 2 dias quando atrasa.
 # 10 LojaBR Pinheiros         Queijo Mussarela Fatiado (kg)      motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → A loja Pinheiros tem apenas 5 unidades em estoque, cobertura de 0,9 dia e venda média de 5,7 unidades/dia, sem lojas doadoras num raio de 450 km. Já existe um pedido de 32 unidades a caminho do CD Cajamar, com chegada prevista em 2 dias e pontualidade histórica de 93,98%; por isso, recomenda-se expedir esse pedido para evitar a ruptura antes da chegada.
+      → A loja Pinheiros tem apenas 5 unidades em estoque, cobertura de 0,9 dia e vendas médias de 5,7 un/dia, sem lojas doadoras num raio de 450 km. Já existe pedido de 32 unidades a caminho do CD Cajamar, com chegada prevista em 2 dias e pontualidade histórica de 93,98% (atraso médio de 1,48 dia); por isso, recomenda-se expedir esse pedido para evitar ruptura antes da chegada.
 # 11 LojaBR Pituba            Picanha Bovina Resfriada (kg)      motor=EXPEDITE     agente=EXPEDITE     tools=get_item_position,find_donor_stores,get_supplier_history,submit_decision
-      → Não há loja doadora em até 450 km, e o estoque atual de 4 unidades cobre apenas 2,7 dias, enquanto o pedido de 9 unidades só chega em 5 dias — por isso é necessário adiantar a entrega já em trânsito. A Frios Paraná Logística tem 74,8% de pontualidade histórica, com atraso médio de 2,48 dias quando falha, o que reforça a urgência do expedite.
-# 12 LojaBR Pinheiros         Fralda Pampers Confort Sec G 36un  motor=EXP
+      → Não há loja doadora em até 450 km com excedente do produto. O estoque atual de 4 unidades cobre apenas 2,7 dias, enquanto o pedido de 9 unidades só chega em 5 dias pela Frios Paraná Logística, fornecedor com 74,79% de pontualidade e atraso médio de 2,48 dias; por isso recomendamos antecipar es
 ```
 
 ## Rule-based rationale for the rest of the queue (labelled as such)
 
 ```python
+def br(x, d=1):
+    """pt-BR number: 6,9 · 1.234"""
+    return f"{x:,.{d}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def dias(n):
+    n = int(round(n))
+    return f"{n} dia" if n == 1 else f"{n} dias"
+
+
 def rule_rationale(r):
-    base = (f"{r['product_name']} em {r['store_name']}: {r['days_of_cover']:.1f} dias de cobertura e "
+    base = (f"{r['product_name']} em {r['store_name']}: {br(r['days_of_cover'])} dias de cobertura e "
             f"{r['risk_probability']:.0%} de risco de ruptura em 7 dias.")
     if r["action_type"] == "TRANSFER":
-        return base + (f" {r['from_store_name']} ({int(r['transfer_km'])} km) tem {r['donor_days_of_cover']:.0f} dias de "
-                       f"cobertura — transferir {r['units']} un, chegada em {r['eta_days']} dia(s).")
+        return base + (f" A {r['from_store_name']}, a {int(r['transfer_km'])} km, tem {br(r['donor_days_of_cover'], 0)} dias de "
+                       f"cobertura: transferir {r['units']} un, com chegada em {dias(r['eta_days'])}.")
     sup = otif.at[r["supplier_id"], "supplier_name"]
     if r["action_type"] == "EXPEDITE":
-        return base + (f" O pedido de {r['inbound_units']} un de {sup} chega só em ~{r['eta_adjusted_days']:.0f} dias "
-                       f"(pontualidade {r['supplier_on_time_rate']:.0%}) — cobrar antecipação para {r['eta_days']} dia(s).")
-    return base + f" Sem pedido a caminho nem loja próxima com excedente — pedido emergencial de {r['units']} un a {sup}."
+        return base + (f" O pedido de {r['inbound_units']} un de {sup} chega só em ~{dias(r['eta_adjusted_days'])} "
+                       f"(pontualidade de {r['supplier_on_time_rate']:.0%}): cobrar a antecipação para {dias(r['eta_days'])}.")
+    return base + f" Não há pedido a caminho nem loja próxima com excedente: pedido emergencial de {r['units']} un a {sup}."
 
 
 rows = []
@@ -265,5 +274,5 @@ print("\nAGENT RUN:", run.to_dict("records")[0])
 **Output**
 
 ```text
-AGENT RUN: {'run_at': '2026-09-28T12:15:47.800594+00:00', 'model_endpoint': 'databricks-claude-sonnet-5', 'items_reviewed': 12, 'errors': 0, 'actions_changed': 0, 'avg_tool_calls': 3.9166666666666665, 'avg_latency_ms': 12261.0}
+AGENT RUN: {'run_at': '2026-09-28T12:41:17.153852+00:00', 'model_endpoint': 'databricks-claude-sonnet-5', 'items_reviewed': 12, 'errors': 0, 'actions_changed': 0, 'avg_tool_calls': 4.0, 'avg_latency_ms': 12367.833333333334}
 ```

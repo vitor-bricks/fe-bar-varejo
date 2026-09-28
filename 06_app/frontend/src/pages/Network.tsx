@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AlertTriangle, MapPin } from 'lucide-react';
 import { api, usePoll, type StoreDetail } from '../lib/api';
 import { brl, dec1, num, pct } from '../lib/format';
@@ -34,9 +35,10 @@ function Drill({ id, onChange }: { id: string; onChange: () => void }) {
         </table>
       </div>
       <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold">ações para esta loja · {d.actions.length}</div>
-      <div className="space-y-3 max-h-[640px] overflow-y-auto pr-1 scrollbar-thin">
-        {d.actions.slice(0, 6).map((a) => <ActionCard key={a.action_id} it={a} onDecided={onChange} compact />)}
+      <div className="space-y-3">
+        {d.actions.slice(0, 4).map((a) => <ActionCard key={a.action_id} it={a} onDecided={onChange} compact />)}
         {!d.actions.length && <div className="text-[12px] text-zinc-500">nenhuma ação pendente — estoque saudável.</div>}
+        {d.actions.length > 4 && <Link to="/fila" className="block text-center text-[11px] uppercase tracking-[0.18em] text-amber-300 hover:text-amber-200 py-2">ver as {d.actions.length} ações desta loja na fila →</Link>}
       </div>
     </div>
   );
@@ -70,7 +72,7 @@ export default function Network() {
       </section>
 
       <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_1fr] gap-6">
-        <Panel title="Mapa operacional" hint="clique numa loja · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>}>
+        <Panel className="xl:sticky xl:top-32 self-start" title="Mapa operacional" hint="clique numa loja · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>}>
           <BrazilMap stores={n.stores} routes={n.routes} selected={sel} onSelect={setSel} />
         </Panel>
         <div className="space-y-6">

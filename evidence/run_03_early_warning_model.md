@@ -1,6 +1,6 @@
-# Executed notebook — fd0ed2b6-5b32-4d2d-88c1-65eb00a652b3
+# Executed notebook — d61e4289-a683-4210-b452-c8c77575fbae
 
-Job task run `805646697250737` · exported with cell outputs (`databricks jobs export-run`).
+Job task run `853858037588402` · exported with cell outputs (`databricks jobs export-run`).
 
 # LojaBR · Centro de Abastecimento — Stockout Early-Warning Model + Action Engine (v2)
 
@@ -160,15 +160,15 @@ print("registered:", f"{G}.stockout_early_warning", "| run:", run_id)
 ```text
 train 153,053 rows (≤ 2026-08-30) · test 49,733 rows
 
-/home/spark-8778a5e9-977d-421e-a611-44/.ipykernel/69/command-8501641085259825-3320192282:20: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+/home/spark-655c8490-ab2d-44cb-90f4-27/.ipykernel/67/command-8501641085259891-3320192282:20: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
   prec_at_k = te_df.groupby("d").apply(lambda g: g.nlargest(k, "p")["y"].mean()).mean()
-/local_disk0/.ephemeral_nfs/envs/pythonEnv-8778a5e9-977d-421e-a611-44eb4dde1d3c/lib/python3.12/site-packages/mlflow/types/utils.py:440: UserWarning: Hint: Inferred schema contains integer column(s). Integer columns in Python cannot represent missing values. If your input data contains missing values at inference time, it will be encoded as floats and will cause a schema enforcement error. The best way to avoid this problem is to infer the model schema based on a realistic data sample (training dataset) that includes missing values. Alternatively, you can declare integer columns as doubles (float64) whenever these columns may have missing values. See `Handling Integers With Missing Values <https://www.mlflow.org/docs/latest/models.html#handling-integers-with-missing-values>`_ for more details.
+/local_disk0/.ephemeral_nfs/envs/pythonEnv-655c8490-ab2d-44cb-90f4-27798696e52d/lib/python3.12/site-packages/mlflow/types/utils.py:440: UserWarning: Hint: Inferred schema contains integer column(s). Integer columns in Python cannot represent missing values. If your input data contains missing values at inference time, it will be encoded as floats and will cause a schema enforcement error. The best way to avoid this problem is to infer the model schema based on a realistic data sample (training dataset) that includes missing values. Alternatively, you can declare integer columns as doubles (float64) whenever these columns may have missing values. See `Handling Integers With Missing Values <https://www.mlflow.org/docs/latest/models.html#handling-integers-with-missing-values>`_ for more details.
   warnings.warn(
-2026/09/28 12:12:31 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.
-🔗 View Logged Model at: https://fevm-serverless-stable-xpbmim.cloud.databricks.com/ml/experiments/4068321213986550/models/m-9595cd386e0b4b48b0c6b68be50b7cec?o=7474654865387615
+2026/09/28 12:37:40 WARNING mlflow.models.model: `artifact_path` is deprecated. Please use `name` instead.
+🔗 View Logged Model at: https://fevm-serverless-stable-xpbmim.cloud.databricks.com/ml/experiments/4068321213986550/models/m-1f8e887e35c54c798ba9b6144e4a129a?o=7474654865387615
 Registered model 'serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning' already exists. Creating a new version of this model...
 
-🔗 Created version '5' of model 'serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning': https://fevm-serverless-stable-xpbmim.cloud.databricks.com/explore/data/models/serverless_stable_xpbmim_catalog/fe_bar_varejo_gold/stockout_early_warning/version/5?o=7474654865387615
+🔗 Created version '6' of model 'serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning': https://fevm-serverless-stable-xpbmim.cloud.databricks.com/explore/data/models/serverless_stable_xpbmim_catalog/fe_bar_varejo_gold/stockout_early_warning/version/6?o=7474654865387615
 
 ================================================================
 EARLY-WARNING MODEL — test set (later dates, in-stock items only)
@@ -185,7 +185,7 @@ NAIVE RULE (days_of_cover < lead_time)
 naive_precision          0.3816
 naive_recall             0.5274
 naive_flag_rate          0.2942   (share of items it would flag)
-registered: serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning | run: 92a1b11653994e69afe3bb162bec5771
+registered: serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning | run: 676ece9a60884439960c391b4aa04241
 ```
 
 ## 3 · Lead time of the warning (true alerts only)
@@ -297,7 +297,8 @@ for _, r in q.iterrows():
         frm_id, frm_name, frm_city, frm_cover = r["supplier_id"], None, None, None
     covered = min(units, r["units_at_risk"])
     protected = round(float(r["risk_probability"] * covered * r["unit_price"]), 2)
-    sev = "CRITICAL" if r["days_of_cover"] < 2 else ("HIGH" if r["days_of_cover"] < 4 else "MEDIUM")
+    # severity = time urgency (priority is money): shelf empties in <1 day / <2.5 days / later
+    sev = "CRITICAL" if r["days_of_cover"] < 1 else ("HIGH" if r["days_of_cover"] < 2.5 else "MEDIUM")
     aid = hashlib.sha1(f"{today}|{r['store_id']}|{r['sku']}|{kind}".encode()).hexdigest()[:12]
     actions.append(dict(action_id=f"ACT-{aid}", snapshot_date=today, action_type=kind, severity=sev,
         store_id=r["store_id"], store_name=r["store_name"], city=r["city"], uf=r["uf"], region=r["region"],
@@ -338,12 +339,12 @@ queue: 188 actions = 8.2% of in-stock items · mix {'EXPEDITE': 142, 'TRANSFER':
 R$ at stake protected if approved: R$ 16,175 (next 7 days)
 ================================================================
  priority severity action_type         store_name                           product_name       from_store_name  units  days_of_cover  risk_probability  revenue_protected
-        1 CRITICAL    EXPEDITE       LojaBR Moema Sabão em Pó Omo Lavagem Perfeita 1,6kg                  None     26            1.3            0.9693             579.64
+        1     HIGH    EXPEDITE       LojaBR Moema Sabão em Pó Omo Lavagem Perfeita 1,6kg                  None     26            1.3            0.9693             579.64
         2 CRITICAL    TRANSFER    LojaBR Campinas        Café Torrado e Moído Pilão 500g LojaBR Ribeirão Preto     46            0.6            0.8419             429.62
-        3 CRITICAL    EXPEDITE     LojaBR Tatuapé          Picanha Bovina Resfriada (kg)                  None     10            1.2            0.8765             420.19
-        4 CRITICAL    EXPEDITE     LojaBR Niterói        Café Torrado e Moído Pilão 500g                  None     46            1.6            0.8960             389.49
-        5 CRITICAL    EXPEDITE   LojaBR Pinheiros          Arroz Branco Tipo 1 Camil 5kg                  None     44            1.5            0.7850             340.30
-        6 CRITICAL    EXPEDITE LojaBR Setor Bueno        Café Torrado e Moído Pilão 500g                  None     60            1.1            0.8615             325.65
+        3     HIGH    EXPEDITE     LojaBR Tatuapé          Picanha Bovina Resfriada (kg)                  None     10            1.2            0.8765             420.19
+        4     HIGH    EXPEDITE     LojaBR Niterói        Café Torrado e Moído Pilão 500g                  None     46            1.6            0.8960             389.49
+        5     HIGH    EXPEDITE   LojaBR Pinheiros          Arroz Branco Tipo 1 Camil 5kg                  None     44            1.5            0.7850             340.30
+        6     HIGH    EXPEDITE LojaBR Setor Bueno        Café Torrado e Moído Pilão 500g                  None     60            1.1            0.8615             325.65
         7 CRITICAL    EXPEDITE     LojaBR Tatuapé       Desodorante Rexona Aerosol 150ml                  None     23            0.5            0.9727             324.78
         8   MEDIUM    EXPEDITE     LojaBR Tatuapé Sabão em Pó Omo Lavagem Perfeita 1,6kg                  None     46            4.0            0.6715             301.17
         9 CRITICAL    EXPEDITE      LojaBR Pituba              Queijo Prato Fatiado (kg)                  None     29            0.4            0.7504             288.38

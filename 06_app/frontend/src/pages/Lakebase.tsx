@@ -1,6 +1,6 @@
 import { Database, PenLine, Table2 } from 'lucide-react';
 import { api, usePoll } from '../lib/api';
-import { brl, num, timeBR } from '../lib/format';
+import { brl, dec1, num, timeBR } from '../lib/format';
 import { ErrorBox, Kpi, Loading, PageTitle, Panel, ProductTag } from '../components/ui';
 
 function Sla({ label, v, target }: { label: string; v?: number; target: number }) {
@@ -8,7 +8,7 @@ function Sla({ label, v, target }: { label: string; v?: number; target: number }
   const w = Math.min(100, ((v ?? 0) / (target * 2)) * 100);
   return (
     <div>
-      <div className="flex justify-between text-[12.5px]"><span className="text-zinc-300">{label}</span><span className="font-mono text-zinc-100">{v ?? '—'} ms</span></div>
+      <div className="flex justify-between text-[12.5px]"><span className="text-zinc-300">{label}</span><span className="font-mono text-zinc-100">{v == null ? '—' : dec1(v)} ms</span></div>
       <div className="h-1.5 rounded-full bg-zinc-800 mt-1.5 overflow-hidden"><div className={`h-full rounded-full ${ok ? 'bg-emerald-500' : 'bg-amber-500'}`} style={{ width: `${w}%` }} /></div>
       <div className="flex justify-between text-[10px] text-zinc-500 mt-0.5"><span>alvo ≤ {target} ms</span><span>{ok ? 'dentro do alvo' : 'acima do alvo'}</span></div>
     </div>
@@ -28,9 +28,9 @@ export default function Lakebase() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Kpi label="leituras medidas" value={num(s.latency.calls)} sub="janela móvel desta instância do app" />
-        <Kpi tone="emerald" label="latência p50" value={`${s.latency.p50 ?? '—'} ms`} sub="leitura real do app" />
-        <Kpi tone="amber" label="latência p95" value={`${s.latency.p95 ?? '—'} ms`} sub={`máx ${s.latency.max ?? '—'} ms`} />
-        <Kpi label="conectado como" value={<span className="text-[13px] break-all">{s.connected_as.length > 20 ? s.connected_as.slice(0, 8) + '…' : s.connected_as}</span>} sub="service principal do app · OAuth" />
+        <Kpi tone="emerald" label="latência p50" value={s.latency.p50 == null ? '—' : `${dec1(s.latency.p50)} ms`} sub="leitura real do app" />
+        <Kpi tone="amber" label="latência p95" value={s.latency.p95 == null ? '—' : `${dec1(s.latency.p95)} ms`} sub={`máx ${s.latency.max == null ? '—' : dec1(s.latency.max)} ms`} />
+        <Kpi label="conectado como" value={<span className="text-[13px] break-all">{s.connected_as.length > 20 ? s.connected_as.slice(0, 8) + '…' : s.connected_as}</span>} sub={s.connected_as.includes('@') ? 'usuário (execução local) · OAuth' : 'service principal do app · OAuth'} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

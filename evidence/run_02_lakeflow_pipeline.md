@@ -1,11 +1,11 @@
 # Executed pipeline — Lakeflow Declarative Pipeline `fe_bar_varejo_pipeline`
 
-Task `02_lakeflow_medallion` of job run `65058701919960` (job `fe_bar_varejo_e2e`), full refresh.
+Task `02_lakeflow_medallion` of job run `204235693781766` (job `fe_bar_varejo_e2e`), full refresh.
 Source: `02_lakeflow/02_lakeflow_medallion_pipeline.py`. Queried after the run via the Databricks API and SQL.
 
 ## Pipeline update
 ```text
-pipeline fe_bar_varejo_pipeline | latest update 4ac6abfd-afb1-4fc9-988e-3a04411ef072 COMPLETED 2026-09-28T12:08:50.711Z
+pipeline fe_bar_varejo_pipeline | latest update 22ab32bf-c075-4e89-a2e4-26cfafa9d167 COMPLETED 2026-09-28T12:34:17.153Z
 ```
 
 ## Row counts per medallion layer (Unity Catalog)

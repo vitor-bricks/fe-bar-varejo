@@ -2,7 +2,7 @@
 
 The FE Bar evaluator reads text, so every stage below is backed by **real output committed as
 text** — no screenshots. All of it comes from one orchestrated run of the job
-`fe_bar_varejo_e2e` (**run `65058701919960`**, all 5 tasks SUCCESS), plus the Genie and app
+`fe_bar_varejo_e2e` (**run `204235693781766`**, all 5 tasks SUCCESS), plus the Genie and app
 checks run against the data that job produced.
 
 | # | Stage | Evidence file | What it proves |
