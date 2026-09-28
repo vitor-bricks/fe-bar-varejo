@@ -1,19 +1,72 @@
 {
   "name": "fe_bar_varejo_e2e",
   "description": "LojaBR Centro de Abastecimento — end-to-end journey: raw data -> Lakeflow medallion -> early-warning model + action queue -> tool-calling replenishment agent -> Lakebase serving",
-  "tags": {"project": "fe_bar_varejo"},
+  "tags": {
+    "project": "fe_bar_varejo"
+  },
   "max_concurrent_runs": 1,
-  "queue": {"enabled": true},
+  "queue": {
+    "enabled": true
+  },
   "tasks": [
-    {"task_key": "01_generate_raw_data",
-     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/01_generate_synthetic_data"}},
-    {"task_key": "02_lakeflow_medallion", "depends_on": [{"task_key": "01_generate_raw_data"}],
-     "pipeline_task": {"pipeline_id": "733e5172-5f51-404b-a790-b40cce95f015", "full_refresh": true}},
-    {"task_key": "03_early_warning_model", "depends_on": [{"task_key": "02_lakeflow_medallion"}],
-     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/03_early_warning_model"}},
-    {"task_key": "04_replenishment_agent", "depends_on": [{"task_key": "03_early_warning_model"}],
-     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/04_replenishment_agent"}},
-    {"task_key": "05_lakebase_sync", "depends_on": [{"task_key": "04_replenishment_agent"}],
-     "notebook_task": {"notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/05_lakebase_sync", "base_parameters": {"job_run_id": "{{job.run_id}}"}}}
-  ]
+    {
+      "task_key": "01_generate_raw_data",
+      "notebook_task": {
+        "notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/01_generate_synthetic_data"
+      }
+    },
+    {
+      "task_key": "02_lakeflow_medallion",
+      "depends_on": [
+        {
+          "task_key": "01_generate_raw_data"
+        }
+      ],
+      "pipeline_task": {
+        "pipeline_id": "733e5172-5f51-404b-a790-b40cce95f015",
+        "full_refresh": true
+      }
+    },
+    {
+      "task_key": "03_early_warning_model",
+      "depends_on": [
+        {
+          "task_key": "02_lakeflow_medallion"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/03_early_warning_model"
+      }
+    },
+    {
+      "task_key": "04_replenishment_agent",
+      "depends_on": [
+        {
+          "task_key": "03_early_warning_model"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/04_replenishment_agent"
+      }
+    },
+    {
+      "task_key": "05_lakebase_sync",
+      "depends_on": [
+        {
+          "task_key": "04_replenishment_agent"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Users/vitor.jardim@databricks.com/fe_bar_varejo/05_lakebase_sync",
+        "base_parameters": {
+          "job_run_id": "{{job.run_id}}"
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "quartz_cron_expression": "0 0 6 * * ?",
+    "timezone_id": "America/Sao_Paulo",
+    "pause_status": "UNPAUSED"
+  }
 }

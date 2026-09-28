@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-FE Bar Varejo — Genie natural-language Q&A driver.
+LojaBR · Centro de Abastecimento — Genie natural-language Q&A driver (v2).
 
 Sends a set of business questions (PT-BR) to the LojaBR Varejo Genie Space, waits for each
 answer, and prints the natural-language question, the SQL Genie generated, and the result rows.
@@ -15,12 +15,14 @@ SPACE = "01f1b906cf2d15b4b1c72c3b25ddb2f0"
 BASE = f"/api/2.0/genie/spaces/{SPACE}"
 
 QUESTIONS = [
-    "Qual foi a taxa de ruptura media dos ultimos 7 dias e a receita perdida total no periodo?",
-    "Quais as 5 lojas com maior receita perdida por ruptura no total do periodo?",
-    "Quais categorias tem a maior taxa de ruptura?",
-    "Quantos itens estao atualmente em risco de ruptura (risk_flag = 1)?",
-    "Liste os 5 itens com maior receita perdida esperada nos proximos 7 dias, com a loja e o pedido sugerido.",
-    "Qual a receita perdida por regiao no total do periodo?",
+    # certified example questions (have curated SQL in the space)
+    "Quantos itens estão na fila de ação agora?",
+    "Qual foi a receita perdida por ruptura nos últimos 7 dias?",
+    "Quais fornecedores atrasam mais?",
+    # NOT in the examples — tests entity matching and generalisation
+    "Quais ações estão recomendadas para a loja Asa Sul?",
+    "Qual a taxa de ruptura por categoria no último mês?",
+    "Quanto de receita a fila protege por região?",
 ]
 
 def api(method, path, body=None):

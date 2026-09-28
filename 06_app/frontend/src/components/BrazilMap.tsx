@@ -1,0 +1,96 @@
+import { useMemo, useState } from 'react';
+import { geoMercator, geoPath } from 'd3-geo';
+import brazil from '../lib/brazil.geo.json';
+import type { Route, Store } from '../lib/api';
+import { brl, pct } from '../lib/format';
+
+const W = 720, H = 640;
+
+export function healthColor(rate: number) {
+  if (rate >= 0.075) return { fill: '#ef4444', ring: 'rgba(239,68,68,0.35)' };
+  if (rate >= 0.06) return { fill: '#f59e0b', ring: 'rgba(245,158,11,0.3)' };
+  return { fill: '#10b981', ring: 'rgba(16,185,129,0.3)' };
+}
+
+export default function BrazilMap({ stores, routes, selected, onSelect }: {
+  stores: Store[]; routes: Route[]; selected?: string | null; onSelect: (id: string) => void;
+}) {
+  const [hover, setHover] = useState<string | null>(null);
+  const { path, pts } = useMemo(() => {
+    const proj = geoMercator().fitExtent([[20, 20], [W - 20, H - 20]], brazil as any);
+    const path = geoPath(proj)(brazil as any) || '';
+    const maxRisk = Math.max(1, ...stores.map((s) => s.revenue_at_risk));
+    // project, then nudge stores that would sit on top of each other (São Paulo, Rio clusters)
+    const placed: { id: string; x: number; y: number; r: number; s: Store }[] = [];
+    [...stores].sort((a, b) => b.revenue_at_risk - a.revenue_at_risk).forEach((s) => {
+      let [x, y] = proj([s.lon, s.lat]) as [number, number];
+      const r = 5 + 15 * Math.sqrt(s.revenue_at_risk / maxRisk);
+      for (let k = 0; k < 12; k++) {
+        const hit = placed.find((p) => Math.hypot(p.x - x, p.y - y) < p.r + r + 2);
+        if (!hit) break;
+        const ang = (k * 137.5 * Math.PI) / 180;
+        x = hit.x + Math.cos(ang) * (hit.r + r + 3);
+        y = hit.y + Math.sin(ang) * (hit.r + r + 3);
+      }
+      placed.push({ id: s.store_id, x, y, r, s });
+    });
+    return { path, pts: Object.fromEntries(placed.map((p) => [p.id, p])) };
+  }, [stores]);
+
+  const top = new Set([...stores].sort((a, b) => b.revenue_at_risk - a.revenue_at_risk).slice(0, 5).map((s) => s.store_id));
+  const tip = hover ? pts[hover] : null;
+
+  return (
+    <div className="relative">
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
+        <defs>
+          <radialGradient id="land" cx="45%" cy="40%" r="75%">
+            <stop offset="0%" stopColor="#27272a" /><stop offset="100%" stopColor="#18181b" />
+          </radialGradient>
+        </defs>
+        <path d={path} fill="url(#land)" stroke="#3f3f46" strokeWidth={1} />
+        {routes.map((r) => {
+          const a = pts[r.from_id], b = pts[r.store_id];
+          if (!a || !b) return null;
+          const done = r.decision === 'APPROVED';
+          return (
+            <line key={r.action_id} x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+              stroke={done ? '#34d399' : '#fbbf24'} strokeOpacity={done ? 0.9 : 0.55} strokeWidth={done ? 2 : 1.4}
+              className={done ? '' : 'route-flow'} />
+          );
+        })}
+        {Object.values(pts).map(({ id, x, y, r, s }) => {
+          const c = healthColor(s.stockout_rate_7d);
+          const sel = selected === id;
+          return (
+            <g key={id} onMouseEnter={() => setHover(id)} onMouseLeave={() => setHover(null)} onClick={() => onSelect(id)} className="cursor-pointer">
+              <circle cx={x} cy={y} r={r + 6} fill={c.ring} opacity={sel || hover === id ? 1 : 0.55} />
+              <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.85} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2.5 : 1.2} />
+              {(top.has(id) || sel) && (
+                <text x={x + r + 6} y={y + 4} fill="#d4d4d8" fontSize={12} fontWeight={600} className="pointer-events-none">{s.store_name.replace('LojaBR ', '')}</text>
+              )}
+            </g>
+          );
+        })}
+      </svg>
+      {tip && (
+        <div className="absolute pointer-events-none rounded-lg border border-zinc-700 bg-zinc-950/95 px-3 py-2 text-[11.5px] shadow-xl"
+          style={{ left: `${(tip.x / W) * 100}%`, top: `${(tip.y / H) * 100}%`, transform: 'translate(12px, -110%)' }}>
+          <div className="text-zinc-100 font-semibold">{tip.s.store_name}</div>
+          <div className="text-zinc-500">{tip.s.city} · {tip.s.uf} · {tip.s.store_format}</div>
+          <div className="mt-1 font-mono text-zinc-300">ruptura 7d {pct(tip.s.stockout_rate_7d)} · em risco {brl(tip.s.revenue_at_risk)}</div>
+          <div className="font-mono text-zinc-400">{tip.s.queue_n} ações na fila</div>
+        </div>
+      )}
+      <div className="absolute left-3 bottom-3 rounded-lg border border-zinc-800 bg-zinc-950/90 px-3 py-2 text-[10.5px] text-zinc-400 space-y-1">
+        <div className="text-[9.5px] uppercase tracking-[0.2em] text-zinc-500 font-semibold mb-1">Legenda</div>
+        <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> ruptura 7d &lt; 6%</div>
+        <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" / 6% – 7,5%</div>
+        <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500" /> ≥ 7,5% · em alerta</div>
+        <div className="flex items-center gap-2"><span className="w-4 border-t-2 border-dashed border-amber-400" /> transferência sugerida</div>
+        <div className="flex items-center gap-2"><span className="w-4 border-t-2 border-emerald-400" /> transferência aprovada</div>
+        <div className="text-zinc-600">tamanho = R$ em risco (7 dias)</div>
+      </div>
+    </div>
+  );
+}

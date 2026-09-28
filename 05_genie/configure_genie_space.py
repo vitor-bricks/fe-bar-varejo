@@ -22,7 +22,7 @@ MATCH = {
 
 INSTRUCTIONS = """Você é o assistente de dados do Centro de Abastecimento da LojaBR (rede de 20 supermercados no Brasil). Responda SEMPRE em português. Valores monetários em R$ (R$ 1.234,56); frações exibidas como percentual (0,053 → 5,3%).
 
-DATAS: os dados vão até a data mais recente de snapshot_date (2026-09-24). "Hoje", "agora" e "últimos N dias" são SEMPRE relativos a (SELECT max(snapshot_date) FROM gold_kpi_daily) — NUNCA use current_date().
+DATAS: os dados são atualizados diariamente e vão até a data mais recente de snapshot_date (ontem). "Hoje", "agora" e "últimos N dias" são SEMPRE relativos a (SELECT max(snapshot_date) FROM gold_kpi_daily) — NUNCA use current_date().
 
 DEFINIÇÕES:
 - Ruptura = stockout_flag = 1 (item indisponível no dia). Taxa de ruptura = avg(stockout_flag) ou stockout_rate / stockout_rate_7d (já é fração).

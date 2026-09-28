@@ -1,21 +1,21 @@
-store_id,store_name,region,city,store_format,size_sqm,open_date
-L100,LojaBR Recife 00,Nordeste,Recife,Supermercado,3491,2019-01-01
-L101,LojaBR Florianopolis 01,Sul,Florianopolis,Express,291,2019-01-01
-L102,LojaBR Goiania 02,Centro-Oeste,Goiania,Supermercado,2141,2019-01-01
-L103,LojaBR Salvador 03,Nordeste,Salvador,Supermercado,2134,2019-01-01
-L104,LojaBR Sao Paulo 04,Sudeste,Sao Paulo,Supermercado,2161,2019-01-01
-L105,LojaBR Belem 05,Norte,Belem,Hipermercado,7413,2019-01-01
-L106,LojaBR Salvador 06,Nordeste,Salvador,Hipermercado,4138,2019-01-01
-L107,LojaBR Fortaleza 07,Nordeste,Fortaleza,Supermercado,1584,2019-01-01
-L108,LojaBR Belo Horizonte 08,Sudeste,Belo Horizonte,Hipermercado,7286,2019-01-01
-L109,LojaBR Florianopolis 09,Sul,Florianopolis,Supermercado,1252,2019-01-01
-L110,LojaBR Campinas 10,Sudeste,Campinas,Supermercado,1444,2019-01-01
-L111,LojaBR Brasilia 11,Centro-Oeste,Brasilia,Express,578,2019-01-01
-L112,LojaBR Salvador 12,Nordeste,Salvador,Supermercado,2974,2019-01-01
-L113,LojaBR Brasilia 13,Centro-Oeste,Brasilia,Supermercado,2861,2019-01-01
-L114,LojaBR Porto Alegre 14,Sul,Porto Alegre,Express,775,2019-01-01
-L115,LojaBR Sao Paulo 15,Sudeste,Sao Paulo,Express,252,2019-01-01
-L116,LojaBR Porto Alegre 16,Sul,Porto Alegre,Supermercado,2849,2019-01-01
-L117,LojaBR Sao Paulo 17,Sudeste,Sao Paulo,Supermercado,1570,2019-01-01
-L118,LojaBR Goiania 18,Centro-Oeste,Goiania,Supermercado,3271,2019-01-01
-L119,LojaBR Fortaleza 19,Nordeste,Fortaleza,Hipermercado,7135,2019-01-01
+store_id,store_name,city,uf,region,store_format,lat,lon
+SP-PIN,LojaBR Pinheiros,São Paulo,SP,Sudeste,Supermercado,-23.566,-46.692
+SP-MOE,LojaBR Moema,São Paulo,SP,Sudeste,Supermercado,-23.6,-46.665
+SP-TAT,LojaBR Tatuapé,São Paulo,SP,Sudeste,Hipermercado,-23.54,-46.576
+SP-CPS,LojaBR Campinas,Campinas,SP,Sudeste,Hipermercado,-22.907,-47.063
+SP-STS,LojaBR Santos,Santos,SP,Sudeste,Supermercado,-23.961,-46.334
+SP-RPO,LojaBR Ribeirão Preto,Ribeirão Preto,SP,Sudeste,Supermercado,-21.178,-47.81
+RJ-BAR,LojaBR Barra da Tijuca,Rio de Janeiro,RJ,Sudeste,Hipermercado,-23.0,-43.365
+RJ-TIJ,LojaBR Tijuca,Rio de Janeiro,RJ,Sudeste,Express,-22.925,-43.235
+RJ-NIT,LojaBR Niterói,Niterói,RJ,Sudeste,Supermercado,-22.883,-43.103
+MG-BHZ,LojaBR Savassi,Belo Horizonte,MG,Sudeste,Supermercado,-19.938,-43.935
+PR-CWB,LojaBR Batel,Curitiba,PR,Sul,Supermercado,-25.443,-49.29
+RS-POA,LojaBR Moinhos,Porto Alegre,RS,Sul,Supermercado,-30.026,-51.201
+SC-FLN,LojaBR Florianópolis,Florianópolis,SC,Sul,Express,-27.595,-48.548
+BA-SSA,LojaBR Pituba,Salvador,BA,Nordeste,Hipermercado,-13.005,-38.458
+PE-REC,LojaBR Boa Viagem,Recife,PE,Nordeste,Supermercado,-8.119,-34.903
+CE-FOR,LojaBR Aldeota,Fortaleza,CE,Nordeste,Supermercado,-3.737,-38.498
+DF-BSB,LojaBR Asa Sul,Brasília,DF,Centro-Oeste,Hipermercado,-15.815,-47.895
+GO-GYN,LojaBR Setor Bueno,Goiânia,GO,Centro-Oeste,Supermercado,-16.707,-49.271
+AM-MAO,LojaBR Adrianópolis,Manaus,AM,Norte,Supermercado,-3.097,-60.013
+PA-BEL,LojaBR Umarizal,Belém,PA,Norte,Express,-1.448,-48.489

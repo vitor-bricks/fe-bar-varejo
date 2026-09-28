@@ -1,25 +1,26 @@
-# Databricks notebook source
-# MAGIC %md
-# MAGIC # LojaBR · Centro de Abastecimento — Synthetic Data Generation (v2)
-# MAGIC
-# MAGIC Generates a realistic Brazilian supermarket chain dataset for the **stockout / on-shelf
-# MAGIC availability** use case and lands it as raw CSV in the Unity Catalog Volume
-# MAGIC `serverless_stable_xpbmim_catalog.fe_bar_varejo_bronze.landing` (Lakeflow Auto Loader source).
-# MAGIC
-# MAGIC **What makes it realistic**
-# MAGIC - 20 real Brazilian cities/neighbourhoods with coordinates; 3 store formats.
-# MAGIC - ~170 real-looking supermarket items (name, brand, pack size) across 8 categories.
-# MAGIC - A day-by-day **inventory simulation**: Poisson demand with weekday seasonality and promos,
-# MAGIC   a reorder policy, supplier lead times **and supplier-specific delays**. Stockouts emerge
-# MAGIC   from the dynamics — they are not labelled at random.
-# MAGIC - Every purchase order is recorded (expected vs actual arrival) → supplier on-time rate.
-# MAGIC - Store-level stocking policies differ, so some stores carry **excess** of an item while
-# MAGIC   others run short → inter-store transfers are a real option.
-# MAGIC
-# MAGIC **100% synthetic — no customer data.**
+# Executed notebook — b7c68bb3-878a-4dfe-aa0d-9c5250a37a40
 
-# COMMAND ----------
+Job task run `319146647138048` · exported with cell outputs (`databricks jobs export-run`).
 
+# LojaBR · Centro de Abastecimento — Synthetic Data Generation (v2)
+
+Generates a realistic Brazilian supermarket chain dataset for the **stockout / on-shelf
+availability** use case and lands it as raw CSV in the Unity Catalog Volume
+`serverless_stable_xpbmim_catalog.fe_bar_varejo_bronze.landing` (Lakeflow Auto Loader source).
+
+**What makes it realistic**
+- 20 real Brazilian cities/neighbourhoods with coordinates; 3 store formats.
+- ~170 real-looking supermarket items (name, brand, pack size) across 8 categories.
+- A day-by-day **inventory simulation**: Poisson demand with weekday seasonality and promos,
+  a reorder policy, supplier lead times **and supplier-specific delays**. Stockouts emerge
+  from the dynamics — they are not labelled at random.
+- Every purchase order is recorded (expected vs actual arrival) → supplier on-time rate.
+- Store-level stocking policies differ, so some stores carry **excess** of an item while
+  others run short → inter-store transfers are a real option.
+
+**100% synthetic — no customer data.**
+
+```python
 import os, shutil
 from datetime import date, timedelta
 import numpy as np
@@ -32,13 +33,17 @@ START_DATE = END_DATE - (N_DAYS - 1)
 LANDING = "/Volumes/serverless_stable_xpbmim_catalog/fe_bar_varejo_bronze/landing"
 rng = np.random.default_rng(SEED)
 print(f"period {START_DATE} .. {END_DATE} ({N_DAYS} days) · seed {SEED}")
+```
 
-# COMMAND ----------
+**Output**
 
-# MAGIC %md ## Stores — 20 real locations
+```text
+period 2026-05-31 .. 2026-09-27 (120 days) · seed 42
+```
 
-# COMMAND ----------
+## Stores — 20 real locations
 
+```python
 STORES = [
     # store_id, name, city, uf, region, format, lat, lon, traffic
     ("SP-PIN", "LojaBR Pinheiros",        "São Paulo",      "SP", "Sudeste",      "Supermercado", -23.566, -46.692, 1.35),
@@ -65,13 +70,37 @@ STORES = [
 dim_store = pd.DataFrame(STORES, columns=["store_id", "store_name", "city", "uf", "region",
                                           "store_format", "lat", "lon", "traffic_index"])
 print(dim_store[["store_id", "store_name", "city", "uf", "store_format"]].to_string(index=False))
+```
 
-# COMMAND ----------
+**Output**
 
-# MAGIC %md ## Suppliers — each with its own reliability (on-time behaviour)
+```text
+store_id             store_name           city uf store_format
+  SP-PIN       LojaBR Pinheiros      São Paulo SP Supermercado
+  SP-MOE           LojaBR Moema      São Paulo SP Supermercado
+  SP-TAT         LojaBR Tatuapé      São Paulo SP Hipermercado
+  SP-CPS        LojaBR Campinas       Campinas SP Hipermercado
+  SP-STS          LojaBR Santos         Santos SP Supermercado
+  SP-RPO  LojaBR Ribeirão Preto Ribeirão Preto SP Supermercado
+  RJ-BAR LojaBR Barra da Tijuca Rio de Janeiro RJ Hipermercado
+  RJ-TIJ          LojaBR Tijuca Rio de Janeiro RJ      Express
+  RJ-NIT         LojaBR Niterói        Niterói RJ Supermercado
+  MG-BHZ         LojaBR Savassi Belo Horizonte MG Supermercado
+  PR-CWB           LojaBR Batel       Curitiba PR Supermercado
+  RS-POA         LojaBR Moinhos   Porto Alegre RS Supermercado
+  SC-FLN   LojaBR Florianópolis  Florianópolis SC      Express
+  BA-SSA          LojaBR Pituba       Salvador BA Hipermercado
+  PE-REC      LojaBR Boa Viagem         Recife PE Supermercado
+  CE-FOR         LojaBR Aldeota      Fortaleza CE Supermercado
+  DF-BSB         LojaBR Asa Sul       Brasília DF Hipermercado
+  GO-GYN     LojaBR Setor Bueno        Goiânia GO Supermercado
+  AM-MAO    LojaBR Adrianópolis         Manaus AM Supermercado
+  PA-BEL        LojaBR Umarizal          Belém PA      Express
+```
 
-# COMMAND ----------
+## Suppliers — each with its own reliability (on-time behaviour)
 
+```python
 SUPPLIERS = [
     # supplier_id, name, p_delay, delay_min, delay_max
     ("FOR-CD",  "CD LojaBR Cajamar (próprio)",       0.06, 1, 2),
@@ -87,13 +116,11 @@ SUPPLIERS = [
 dim_supplier = pd.DataFrame(SUPPLIERS, columns=["supplier_id", "supplier_name", "p_delay",
                                                 "delay_min", "delay_max"])
 sup_idx = {s[0]: i for i, s in enumerate(SUPPLIERS)}
+```
 
-# COMMAND ----------
+## Products — ~170 real-looking supermarket items
 
-# MAGIC %md ## Products — ~170 real-looking supermarket items
-
-# COMMAND ----------
-
+```python
 # category -> (supplier options, lead_time_min, lead_time_max, base_daily_demand, gross_margin)
 CAT = {
     "Mercearia":   (["FOR-CD", "FOR-ATC"], 3, 5, 5.0, 0.24),
@@ -186,13 +213,29 @@ dim_product = pd.DataFrame(rows)
 N_PRODUCTS, N_STORES = len(dim_product), len(dim_store)
 print(f"{N_PRODUCTS} products · {N_STORES} stores · {N_PRODUCTS * N_STORES:,} store×sku combos")
 display(dim_product.drop(columns=["base_demand"]).head(10))
+```
 
-# COMMAND ----------
+**Output**
 
-# MAGIC %md ## Day-by-day inventory simulation
+```text
+129 products · 20 stores · 2,580 store×sku combos
 
-# COMMAND ----------
+sku | product_name | category | supplier_id | unit_price | unit_cost | lead_time_days
+MER-001 | Arroz Branco Tipo 1 Tio João 5kg | Mercearia | FOR-CD | 27.9 | 20.65 | 4
+MER-002 | Arroz Branco Tipo 1 Camil 5kg | Mercearia | FOR-ATC | 25.5 | 18.72 | 4
+MER-003 | Feijão Carioca Camil 1kg | Mercearia | FOR-CD | 8.9 | 6.64 | 3
+MER-004 | Feijão Preto Kicaldo 1kg | Mercearia | FOR-ATC | 9.5 | 6.89 | 3
+MER-005 | Açúcar Refinado União 1kg | Mercearia | FOR-CD | 4.99 | 3.7 | 5
+MER-006 | Café Torrado e Moído Pilão 500g | Mercearia | FOR-ATC | 18.9 | 14.87 | 5
+MER-007 | Café Extraforte Melitta 500g | Mercearia | FOR-CD | 19.5 | 14.89 | 4
+MER-008 | Óleo de Soja Liza 900ml | Mercearia | FOR-ATC | 7.89 | 5.75 | 4
+MER-009 | Macarrão Espaguete Renata 500g | Mercearia | FOR-CD | 4.59 | 3.44 | 4
+MER-010 | Macarrão Parafuso Barilla 500g | Mercearia | FOR-ATC | 7.99 | 6.1 | 5
+```
 
+## Day-by-day inventory simulation
+
+```python
 N = N_STORES * N_PRODUCTS
 si = np.repeat(np.arange(N_STORES), N_PRODUCTS)
 pi = np.tile(np.arange(N_PRODUCTS), N_STORES)
@@ -278,13 +321,17 @@ fact_open_orders = pd.DataFrame({
     "eta_date": [str(START_DATE + x) for x in pend_exp[open_mask]],
     "qty_units": pend_qty[open_mask].astype(int)})
 print(f"sales {len(fact_sales):,} · inventory {len(fact_inventory):,} · purchase orders {len(fact_purchase_orders):,} · open orders {len(fact_open_orders):,}")
+```
 
-# COMMAND ----------
+**Output**
 
-# MAGIC %md ## Land raw CSV into the Unity Catalog Volume (clean re-land)
+```text
+sales 309,600 · inventory 309,600 · purchase orders 37,882 · open orders 1,344
+```
 
-# COMMAND ----------
+## Land raw CSV into the Unity Catalog Volume (clean re-land)
 
+```python
 tables = {
     "dim_store": dim_store.drop(columns=["traffic_index"]),
     "dim_product": dim_product.drop(columns=["base_demand"]),
@@ -302,13 +349,25 @@ for name, df in tables.items():
     df.to_csv(f"{LANDING}/{name}/{name}.csv", index=False)
     print(f"{name:22s} rows={len(df):>8,}  cols={df.shape[1]:>2}  -> landing/{name}/")
 print("=" * 72)
+```
 
-# COMMAND ----------
+**Output**
 
-# MAGIC %md ## Execution evidence
+```text
+========================================================================
+dim_store              rows=      20  cols= 8  -> landing/dim_store/
+dim_product            rows=     129  cols= 7  -> landing/dim_product/
+dim_supplier           rows=       9  cols= 2  -> landing/dim_supplier/
+fact_sales_daily       rows= 309,600  cols= 7  -> landing/fact_sales_daily/
+fact_inventory_daily   rows= 309,600  cols= 8  -> landing/fact_inventory_daily/
+fact_purchase_orders   rows=  37,882  cols= 8  -> landing/fact_purchase_orders/
+fact_open_orders       rows=   1,344  cols= 6  -> landing/fact_open_orders/
+========================================================================
+```
 
-# COMMAND ----------
+## Execution evidence
 
+```python
 inv = fact_inventory.merge(dim_product[["sku", "category", "unit_price"]], on="sku")
 lost_rev = (inv["lost_sales_units"] * inv["unit_price"]).sum()
 rev = fact_sales["revenue"].sum()
@@ -320,3 +379,34 @@ print("\nsupplier on-time rate:")
 print((1 - po.groupby("supplier_id")["late"].mean()).round(3).sort_values().to_string())
 print("\nstockout rate by category:")
 print(inv.groupby("category")["stockout_flag"].mean().sort_values(ascending=False).round(4).to_string())
+```
+
+**Output**
+
+```text
+stockout rate (store×sku×day): 5.30%
+lost revenue 120d: R$ 784,391  ·  revenue: R$ 18,250,213  ·  lost share 4.12%
+
+supplier on-time rate:
+supplier_id
+FOR-LMP    0.627
+FOR-HIG    0.681
+FOR-SAZ    0.706
+FOR-FRZ    0.748
+FOR-TRP    0.773
+FOR-ATC    0.830
+FOR-VVD    0.881
+FOR-CD     0.940
+FOR-PAN    0.952
+
+stockout rate by category:
+category
+Limpeza       0.1132
+Higiene       0.0915
+Congelados    0.0808
+Mercearia     0.0516
+Bebidas       0.0454
+Laticínios    0.0417
+Hortifruti    0.0120
+Padaria       0.0058
+```

@@ -1,124 +1,115 @@
-# LojaBR Varejo — Torre de Controle de Disponibilidade
-### Da ruptura reativa à reposição preditiva
+# LojaBR · Centro de Abastecimento
+### Ruptura: de reativo a preditivo — com a ação certa na mão de quem decide
 
-**Para:** VP de Operações / Supply Chain (patrocinador) e Head de Reposição / Operações de Loja (dono do domínio)
-**Apresentado por:** Field Engineering · Databricks
-*(Dados 100% sintéticos — demonstração)*
-
----
-
-## 1. O problema de negócio
-
-**Produto fora da gôndola = venda perdida — e cliente que migra para o concorrente.**
-
-- Disponibilidade em gôndola (OSA) no varejo físico tem gap de **5–10% dos SKUs** a qualquer momento.
-- Na LojaBR isso representa **R$ 3,26M perdidos em 120 dias** → **≈ R$ 9,9M por ano**.
-- A dor operacional: o time de reposição reage **depois** que a gôndola já esvaziou, com relatórios defasados.
-
-> A pergunta do executivo: *"Quanto de venda estou perdendo agora e o que faço hoje para recuperar?"*
+**Para:** VP de Operações & Supply Chain (patrocinador) · Gerente de Reposição (dono do domínio)
+**Por:** Field Engineering · Databricks — *dados 100% sintéticos*
 
 ---
 
-## 2. O resultado que entregamos
+## 1. O problema, em reais
 
-| KPI | Hoje | Com a Torre de Controle |
-|-----|------|-------------------------|
-| Taxa de ruptura (SKU×loja) | ~5,5% | **< 4%** |
-| Receita perdida / ano | ~R$ 9,9M | **Recuperar ~R$ 5M** (metade do gap) |
-| Reação da reposição | após gôndola vazia | **horas de antecedência** (risco previsto) |
-| Priorização | por intuição | **por R$ em risco** (modelo + IA) |
+- **4,1% da venda some por ruptura**: o cliente não acha o produto e compra no concorrente.
+- Na amostra de 129 itens de alto giro × 20 lojas: **R$ 2,39 mi por ano**.
+- Hoje o time descobre **depois** que a gôndola esvaziou.
+- A causa está concentrada: **Limpeza e Higiene rompem 2–3× mais**, e dois fornecedores entregam no prazo só **63–67%** das vezes.
 
-**Tese de valor:** transformar reposição reativa em **preditiva**, priorizada por receita em risco — recuperando vendas que hoje simplesmente evaporam.
+> *"Quanto estou perdendo agora, e o que eu faço hoje para não perder amanhã?"*
 
 ---
 
-## 3. O que construímos — uma tela, uma decisão
+## 2. O resultado que buscamos
 
-Uma **Torre de Controle** que o time de operação abre de manhã e sabe **exatamente onde agir**:
+| KPI do comprador | Hoje | Meta |
+|---|---|---|
+| Taxa de ruptura (loja × item × dia) | 6,5% | **< 4,5%** |
+| Venda perdida por ruptura | 4,1% da venda | **recuperar ~⅓** |
+| Antecedência do alerta | nenhuma | **~2,9 dias** |
+| Lista de trabalho | sortimento inteiro | **8% dos itens, ordenados por R$** |
 
-- **KPIs executivos:** taxa de ruptura, receita perdida (dia / período / anualizada), itens em risco agora.
-- **Worklist de reposição** priorizado por **receita esperada em risco (7 dias)** — não por intuição.
-- **Recomendação em linguagem natural (IA)** por item: por que está em risco e qual pedido disparar.
-- **Pergunte ao Genie:** qualquer gestor pergunta em português e recebe o número na hora.
+**Regra de bolso:** a cada **R$ 100 mi de venda**, ~R$ 4 mi se perdem em ruptura; recuperar um terço = **~R$ 1,4 mi**.
 
 ---
 
-## 4. Como funciona — uma jornada de dados integrada na plataforma
+## 3. O que o gerente vê de manhã
+
+Uma **fila de ação** com o produto, a loja, o risco e o R$ em jogo, e a solução mais barata para cada item:
+
+- **Transferir** de uma loja próxima com excesso (≤ 450 km, chega em 1–2 dias).
+- **Antecipar** o pedido que já está a caminho, mas chegaria tarde.
+- **Pedido urgente** quando não há alternativa.
+
+**Um clique aprova.** A decisão fica registrada com o nome de quem aprovou, e o **"R$ protegido hoje"** sobe na tela.
+
+---
+
+## 4. Por que confiar no alerta
+
+- O modelo só olha itens **ainda na gôndola**, porque prever o que já zerou não evita nada.
+- **Acerta 84% da lista diária, contra 38% da regra "cobertura < lead time"** usada hoje.
+- Avisa **~2,9 dias antes** (75% dos alertas com 2 dias ou mais).
+- Validado em datas futuras, que o modelo não viu no treino.
+
+---
+
+## 5. Um agente que confere antes de recomendar
+
+Para os itens de maior valor, um agente de IA **consulta os fatos** (estoque e venda, lojas vizinhas com excesso, histórico do fornecedor) e só então confirma ou muda a ação:
+
+> *"A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias, insuficiente para evitar ruptura. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades e cobertura de 18,2 dias, permitindo transferir 46 unidades sem comprometer seu próprio estoque."*
+> — justificativa real do agente, Café Pilão 500g, último run do job
+
+---
+
+## 6. Business case — e as premissas
+
+- **Fila de hoje:** protege **R$ 16,2 mil nos próximos 7 dias** (valor esperado, ponderado pelo risco), ≈ 27% da perda da última semana.
+- **Anualizado**, com as ações aprovadas: **≈ R$ 0,84 mi/ano** na amostra (≈ 35% da perda).
+- **Premissas:** as ações aprovadas são executadas; o valor é esperado, não garantido; a amostra é de itens de alto giro. Tudo isso é medido no piloto (slide 8).
+
+---
+
+## 7. Como funciona — uma plataforma, uma execução por dia
 
 ```
-Dados brutos ─▶ Lakeflow ─▶ Unity Catalog ─▶ ML + GenAI ─▶ Lakebase ─▶ App (Torre)
- (POS, estoque,  (ingestão +   (governança:    (risco de     (serving    (+ Genie
-  auditorias)     medallion)    catálogo/         ruptura +     operacional  embutido)
-                                lineage/qualidade) justificativa) baixa latência)
-                                       │
-                                       └─▶ Genie (perguntas em linguagem natural)
+dados brutos → Lakeflow → Unity Catalog → modelo → agente de IA → Lakebase → app
+                                   └──────────→ Genie (perguntas em português)
 ```
 
-Tudo **governado no Unity Catalog**, do dado bruto à decisão — sem silos, sem exportar planilha.
+Um único job roda tudo, todo dia às 06:00, governado no Unity Catalog: linhagem, qualidade e permissões mínimas. Não há planilha exportada nem cópia de dados.
 
 ---
 
-## 5. A inteligência — risco de ruptura priorizado por dinheiro
+## 8. Plano de piloto — 30 dias, risco controlado
 
-- Modelo prevê a **probabilidade de ruptura nos próximos 7 dias** por SKU×loja.
-- **AUC 0,86** · **precisão nos 100 de maior risco = 100%** → o time age numa lista curta, sem desperdício.
-- Cada item vem com **pedido de reposição sugerido** e **receita esperada em risco** — a fila é ordenada por R$, não por alarme genérico.
-- Modelo registrado e versionado no **Unity Catalog** (governança e reprodutibilidade).
+| Semana | O que acontece | Como medimos |
+|---|---|---|
+| 1 | Conectar POS, estoque e pedidos das 4 lojas-piloto | dados fluindo, qualidade ≥ 99% |
+| 2–4 | Fila de ação em 4 lojas; 4 lojas similares como **controle** | ruptura e venda perdida, piloto vs controle |
+| Fim | Decisão de escalar | R$ recuperado por loja × custo |
 
----
-
-## 6. Da previsão à ação — IA que explica e recomenda
-
-> *"O SKU10029 está com estoque zerado na loja L119, mas vende 87 un/dia — ruptura confirmada (100%). Ação: acelerar o pedido pendente e priorizar o abastecimento."*
-
-- A **Foundation Model API (Claude)** transforma o score em uma justificativa que o gerente de loja entende e executa.
-- Fecha o ciclo: **prever → explicar → agir**, na mesma tela.
-
----
-
-## 7. Autoatendimento — Genie em linguagem natural
-
-- *"Quais lojas perderam mais receita?"* · *"Qual a taxa de ruptura por região?"* · *"Quantos itens em risco agora?"*
-- Genie gera o **SQL governado** e responde em segundos — o dono do domínio não depende de um analista.
-- Democratiza o dado sem abrir mão do controle (Unity Catalog).
-
----
-
-## 8. Business case
-
-- **Perda atual:** ~R$ 9,9M/ano em vendas por ruptura (medido nos dados).
-- **Alvo:** reduzir ruptura de ~5,5% para <4% → **recuperar ~R$ 5M/ano**.
-- **Concentração:** Nordeste e Sudeste concentram a maior perda → priorização regional imediata.
-- **Custo x valor:** plataforma serverless, sem infra dedicada; o ganho de um único mês paga o esforço.
+**Riscos e mitigação:** o modelo errar → a fila é priorizada por R$ e o gerente decide; adoção → um clique, dentro da rotina da manhã; dados de fornecedor incompletos → o agente declara a confiança e a regra cobre a base.
 
 ---
 
 ## 9. Por que Databricks
 
-- **Uma plataforma, do bruto à decisão** — Lakeflow, Unity Catalog, ML/GenAI, Lakebase, Genie e Apps integrados.
-- **Governança nativa** (UC): lineage, qualidade, permissões — sem cópias e silos.
-- **Serving operacional (Lakebase)** e **analítico** na mesma base governada.
-- **Time to value:** protótipo end-to-end funcionando — não slideware.
+- **Uma plataforma**, do dado bruto à decisão: ingestão, governança, ML, agente de IA, Postgres operacional, perguntas em linguagem natural e app.
+- **Governança nativa**: quem vê o quê, de onde veio cada número.
+- **Pronto para piloto hoje**: já roda ponta a ponta; não é slideware.
 
 ---
 
-## 10. Roadmap — a mesma jornada, mais valor
+## 10. O pedido
 
-- 📈 **Previsão de demanda** alimentando o pedido de reposição.
-- 🏷️ **Markdown/preço** para queimar excesso protegendo margem.
-- 🎯 **Next-best-offer** sobre o comportamento do cliente.
-
-Um único produto que cresce em cima da **mesma base de dados governada**.
+**Patrocinar um piloto de 30 dias em 4 lojas**, com grupo de controle, para medir ruptura e venda recuperada, e decidir a escala com números da própria LojaBR.
 
 ---
 
-## Apêndice — evidência técnica (para o stakeholder técnico)
-
-- **Lakeflow Declarative Pipeline:** Auto Loader → bronze → silver (expectativas de qualidade) → gold; 600K linhas/camada.
-- **Unity Catalog:** catálogo/schemas `fe_bar_varejo_*`, comments, lineage automática.
-- **ML:** HistGradientBoosting, AUC 0,856, precision@top100 = 1,0, registrado no UC.
-- **GenAI:** Foundation Model API (Claude Sonnet) para justificativa de reposição.
-- **Lakebase:** Postgres autoscaling servindo worklist/KPIs em baixa latência.
-- **Genie:** Space governado sobre as tabelas gold, respostas em PT-BR com SQL.
-- **App:** Databricks App (FastAPI + React), service principal com acesso mínimo necessário.
-- **Repo (evidência de execução em texto):** github.com/vitor-bricks/fe-bar-varejo
+### Apêndice técnico (stakeholder técnico)
+- Lakeflow Declarative Pipeline: Auto Loader em 7 feeds brutos; medallion com 7 expectativas de qualidade (0 falhas no último run).
+- ML: gradient boosting, features *point-in-time* (pedido em aberto com chegada **prevista**), AUC 0,85, registrado no UC.
+- Agente: tool-calling na Foundation Model API; rejeita decisão sem consulta prévia.
+- Lakebase: schema `serving` (publicação atômica) + `app` (aprovações, log do Genie); leitura em ms.
+- Genie: entity matching, definições de métrica, SQL certificado.
+- App: React + Vite + TypeScript + Tailwind / FastAPI, service principal com acesso mínimo.
+- Evidência de execução em texto: github.com/vitor-bricks/fe-bar-varejo → `evidence/`

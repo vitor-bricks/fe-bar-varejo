@@ -1,111 +1,78 @@
-# Retail Intelligence Control Tower — On-Shelf Availability
+# LojaBR · Centro de Abastecimento — stop stockouts before the shelf empties
 
-> **FE Bar submission — Industry: Retail (Varejo).**
-> End-to-end Databricks data journey that predicts and prevents **stockouts / on-shelf
-> unavailability** for a multi-store retail chain, and surfaces it to store-ops as a
-> live control tower. All data is **synthetic** (no customer data).
+> **FE Bar submission · Industry: Retail (supermarkets).** 100% synthetic data.
 
----
+## The outcome
 
-## The business problem
+A Brazilian supermarket chain (20 stores) loses sales every day to **stockouts**: the product is
+missing from the shelf, the shopper buys elsewhere. Replenishment teams find out *after* the shelf
+is empty.
 
-For a physical retail chain, a product that is **out on the shelf is a lost sale** — and
-repeat unavailability pushes shoppers to competitors. Industry benchmarks put **on-shelf
-availability (OSA)** gaps at **5–10% of SKUs at any time**, translating to **~4% of annual
-revenue** in lost sales. The operational pain: replenishment teams react *after* the shelf
-is already empty, using stale reports.
+**Measured on the chain's data:** stockouts cost **R$ 2.39 M/year** on this 129-item high-turnover
+sample, which is **4.1% of sales**, in line with the ~4% retail benchmark.
 
-**Our customer — "LojaBR Varejo"** (synthetic), a chain with multiple stores across Brazil —
-wants to move from *reactive* to *predictive* replenishment.
+The **Centro de Abastecimento** predicts which items *still on the shelf* will run out in the next
+7 days (≈ **2.9 days of warning**). For each item it proposes the cheapest fix: **transfer from a
+nearby store with excess, expedite the order already in transit, or place an urgent order**. A
+manager approves it in one click; the decision is stored with the approver's name and "R$
+protected today" moves on screen.
 
-### The outcome we drive
+| Buyer KPI | Today | With the Centro de Abastecimento |
+|---|---|---|
+| Stockout rate (store × item × day) | 6.5% (last 7 days) | target **< 4.5%** |
+| Sales lost to stockouts | R$ 2.39 M/yr (4.1% of sales) | recover **~⅓ ≈ R$ 0.8 M/yr** on this sample |
+| Warning before the shelf empties | none (reactive) | **~2.9 days** |
+| Work list | intuition, whole assortment | **8% of items**, ranked by R$ |
 
-| KPI | Baseline | Target with Control Tower |
-|-----|----------|---------------------------|
-| Stockout rate (SKU×store) | ~8% | **< 4%** |
-| Lost sales recovered | — | **R$ (quantified in deck)** |
-| Replenishment lead reaction | after empty shelf | **hours ahead (predicted risk)** |
-| Sell-through | baseline | **+ via demand-aligned reorders** |
+**Assumptions:** today's queue protects R$ 16.2 k over the next 7 days (risk-weighted expected
+value), ≈ 27% of the R$ 60 k lost last week. Annualized and at full approval this is ≈ R$ 0.84 M/yr,
+≈ 35% of the loss. **Rule of thumb for the full chain:** every R$ 100 M of sales carries ~R$ 4 M of
+stockout loss; recovering a third is **~R$ 1.4 M per R$ 100 M of sales**.
 
----
-
-## The solution — one integrated journey
-
-A **Retail Intelligence Control Tower** anchored on the stockout hero use case, with
-connected modules (demand forecast, markdown, next-best-offer) on the same data journey.
+## The integrated journey (one job, one run id)
 
 ```
-Raw synthetic data ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML + GenAI ──▶ Lakebase ──▶ Databricks App
-   (POS, stock,        (ingest +     (govern:          (stockout      (operational   (Control Tower
-    shelf audits,       medallion     catalog/          risk model +   serving of     + embedded
-    product/store)      bronze→gold)  schemas/lineage)  GenAI reason)  reco to app)   Genie)
-                                              │
-                                              └──▶ Genie Space (natural-language querying)
+raw feeds ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML model ──▶ AI agent ──▶ Lakebase ──▶ Databricks App
+(POS, stock,   Auto Loader   bronze/silver/gold  early warning  tool-calling   serving +     approve →
+ POs, masters) + medallion   + expectations      (MLflow, UC)   (FMAPI)        app state     persisted
+                                    └────────────▶ Genie (natural language, curated)
 ```
 
-| Stage | What it does | Where |
-|-------|--------------|-------|
-| **Lakeflow** | Ingest raw synthetic feeds → bronze; declarative medallion bronze→silver→gold | `02_lakeflow/` |
-| **Unity Catalog** | Governs the data: catalog `serverless_stable_xpbmim_catalog`, schemas `fe_bar_varejo_{bronze,silver,gold}`, comments, tags, lineage | throughout |
-| **ML + GenAI** | Stockout-risk model (per SKU×store) registered in UC/MLflow + GenAI reorder rationale via Foundation Model API | `03_ml_genai/` |
-| **Lakebase** | Operational Postgres serving at-risk SKUs + reorder recommendations to the app | `04_lakebase/` |
-| **Genie** | Natural-language querying over gold tables | `05_genie/` |
-| **Databricks App** | React + FastAPI control tower surfacing it to store-ops | `06_app/` |
+| Stage | What it does | Code |
+|---|---|---|
+| **Lakeflow** | Auto Loader ingests 7 raw feeds; declarative medallion with 7 data-quality expectations | `01_ingestion/`, `02_lakeflow/` |
+| **Unity Catalog** | 3 governed schemas, lineage, comments, registered model, least-privilege grants | throughout |
+| **ML** | Stockout early warning for in-stock items; beats the planner rule (precision@K 0.84 vs 0.38) | `03_ml_genai/03_early_warning_model.py` |
+| **GenAI agent** | Tool-calling agent checks position, nearby donors and supplier history, then decides and explains | `03_ml_genai/04_replenishment_agent.py` |
+| **Lakebase** | `serving` (atomic publish) + `app` (approvals, Genie log); the app reads and writes here | `04_lakebase/05_lakebase_sync.py` |
+| **Genie** | Curated space: entity matching, metric definitions, certified SQL | `05_genie/` |
+| **App** | React + Vite + TS + Tailwind / FastAPI — home, store network map, action queue, agent room, Lakebase live | `06_app/` |
+| **Orchestration** | Job `fe_bar_varejo_e2e`, 5 tasks, daily 06:00 BRT | `07_orchestration/job_e2e.json` |
 
----
+## Live resources
 
-## Decisions, trade-offs & how it was built
+| Resource | Identifier |
+|---|---|
+| App | https://fe-bar-varejo-tower-7474654865387615.aws.databricksapps.com |
+| Job | `fe_bar_varejo_e2e` (id `384370635751593`) — evidence run `65058701919960` |
+| Lakeflow pipeline | `fe_bar_varejo_pipeline` (`733e5172-5f51-404b-a790-b40cce95f015`) |
+| UC schemas | `serverless_stable_xpbmim_catalog.fe_bar_varejo_{bronze,silver,gold}` |
+| Model | `…fe_bar_varejo_gold.stockout_early_warning` |
+| Agent LLM | `databricks-claude-sonnet-5` (Foundation Model API) |
+| Lakebase | project `fe-bar-varejo`, database `retail`, schemas `serving` / `app` |
+| Genie space | `01f1b906cf2d15b4b1c72c3b25ddb2f0` |
 
-- **[`DECISIONS.md`](DECISIONS.md)** — the key choices and trade-offs (scenario scope, synthetic
-  simulation, serverless execution, medallion pipeline, ranking by money, Lakebase + warehouse, …).
-- **[`AI_USAGE.md`](AI_USAGE.md)** — how AI (Claude Code + harness engineering) was used as a
-  teammate: planner/generator/evaluator roles, the bugs it caught and fixed, and the tooling.
+## Read the evidence
 
-## How to read the execution evidence (for the evaluator)
+Everything ran: see **[`evidence/README.md`](evidence/README.md)**. It contains executed notebooks
+exported **with their cell outputs**, pipeline expectation results, Postgres read-backs, Genie Q&A
+with generated SQL, and live app API responses, all as text.
 
-This build commits **execution output as text**, not screenshots:
+## More
 
-- `evidence/` — consolidated run outputs, query results, and model output as `.md`/`.txt`.
-- Notebooks under `02_lakeflow/`, `03_ml_genai/` are committed **with cell outputs visible**.
-- SQL results and Lakebase query output are committed as text.
-- Genie natural-language Q&A committed as text in `05_genie/`.
+- **[`DECISIONS.md`](DECISIONS.md)**: trade-offs, including a correction to this build's first version.
+- **[`AI_USAGE.md`](AI_USAGE.md)**: how AI was used as a teammate (planner / generator / evaluator).
+- **[`deck/`](deck/)**: business deck and roleplay prep.
 
-See [`evidence/README.md`](evidence/README.md) for the index of what ran and where its
-output lives.
-
----
-
-## Live resources (the integrated journey, deployed)
-
-| Stage | Resource | Identifier |
-|-------|----------|------------|
-| Landing | UC Volume | `serverless_stable_xpbmim_catalog.fe_bar_varejo_bronze.landing` |
-| Lakeflow | Declarative Pipeline | `fe_bar_varejo_pipeline` (`733e5172-5f51-404b-a790-b40cce95f015`) |
-| Unity Catalog | Schemas | `fe_bar_varejo_{bronze,silver,gold}` |
-| ML | UC-registered model | `serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_risk` |
-| GenAI | Foundation Model | `databricks-claude-sonnet-5` |
-| Lakebase | Postgres (Autoscaling) | `projects/fe-bar-varejo` · db `retail` |
-| Genie | Genie Space | `01f1b906cf2d15b4b1c72c3b25ddb2f0` |
-| App | Databricks App | `fe-bar-varejo-tower` |
-
-**App URL:** https://fe-bar-varejo-tower-7474654865387615.aws.databricksapps.com
-
-## Isolation note
-
-This build is **fully isolated** and does not modify any pre-existing asset in the
-workspace. All resources use the `fe_bar_varejo` / `fe-bar-varejo` prefix in a
-dedicated set of schemas.
-
-## Repository layout
-
-```
-01_ingestion/   synthetic data generation
-02_lakeflow/    Lakeflow ingestion + medallion pipeline
-03_ml_genai/    stockout-risk ML model + GenAI reorder rationale
-04_lakebase/    Lakebase (Postgres) operational serving
-05_genie/       Genie space setup + example NL Q&A
-06_app/         React + FastAPI Databricks App
-evidence/       execution evidence (text) index
-deck/           business presentation deck
-data/           synthetic data schema / samples
-```
+Isolation: everything uses the `fe_bar_varejo` / `fe-bar-varejo` prefix; no pre-existing asset in
+the workspace was modified.
