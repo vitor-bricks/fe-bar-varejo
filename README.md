@@ -24,8 +24,8 @@ protected today" moves on screen.
 | Warning before the shelf empties | none (reactive) | **~2.9 days** |
 | Work list | intuition, whole assortment | **8% of items**, ranked by R$ |
 
-**Assumptions:** today's queue protects R$ 16.2 k over the next 7 days (risk-weighted expected
-value), ≈ 27% of the R$ 60 k lost last week. Annualized and at full approval this is ≈ R$ 0.84 M/yr,
+**Assumptions:** the queue from the evidence run (data through 2026-09-27) protects R$ 16.2 k over
+the next 7 days (risk-weighted expected value), ≈ 27% of the R$ 60 k lost last week. Annualized and at full approval this is ≈ R$ 0.84 M/yr,
 ≈ 35% of the loss. **Rule of thumb for the full chain:** every R$ 100 M of sales carries ~R$ 4 M of
 stockout loss; recovering a third is **~R$ 1.4 M per R$ 100 M of sales**.
 
@@ -61,6 +61,11 @@ raw feeds ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML model ──�
 | Agent LLM | `databricks-claude-sonnet-5` (Foundation Model API) |
 | Lakebase | project `fe-bar-varejo`, database `retail`, schemas `serving` / `app` |
 | Genie space | `01f1b906cf2d15b4b1c72c3b25ddb2f0` |
+
+The job re-runs every morning and the data always closes yesterday, so the live app's queue and
+stores in alert change from day to day. The headline loss stays at 4.1–4.2% of sales (R$ 2.37–2.45
+M/yr). Figures in this README and the deck come from the evidence run. `deck/demo_prep.py` prints
+the current day's figures from the deployed app.
 
 ## Read the evidence
 

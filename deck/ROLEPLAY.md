@@ -6,6 +6,13 @@
 > Regra de ouro: comece e termine no **R$**. Mostre só o que prova um ponto de negócio. Quando o
 > técnico cavar fundo, responda o mecanismo e **suba de volta para o dinheiro numa frase**.
 
+**Na manhã da demo, rode `python3 deck/demo_prep.py`.** O job das 6h regenera os dados todo dia:
+os números principais ficam estáveis (4,1–4,2% da venda, R$ 2,4 mi/ano), mas as lojas em alerta e
+os itens da fila mudam. O script lê o app publicado (só leitura) e imprime a cola do dia: os 4 KPIs,
+a loja para clicar, a melhor transferência, o card para aprovar ao vivo e a frase de fechamento.
+Os números abaixo são do run de evidência de 28/09 (dados até 27/09, um domingo). Nos dias em que
+os dados fecham num domingo, ou seja, no run de segunda-feira, o app mostra exatamente esses números.
+
 ---
 
 ## 0 · Abertura (60–90 s, antes de qualquer tela) — *Demo setup*
@@ -31,9 +38,10 @@
 **B) Rede de lojas**
 - *Tell:* "Onde agir primeiro."
 - *Show:* o mapa. No zoom do Sudeste, as linhas tracejadas são **transferências sugeridas**.
-  Clique em Tatuapé: os itens que vão acabar, com cobertura em dias e o que já está a caminho.
-- *Tell:* "Estoque parado em Ribeirão Preto resolve a falta em Campinas em 2 dias, sem esperar
-  o fornecedor."
+  Clique na loja que a cola indicar (em 28/09, Tatuapé): os itens que vão acabar, com cobertura
+  em dias e o que já está a caminho.
+- *Tell:* use a melhor transferência da cola. Em 28/09: "Estoque parado em Ribeirão Preto resolve
+  a falta em Campinas em 2 dias, sem esperar o fornecedor."
 
 **C) Fila de ação — o momento da demo**
 - *Tell:* "É isto que o gerente abre às 7h."
@@ -83,8 +91,10 @@
 > **Você:** "Demanda média de 28 dias × a janela até a reposição, menos o que já está em casa e a
 > caminho; transferência só se a doadora mantiver 10 dias de cobertura e estiver a até 450 km.
 > **Na prática, é o que evita perder os R$ 430 do Café Pilão em Campinas nesta semana.**"
+> (o exemplo do dia está na última linha da cola)
 
 ## 4 · Profissionalismo
 - Uma ideia por frase. Objeção não é ataque: "boa pergunta", resposta direta, volta ao valor.
-- Antes de começar: confira que o "Protegido hoje" está em **R$ 0** (para o clique ao vivo ter efeito).
+- Antes de começar: confira que o "Protegido hoje" está em **R$ 0**, para o clique ao vivo ter
+  efeito. A cola avisa se não estiver. O contador zera sozinho à meia-noite UTC (21h em Brasília).
 - Ensaie cronometrando: ~8 min de demo e o resto para perguntas.

@@ -56,13 +56,13 @@ Uma **fila de ação** com o produto, a loja, o risco e o R$ em jogo, e a soluç
 Para os itens de maior valor, um agente de IA **consulta os fatos** (estoque e venda, lojas vizinhas com excesso, histórico do fornecedor) e só então confirma ou muda a ação:
 
 > *"A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias, insuficiente para evitar ruptura. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades e cobertura de 18,2 dias, permitindo transferir 46 unidades sem comprometer seu próprio estoque."*
-> — justificativa real do agente, Café Pilão 500g, último run do job
+> — justificativa real do agente, Café Pilão 500g, run de evidência de 28/09/2026
 
 ---
 
 ## 6. Business case — e as premissas
 
-- **Fila de hoje:** protege **R$ 16,2 mil nos próximos 7 dias** (valor esperado, ponderado pelo risco), ≈ 27% da perda da última semana.
+- **Fila do run de 28/09** (dados até 27/09): protege **R$ 16,2 mil nos próximos 7 dias** (valor esperado, ponderado pelo risco), ≈ 27% da perda da última semana.
 - **Anualizado**, com as ações aprovadas: **≈ R$ 0,84 mi/ano** na amostra (≈ 35% da perda).
 - **Premissas:** as ações aprovadas são executadas; o valor é esperado, não garantido; a amostra é de itens de alto giro. Tudo isso é medido no piloto (slide 8).
 
