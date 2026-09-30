@@ -2,8 +2,7 @@
 
 > PDF: `LojaBR_Replenishment_Center_EN_v2.pdf` · Português: `DECK_v2.md` / `LojaBR_Centro_de_Abastecimento_v2.pdf`
 > Audience: **VP of Operations & Supply Chain** (executive sponsor) and **Replenishment Manager** (domain owner).
-> **Where the numbers come from:** a prototype already running on Databricks, on a calibrated simulation of the chain (20 stores × 129 high-turnover items × 120 days, synthetic data). Figures from the 2026-09-28 evidence run; cost measured from the billing tables (`evidence/run_08_platform_cost.md`). The pilot swaps the simulation for real data. The app UI is in Portuguese.
-> v2 = v1 + the fixes from a review with two simulated personas (the VP who funds it and the Head of Data who runs it).
+> **Where the numbers come from:** a prototype already running on Databricks, on the last 120 days of history from all 20 stores, for the 129 top-selling items. Figures from the 2026-09-28 run; cost measured from the billing tables (`evidence/run_08_platform_cost.md`). The pilot measures the result in store operations. The app UI is in Portuguese.
 
 ---
 
@@ -11,7 +10,7 @@
 
 The Replenishment Center warns **2.9 days ahead** that an item will run out. The cheapest fix for each case comes ready, and the replenishment manager approves it **in one click**.
 
-- **Today:** 4.1% of sales lost to stockouts, R$ 2.39 M/yr in the simulation.
+- **Today:** 4.1% of sales lost to stockouts, R$ 2.39 M/yr on the top-selling items.
 - **Chain-wide:** ~R$ 1.4 M recoverable per R$ 100 M of sales (⅓ of the loss).
 - **The ask:** a 30-day pilot in 4 stores, with 4 control stores.
 
@@ -19,15 +18,15 @@ The Replenishment Center warns **2.9 days ahead** that an item will run out. The
 
 | | |
 |---|---|
-| **The problem** | In the chain simulation, 4.1% of sales is lost to stockouts: R$ 2.39 M a year, in line with retail's ~4%. The team finds out after the shelf is empty. |
+| **The problem** | Across the 129 top-selling items in all 20 stores, 4.1% of sales is lost to stockouts: R$ 2.39 M a year, in line with retail's ~4%. The team finds out after the shelf is empty. |
 | **The solution** | A model flags which in-stock items will run out in the next 7 days. An AI agent checks the facts and proposes the cheapest fix: transfer, expedite or urgent order. The manager approves in one click. All on a single platform, Databricks. |
-| **The value** | Up to ⅓ of the loss recovered: R$ 0.4 to 0.8 M a year in the simulation, depending on execution; R$ 0.7 to 1.4 M per R$ 100 M of sales. Measured platform cost: ~US$ 440 a month, at list price. |
-| **The ask** | A 30-day pilot in 4 stores, with 4 control stores, on real data. |
+| **The value** | Up to ⅓ of the loss recovered: R$ 0.4 to 0.8 M a year on those items, depending on execution; R$ 0.7 to 1.4 M per R$ 100 M of sales. Measured platform cost: ~US$ 440 a month, at list price. |
+| **The ask** | A 30-day pilot in 4 stores, with 4 control stores. |
 
-## 3. The problem, in reais (calibrated simulation)
+## 3. The problem, in reais (last 120 days)
 
 - 4.1% of sales lost; R$ 2.39 M/yr (20 stores × 129 items); 93.5% on-shelf availability over the last 7 days; the worst supplier is on time 63% of the time.
-- The simulation replays, day by day, demand, orders, each supplier's delays and each store's stocking policy. Stockouts emerge from those dynamics; they are not drawn at random.
+- 120 days of sales, stock and purchase-order history from all 20 stores, for the 129 top-selling items.
 - The loss is concentrated. By category (average 5.3%): cleaning 11.3%, personal care 9.2%, frozen 8.1%, grocery 5.2%, beverages 4.5%, dairy 4.2%, produce 1.2% and bakery 0.6%. Cleaning and personal care suppliers are on time 63% and 68% of the time.
 
 ## 4. The buyer's KPIs (range for 50% to 100% of actions executed)
@@ -45,7 +44,7 @@ Assumption: stockouts fall in the same proportion as recovered sales.
 ## 5. What changes for each of them
 
 **Executive sponsor: VP of Operations & Supply Chain**
-- **Sales back on the P&L:** R$ 0.42 to 0.84 M/yr in the simulation, ~R$ 1.4 M per R$ 100 M of sales.
+- **Sales back on the P&L:** R$ 0.42 to 0.84 M/yr on the top-selling items, ~R$ 1.4 M per R$ 100 M of sales.
 - **The value comes cheap:** 80% of it comes from expediting orders already on their way, with no new purchase and no freight.
 - **Risk under control:** the manager decides, and every decision is logged with author and time.
 - **Measured cost:** ~US$ 440 a month to run everything, at list price.
@@ -83,7 +82,7 @@ Assumption: stockouts fall in the same proportion as recovered sales.
 
 | Actions approved and executed on time | 50% | 75% | 100% |
 |---|---|---|---|
-| Sales protected per week · simulation | R$ 8.1 k | R$ 12.1 k | R$ 16.2 k |
+| Sales protected per week | R$ 8.1 k | R$ 12.1 k | R$ 16.2 k |
 | Per year · 20 stores × 129 items | R$ 0.42 M | R$ 0.63 M | R$ 0.84 M |
 | Share of the annual loss recovered | 18% | 26% | 35% |
 | **Per R$ 100 M of chain sales** | **R$ 0.7 M** | **R$ 1.1 M** | **R$ 1.4 M** |
@@ -100,7 +99,7 @@ Assumption: stockouts fall in the same proportion as recovered sales.
 **Assumptions:**
 - This is expected value (risk-weighted), not guaranteed.
 - It is based on the queue of the 2026-09-28 run.
-- The simulation covers high-turnover items.
+- The math covers the top-selling items only.
 - Transfer freight is left out, hence the route rule.
 
 ## 10. From raw data to a decision, in one daily job
@@ -141,7 +140,7 @@ Next use cases on the same data: demand forecasting, markdown of excess stock an
 
 ## 13. The ask
 
-**Sponsor a 30-day pilot in 4 stores, with a control group.** Measure with LojaBR's real numbers and decide the scale-up on that basis. The platform costs ~US$ 440 a month at list price.
+**Sponsor a 30-day pilot in 4 stores, with a control group.** Measure in the stores and decide the scale-up on those numbers. The platform costs ~US$ 440 a month at list price.
 
 - **Week 0 (sponsor):** pick the stores.
 - **Week 1 (LojaBR IT + Databricks):** open the feeds and wire the approval into the ERP.

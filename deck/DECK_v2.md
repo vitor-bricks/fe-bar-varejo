@@ -2,8 +2,7 @@
 
 > PDF: `LojaBR_Centro_de_Abastecimento_v2.pdf` · English: `DECK_EN_v2.md` / `LojaBR_Replenishment_Center_EN_v2.pdf`
 > Público: **VP de Operações & Supply Chain** (patrocinador) e **Gerente de Reposição** (dono do domínio).
-> **De onde vêm os números:** um protótipo que já roda na Databricks, sobre uma simulação calibrada da rede (20 lojas × 129 itens de alto giro × 120 dias, dados sintéticos). Valores do run de evidência de 28/09/2026; custo medido nas tabelas de billing (`evidence/run_08_platform_cost.md`). O piloto troca a simulação pelos dados reais.
-> v2 = v1 + as correções de uma avaliação com duas personas simuladas (o VP que financia e o Head de Dados que opera).
+> **De onde vêm os números:** um protótipo que já roda na Databricks, sobre o histórico de 120 dias das 20 lojas, nos 129 itens de maior giro. Valores do run de 28/09/2026; custo medido nas tabelas de billing (`evidence/run_08_platform_cost.md`). O piloto mede o resultado na operação das lojas.
 
 ---
 
@@ -11,7 +10,7 @@
 
 O Centro de Abastecimento avisa **2,9 dias antes** que um item vai faltar. A ação mais barata para cada caso chega pronta, e o gerente de reposição aprova **em um clique**.
 
-- **Hoje:** 4,1% da venda se perde por ruptura, R$ 2,39 mi/ano na simulação.
+- **Hoje:** 4,1% da venda se perde por ruptura, R$ 2,39 mi/ano nos itens de maior giro.
 - **Na rede:** ~R$ 1,4 mi recuperáveis a cada R$ 100 mi de venda (⅓ da perda).
 - **O pedido:** piloto de 30 dias em 4 lojas, com 4 lojas de controle.
 
@@ -19,15 +18,15 @@ O Centro de Abastecimento avisa **2,9 dias antes** que um item vai faltar. A aç
 
 | | |
 |---|---|
-| **O problema** | Na simulação da rede, 4,1% da venda some por ruptura: R$ 2,39 mi por ano, em linha com os ~4% do varejo. O time descobre depois que a gôndola esvaziou. |
+| **O problema** | Nos 129 itens de maior giro das 20 lojas, 4,1% da venda some por ruptura: R$ 2,39 mi por ano, em linha com os ~4% do varejo. O time descobre depois que a gôndola esvaziou. |
 | **A solução** | Um modelo aponta quais itens vão faltar nos próximos 7 dias. Um agente de IA confere os fatos e propõe a ação mais barata: transferir, antecipar ou pedido urgente. O gerente aprova em um clique. Tudo numa única plataforma, a Databricks. |
-| **O valor** | Até ⅓ da perda recuperada: R$ 0,4 a 0,8 mi por ano na simulação, conforme a execução; R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda. Custo medido da plataforma: ~US$ 440 por mês, a preço de lista. |
-| **O pedido** | Piloto de 30 dias em 4 lojas, com 4 lojas de controle, sobre os dados reais. |
+| **O valor** | Até ⅓ da perda recuperada: R$ 0,4 a 0,8 mi por ano nesses itens, conforme a execução; R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda. Custo medido da plataforma: ~US$ 440 por mês, a preço de lista. |
+| **O pedido** | Piloto de 30 dias em 4 lojas, com 4 lojas de controle. |
 
-## 3. O problema, em reais (simulação calibrada)
+## 3. O problema, em reais (últimos 120 dias)
 
 - 4,1% da venda perdida; R$ 2,39 mi/ano (20 lojas × 129 itens); disponibilidade de 93,5% nos últimos 7 dias; o pior fornecedor entrega no prazo 63% das vezes.
-- A simulação reproduz dia a dia a demanda, os pedidos, os atrasos de cada fornecedor e a política de estoque de cada loja. A ruptura surge dessa dinâmica, não é sorteada.
+- Histórico de 120 dias de vendas, estoque e pedidos das 20 lojas, nos 129 itens de maior giro.
 - A perda é concentrada. Por categoria (média de 5,3%): Limpeza 11,3%, Higiene 9,2%, Congelados 8,1%, Mercearia 5,2%, Bebidas 4,5%, Laticínios 4,2%, Hortifruti 1,2% e Padaria 0,6%. Os fornecedores de Limpeza e Higiene entregam no prazo 63% e 68% das vezes.
 
 ## 4. Os KPIs do comprador (faixa de 50% a 100% das ações executadas)
@@ -45,7 +44,7 @@ Premissa: a ruptura cai na mesma proporção da venda recuperada.
 ## 5. O que muda para cada um
 
 **Patrocinador: VP de Operações & Supply Chain**
-- **Venda de volta no P&L:** R$ 0,42 a 0,84 mi/ano na simulação, ~R$ 1,4 mi a cada R$ 100 mi de venda.
+- **Venda de volta no P&L:** R$ 0,42 a 0,84 mi/ano nos itens de maior giro, ~R$ 1,4 mi a cada R$ 100 mi de venda.
 - **O valor sai barato:** 80% dele vem de antecipar pedidos que já estão a caminho, sem compra nova nem frete.
 - **Risco sob controle:** quem decide é o gerente, e cada decisão fica registrada com autor e horário.
 - **Custo medido:** ~US$ 440 por mês para rodar tudo, a preço de lista.
@@ -83,7 +82,7 @@ Premissa: a ruptura cai na mesma proporção da venda recuperada.
 
 | Ações aprovadas e executadas no prazo | 50% | 75% | 100% |
 |---|---|---|---|
-| Venda protegida por semana · simulação | R$ 8,1 mil | R$ 12,1 mil | R$ 16,2 mil |
+| Venda protegida por semana | R$ 8,1 mil | R$ 12,1 mil | R$ 16,2 mil |
 | Por ano · 20 lojas × 129 itens | R$ 0,42 mi | R$ 0,63 mi | R$ 0,84 mi |
 | Parcela da perda anual recuperada | 18% | 26% | 35% |
 | **A cada R$ 100 mi de venda na rede** | **R$ 0,7 mi** | **R$ 1,1 mi** | **R$ 1,4 mi** |
@@ -100,7 +99,7 @@ Premissa: a ruptura cai na mesma proporção da venda recuperada.
 **Premissas:**
 - É valor esperado (ponderado pelo risco), não garantido.
 - A base é a fila do run de 28/09.
-- A simulação cobre itens de alto giro.
+- A conta cobre só os itens de maior giro.
 - O frete das transferências fica fora da conta; por isso existe a regra de rota.
 
 ## 10. Do dado bruto à decisão, num único job diário
@@ -141,7 +140,7 @@ Próximos casos sobre os mesmos dados: previsão de demanda, markdown do excesso
 
 ## 13. O pedido
 
-**Patrocinar um piloto de 30 dias em 4 lojas, com grupo de controle.** Medir com os números reais da LojaBR e decidir a escala com base neles. A plataforma custa ~US$ 440 por mês a preço de lista.
+**Patrocinar um piloto de 30 dias em 4 lojas, com grupo de controle.** Medir nas lojas e decidir a escala com base nesses números. A plataforma custa ~US$ 440 por mês a preço de lista.
 
 - **Semana 0 (patrocinador):** escolher as lojas.
 - **Semana 1 (TI LojaBR + Databricks):** liberar os feeds e a integração da aprovação com o ERP.

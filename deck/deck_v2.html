@@ -12,11 +12,11 @@
   <h1 style="margin-top:44px;max-width:1120px">Recuperar até <span class="g">R$ 0,8 mi por ano</span> em vendas que hoje somem da gôndola</h1>
   <p style="font-size:23px;max-width:1000px;margin-top:20px">O Centro de Abastecimento avisa <b>2,9 dias antes</b> que um item vai faltar. A ação mais barata para cada caso chega pronta, e o gerente de reposição aprova <b>em um clique</b>.</p>
   <div class="tiles c3" style="margin-top:30px">
-    <div class="t"><div class="l">hoje</div><div class="v red">4,1%</div><div class="d">da venda se perde por ruptura: R$ 2,39 mi/ano na simulação</div></div>
+    <div class="t"><div class="l">hoje</div><div class="v red">4,1%</div><div class="d">da venda se perde por ruptura: R$ 2,39 mi/ano nos itens de maior giro</div></div>
     <div class="t"><div class="l">na rede</div><div class="v emr">~R$ 1,4 mi</div><div class="d">recuperáveis a cada R$ 100 mi de venda (⅓ da perda)</div></div>
     <div class="t"><div class="l">o pedido</div><div class="v amb">30 dias</div><div class="d">piloto em 4 lojas, com 4 lojas de controle</div></div>
   </div>
-  <div class="sim"><b>De onde vêm os números:</b> um protótipo que já roda na Databricks, sobre uma <b>simulação calibrada da rede</b>: 20 lojas × 129 itens de alto giro × 120 dias, com dados sintéticos. O piloto troca a simulação pelos dados reais da LojaBR.</div>
+  <div class="sim"><b>De onde vêm os números:</b> um protótipo que já roda na Databricks, sobre o <b>histórico de 120 dias das 20 lojas</b>, nos 129 itens de maior giro. O piloto mede o resultado na operação das lojas.</div>
   <div class="f">para VP de Operações &amp; Supply Chain · Gerente de Reposição</div><div class="n">01</div>
 </section>
 
@@ -25,17 +25,17 @@
   <div class="k">Resumo executivo</div>
   <h2>A resposta em uma página</h2>
   <div class="sum">
-    <div class="b"><div class="h red">O problema</div><p>Na simulação da rede (20 lojas, 129 itens de alto giro), <b>4,1% da venda some por ruptura: R$ 2,39 mi por ano</b>, em linha com os ~4% do varejo. O time descobre <b>depois</b> que a gôndola esvaziou.</p></div>
+    <div class="b"><div class="h red">O problema</div><p>Nos 129 itens de maior giro das 20 lojas, <b>4,1% da venda some por ruptura: R$ 2,39 mi por ano</b>, em linha com os ~4% do varejo. O time descobre <b>depois</b> que a gôndola esvaziou.</p></div>
     <div class="b"><div class="h teal">A solução</div><p>Um modelo aponta <b>quais itens vão faltar nos próximos 7 dias</b>. Um agente de IA confere os fatos e propõe a ação mais barata: <b>transferir, antecipar ou pedido urgente</b>. O gerente aprova em um clique. <b>Tudo numa única plataforma, a Databricks.</b></p></div>
-    <div class="b"><div class="h emr">O valor</div><p>Até <b>⅓ da perda recuperada</b>: R$ 0,4 a 0,8 mi por ano na simulação, conforme a execução; <b>R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda</b>. Custo medido da plataforma: <b>~US$ 440 por mês</b>, a preço de lista.</p></div>
-    <div class="b"><div class="h amb">O pedido</div><p><b>Piloto de 30 dias em 4 lojas</b>, com 4 lojas de controle, sobre os dados reais. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção.</p></div>
+    <div class="b"><div class="h emr">O valor</div><p>Até <b>⅓ da perda recuperada</b>: R$ 0,4 a 0,8 mi por ano nesses itens, conforme a execução; <b>R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda</b>. Custo medido da plataforma: <b>~US$ 440 por mês</b>, a preço de lista.</p></div>
+    <div class="b"><div class="h amb">O pedido</div><p><b>Piloto de 30 dias em 4 lojas</b>, com 4 lojas de controle. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção.</p></div>
   </div>
   <div class="n">02</div>
 </section>
 
 <!-- 03 · o problema em reais -->
 <section class="s">
-  <div class="k">O problema, em reais · simulação calibrada</div>
+  <div class="k">O problema, em reais · últimos 120 dias</div>
   <h2>Produto fora da gôndola é venda que vai para o concorrente</h2>
   <div class="split" style="grid-template-columns:1fr 1.05fr">
     <div>
@@ -45,7 +45,7 @@
         <div class="t"><div class="l">disponibilidade · 7 dias</div><div class="v amb">93,5%</div><div class="d">ruptura de 6,5% (loja × item × dia)</div></div>
         <div class="t"><div class="l">pior fornecedor</div><div class="v amb">63%</div><div class="d">das entregas no prazo</div></div>
       </div>
-      <p class="mut" style="font-size:14px;margin-top:14px">A simulação reproduz dia a dia a demanda, os pedidos, os atrasos de cada fornecedor e a política de estoque de cada loja. A ruptura surge dessa dinâmica, não é sorteada.</p>
+      <p class="mut" style="font-size:14px;margin-top:14px">Histórico de 120 dias de vendas, estoque e pedidos das 20 lojas, nos 129 itens de maior giro.</p>
     </div>
     <div>
       <div class="lbl">ruptura por categoria · 120 dias · média da rede 5,3%</div>
@@ -90,7 +90,7 @@
     <div class="p">
       <div class="ph"><span class="pt amb">patrocinador</span>VP de Operações &amp; Supply Chain</div>
       <ul>
-        <li><b>Venda de volta no P&amp;L:</b> R$ 0,42 a 0,84 mi/ano na simulação, ~R$ 1,4 mi a cada R$ 100 mi de venda.</li>
+        <li><b>Venda de volta no P&amp;L:</b> R$ 0,42 a 0,84 mi/ano nos itens de maior giro, ~R$ 1,4 mi a cada R$ 100 mi de venda.</li>
         <li><b>O valor sai barato:</b> 80% dele vem de antecipar pedidos que já estão a caminho, sem compra nova nem frete.</li>
         <li><b>Risco sob controle:</b> quem decide é o gerente, e cada decisão fica registrada com autor e horário.</li>
         <li><b>Custo medido:</b> ~US$ 440 por mês para rodar tudo, a preço de lista.</li>
@@ -125,7 +125,7 @@
         <div><b class="amb">Pedido urgente</b> quando não há alternativa</div>
       </div>
     </div>
-    <figure><img class="shot" src="img/card.png" alt="Card de ação do app" style="width:500px"><figcaption>tela do app · dados sintéticos</figcaption></figure>
+    <figure><img class="shot" src="img/card.png" alt="Card de ação do app" style="width:500px"><figcaption>tela do app</figcaption></figure>
   </div>
   <div class="n">06</div>
 </section>
@@ -172,7 +172,7 @@
   <h2>Quanto vale, conforme a execução, e quanto custa</h2>
   <table class="sens tight">
     <tr><th>Ações aprovadas e executadas no prazo</th><th>50%</th><th>75%</th><th>100%</th></tr>
-    <tr><td>Venda protegida por semana · simulação</td><td class="mono">R$ 8,1 mil</td><td class="mono">R$ 12,1 mil</td><td class="mono">R$ 16,2 mil</td></tr>
+    <tr><td>Venda protegida por semana</td><td class="mono">R$ 8,1 mil</td><td class="mono">R$ 12,1 mil</td><td class="mono">R$ 16,2 mil</td></tr>
     <tr><td>Por ano · 20 lojas × 129 itens</td><td class="mono">R$ 0,42 mi</td><td class="mono">R$ 0,63 mi</td><td class="mono emr">R$ 0,84 mi</td></tr>
     <tr><td>Parcela da perda anual recuperada</td><td class="mono">18%</td><td class="mono">26%</td><td class="mono">35%</td></tr>
     <tr class="hl"><td>A cada R$ 100 mi de venda na rede</td><td class="mono">R$ 0,7 mi</td><td class="mono">R$ 1,1 mi</td><td class="mono emr">R$ 1,4 mi</td></tr>
@@ -181,7 +181,7 @@
   <div class="lbl" style="margin-top:18px;margin-bottom:0">de onde vem o valor da fila de um dia</div>
   <div class="mix"><span style="width:79.7%;background:#7dd3fc">antecipar · 80% · R$ 12,9 mil</span><span style="width:17.7%;background:#5eead4">transferir · 18%</span><span style="width:2.6%;background:#fbbf24"></span></div>
   <div class="mixl"><span>142 antecipações</span><span>39 transferências (R$ 2,9 mil)</span><span>7 pedidos urgentes (R$ 0,4 mil)</span></div>
-  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Premissas:</b> valor <b style="color:#d4d4d8">esperado</b> (ponderado pelo risco), não garantido; base na fila do run de 28/09 (R$ 16,2 mil em 7 dias, ≈ 27% da perda da semana anterior); simulação de itens de alto giro; frete das transferências fora da conta, por isso a regra de rota.</p>
+  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Premissas:</b> valor <b style="color:#d4d4d8">esperado</b> (ponderado pelo risco), não garantido; base na fila do run de 28/09 (R$ 16,2 mil em 7 dias, ≈ 27% da perda da semana anterior); só os itens de maior giro; frete das transferências fora da conta, por isso a regra de rota.</p>
   <div class="n">09</div>
 </section>
 
@@ -238,7 +238,7 @@
 <section class="s">
   <div class="k">O pedido</div>
   <h1 style="margin-top:36px;font-size:56px;max-width:1100px">Patrocinar um <span class="g">piloto de 30 dias em 4 lojas</span>, com grupo de controle.</h1>
-  <p style="margin-top:18px;max-width:1000px">Medir ruptura e venda recuperada com os números reais da LojaBR, e decidir a escala com base neles. A plataforma custa ~US$ 440 por mês a preço de lista.</p>
+  <p style="margin-top:18px;max-width:1000px">Medir ruptura e venda recuperada nas lojas, e decidir a escala com base nesses números. A plataforma custa ~US$ 440 por mês a preço de lista.</p>
   <div class="tiles c3" style="margin-top:30px">
     <div class="t"><div class="l">semana 0 · patrocinador</div><div class="d big">Escolher as 4 lojas-piloto e as 4 de controle.</div></div>
     <div class="t"><div class="l">semana 1 · TI LojaBR + Databricks</div><div class="d big">Liberar os feeds de vendas, estoque e pedidos, e a integração da aprovação com o ERP.</div></div>

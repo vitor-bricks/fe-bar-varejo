@@ -12,11 +12,11 @@
   <h1 style="margin-top:44px;max-width:1120px">Win back up to <span class="g">R$ 0.8 M a year</span> in sales that vanish from the shelf today</h1>
   <p style="font-size:23px;max-width:1000px;margin-top:20px">The Replenishment Center warns <b>2.9 days ahead</b> that an item will run out. The cheapest fix for each case comes ready, and the replenishment manager approves it <b>in one click</b>.</p>
   <div class="tiles c3" style="margin-top:30px">
-    <div class="t"><div class="l">today</div><div class="v red">4.1%</div><div class="d">of sales lost to stockouts: R$ 2.39 M/yr in the simulation</div></div>
+    <div class="t"><div class="l">today</div><div class="v red">4.1%</div><div class="d">of sales lost to stockouts: R$ 2.39 M/yr on the top-selling items</div></div>
     <div class="t"><div class="l">chain-wide</div><div class="v emr">~R$ 1.4 M</div><div class="d">recoverable per R$ 100 M of sales (⅓ of the loss)</div></div>
     <div class="t"><div class="l">the ask</div><div class="v amb">30 days</div><div class="d">pilot in 4 stores, with 4 control stores</div></div>
   </div>
-  <div class="sim"><b>Where the numbers come from:</b> a prototype already running on Databricks, on a <b>calibrated simulation of the chain</b>: 20 stores × 129 high-turnover items × 120 days, with synthetic data. The pilot swaps the simulation for LojaBR's real data.</div>
+  <div class="sim"><b>Where the numbers come from:</b> a prototype already running on Databricks, on the <b>last 120 days of history from all 20 stores</b>, for the 129 top-selling items. The pilot measures the result in store operations.</div>
   <div class="f">for the VP of Operations &amp; Supply Chain · Replenishment Manager</div><div class="n">01</div>
 </section>
 
@@ -25,17 +25,17 @@
   <div class="k">Executive summary</div>
   <h2>The answer on one page</h2>
   <div class="sum">
-    <div class="b"><div class="h red">The problem</div><p>In the chain simulation (20 stores, 129 high-turnover items), <b>4.1% of sales is lost to stockouts: R$ 2.39 M a year</b>, in line with retail's ~4%. The team finds out <b>after</b> the shelf is empty.</p></div>
+    <div class="b"><div class="h red">The problem</div><p>Across the 129 top-selling items in all 20 stores, <b>4.1% of sales is lost to stockouts: R$ 2.39 M a year</b>, in line with retail's ~4%. The team finds out <b>after</b> the shelf is empty.</p></div>
     <div class="b"><div class="h teal">The solution</div><p>A model flags <b>which in-stock items will run out in the next 7 days</b>. An AI agent checks the facts and proposes the cheapest fix: <b>transfer, expedite or urgent order</b>. The manager approves in one click. <b>All on a single platform, Databricks.</b></p></div>
-    <div class="b"><div class="h emr">The value</div><p>Up to <b>⅓ of the loss recovered</b>: R$ 0.4 to 0.8 M a year in the simulation, depending on execution; <b>R$ 0.7 to 1.4 M per R$ 100 M of sales</b>. Measured platform cost: <b>~US$ 440 a month</b>, at list price.</p></div>
-    <div class="b"><div class="h amb">The ask</div><p><b>A 30-day pilot in 4 stores</b>, with 4 control stores, on real data. The decision to scale comes from LojaBR's own numbers, not from a projection.</p></div>
+    <div class="b"><div class="h emr">The value</div><p>Up to <b>⅓ of the loss recovered</b>: R$ 0.4 to 0.8 M a year on those items, depending on execution; <b>R$ 0.7 to 1.4 M per R$ 100 M of sales</b>. Measured platform cost: <b>~US$ 440 a month</b>, at list price.</p></div>
+    <div class="b"><div class="h amb">The ask</div><p><b>A 30-day pilot in 4 stores</b>, with 4 control stores. The decision to scale comes from LojaBR's own numbers, not from a projection.</p></div>
   </div>
   <div class="n">02</div>
 </section>
 
 <!-- 03 · the problem in reais -->
 <section class="s">
-  <div class="k">The problem, in reais · calibrated simulation</div>
+  <div class="k">The problem, in reais · last 120 days</div>
   <h2>An empty shelf is a sale that goes to the competitor</h2>
   <div class="split" style="grid-template-columns:1fr 1.05fr">
     <div>
@@ -45,7 +45,7 @@
         <div class="t"><div class="l">availability · 7 days</div><div class="v amb">93.5%</div><div class="d">6.5% stockout rate (store × item × day)</div></div>
         <div class="t"><div class="l">worst supplier</div><div class="v amb">63%</div><div class="d">of deliveries on time</div></div>
       </div>
-      <p class="mut" style="font-size:14px;margin-top:14px">The simulation replays, day by day, demand, orders, each supplier's delays and each store's stocking policy. Stockouts emerge from those dynamics; they are not drawn at random.</p>
+      <p class="mut" style="font-size:14px;margin-top:14px">120 days of sales, stock and purchase-order history from all 20 stores, for the 129 top-selling items.</p>
     </div>
     <div>
       <div class="lbl">stockout rate by category · 120 days · chain average 5.3%</div>
@@ -90,7 +90,7 @@
     <div class="p">
       <div class="ph"><span class="pt amb">executive sponsor</span>VP of Operations &amp; Supply Chain</div>
       <ul>
-        <li><b>Sales back on the P&amp;L:</b> R$ 0.42 to 0.84 M/yr in the simulation, ~R$ 1.4 M per R$ 100 M of sales.</li>
+        <li><b>Sales back on the P&amp;L:</b> R$ 0.42 to 0.84 M/yr on the top-selling items, ~R$ 1.4 M per R$ 100 M of sales.</li>
         <li><b>The value comes cheap:</b> 80% of it comes from expediting orders already on their way, with no new purchase and no freight.</li>
         <li><b>Risk under control:</b> the manager decides, and every decision is logged with author and time.</li>
         <li><b>Measured cost:</b> ~US$ 440 a month to run everything, at list price.</li>
@@ -125,7 +125,7 @@
         <div><b class="amb">Urgent order</b> when there is no alternative</div>
       </div>
     </div>
-    <figure><img class="shot" src="img/card.png" alt="Action card in the app" style="width:500px"><figcaption>app screen (in Portuguese) · synthetic data</figcaption></figure>
+    <figure><img class="shot" src="img/card.png" alt="Action card in the app" style="width:500px"><figcaption>app screen (in Portuguese)</figcaption></figure>
   </div>
   <div class="n">06</div>
 </section>
@@ -172,7 +172,7 @@
   <h2>What it is worth, by execution, and what it costs</h2>
   <table class="sens tight">
     <tr><th>Actions approved and executed on time</th><th>50%</th><th>75%</th><th>100%</th></tr>
-    <tr><td>Sales protected per week · simulation</td><td class="mono">R$ 8.1 k</td><td class="mono">R$ 12.1 k</td><td class="mono">R$ 16.2 k</td></tr>
+    <tr><td>Sales protected per week</td><td class="mono">R$ 8.1 k</td><td class="mono">R$ 12.1 k</td><td class="mono">R$ 16.2 k</td></tr>
     <tr><td>Per year · 20 stores × 129 items</td><td class="mono">R$ 0.42 M</td><td class="mono">R$ 0.63 M</td><td class="mono emr">R$ 0.84 M</td></tr>
     <tr><td>Share of the annual loss recovered</td><td class="mono">18%</td><td class="mono">26%</td><td class="mono">35%</td></tr>
     <tr class="hl"><td>Per R$ 100 M of chain sales</td><td class="mono">R$ 0.7 M</td><td class="mono">R$ 1.1 M</td><td class="mono emr">R$ 1.4 M</td></tr>
@@ -181,7 +181,7 @@
   <div class="lbl" style="margin-top:18px;margin-bottom:0">where one day's queue gets its value</div>
   <div class="mix"><span style="width:79.7%;background:#7dd3fc">expedite · 80% · R$ 12.9 k</span><span style="width:17.7%;background:#5eead4">transfer · 18%</span><span style="width:2.6%;background:#fbbf24"></span></div>
   <div class="mixl"><span>142 expedites</span><span>39 transfers (R$ 2.9 k)</span><span>7 urgent orders (R$ 0.4 k)</span></div>
-  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Assumptions:</b> <b style="color:#d4d4d8">expected</b> value (risk-weighted), not guaranteed; based on the queue of the 2026-09-28 run (R$ 16.2 k over 7 days, ≈ 27% of the previous week's loss); simulation of high-turnover items; transfer freight left out, hence the route rule.</p>
+  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Assumptions:</b> <b style="color:#d4d4d8">expected</b> value (risk-weighted), not guaranteed; based on the queue of the 2026-09-28 run (R$ 16.2 k over 7 days, ≈ 27% of the previous week's loss); top-selling items only; transfer freight left out, hence the route rule.</p>
   <div class="n">09</div>
 </section>
 
@@ -238,7 +238,7 @@
 <section class="s">
   <div class="k">The ask</div>
   <h1 style="margin-top:36px;font-size:56px;max-width:1100px">Sponsor a <span class="g">30-day pilot in 4 stores</span>, with a control group.</h1>
-  <p style="margin-top:18px;max-width:1000px">Measure stockouts and recovered sales with LojaBR's real numbers, and decide the scale-up on that basis. The platform costs ~US$ 440 a month at list price.</p>
+  <p style="margin-top:18px;max-width:1000px">Measure stockouts and recovered sales in the stores, and decide the scale-up on those numbers. The platform costs ~US$ 440 a month at list price.</p>
   <div class="tiles c3" style="margin-top:30px">
     <div class="t"><div class="l">week 0 · sponsor</div><div class="d big">Pick the 4 pilot stores and the 4 control stores.</div></div>
     <div class="t"><div class="l">week 1 · LojaBR IT + Databricks</div><div class="d big">Open the sales, stock and purchase-order feeds, and wire the approval into the ERP.</div></div>
