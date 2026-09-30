@@ -34,6 +34,8 @@ export interface Store {
 }
 export interface Route { action_id: string; from_id: string; store_id: string; product_name: string; units: number; transfer_km: number; revenue_protected: number; severity: Severity; decision: string | null }
 export interface Network { stores: Store[]; routes: Route[] }
+export type QueueSort = 'impacto' | 'criticidade';
+
 export interface StoreDetail {
   store: Store;
   actions: QueueItem[];
@@ -63,7 +65,7 @@ export const api = {
   journey: () => j<Journey>('/api/journey'),
   network: () => j<Network>('/api/network'),
   store: (id: string) => j<StoreDetail>(`/api/stores/${id}`),
-  queue: (p: { action_type?: string; severity?: string; store_id?: string; limit?: number } = {}) => {
+  queue: (p: { action_type?: string; severity?: string; store_id?: string; sort?: QueueSort; limit?: number } = {}) => {
     const qs = new URLSearchParams(Object.entries(p).filter(([, v]) => v).map(([k, v]) => [k, String(v)]));
     return j<QueueItem[]>(`/api/queue?${qs}`);
   },

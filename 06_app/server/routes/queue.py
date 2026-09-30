@@ -11,10 +11,14 @@ from .overview import LATEST_DECISION
 
 router = APIRouter()
 
+# impacto = the engine's priority (R$ protected); criticidade = time to empty shelf first, then R$
+ORDER = {"impacto": "q.priority",
+         "criticidade": "CASE q.severity WHEN 'CRITICAL' THEN 0 WHEN 'HIGH' THEN 1 ELSE 2 END, q.revenue_protected DESC"}
+
 
 @router.get("/api/queue")
 def queue(action_type: Optional[str] = None, severity: Optional[str] = None, store_id: Optional[str] = None,
-          limit: int = 60):
+          sort: Literal["impacto", "criticidade"] = "impacto", limit: int = 60):
     where, params = [], []
     for col, val in (("q.action_type", action_type), ("q.severity", severity), ("q.store_id", store_id)):
         if val:
@@ -23,7 +27,7 @@ def queue(action_type: Optional[str] = None, severity: Optional[str] = None, sto
         SELECT q.*, d.decision, d.decided_by, d.decided_at
         FROM serving.replenishment_queue q LEFT JOIN d USING (action_id)
         {"WHERE " + " AND ".join(where) if where else ""}
-        ORDER BY q.priority LIMIT %s"""
+        ORDER BY {ORDER[sort]} LIMIT %s"""
     rows = lb.query(sql, (*params, min(limit, 200)))
     for r in rows:
         if r.get("decided_at"):

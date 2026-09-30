@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CheckCheck, Loader2, X } from 'lucide-react';
-import { api, usePoll, type ActionType, type Severity } from '../lib/api';
+import { api, usePoll, type ActionType, type QueueSort, type Severity } from '../lib/api';
 import { brl, whenBR } from '../lib/format';
 import ActionCard from '../components/ActionCard';
 import { ACTION, ErrorBox, Loading, PageTitle, Panel, ProductTag, SEV } from '../components/ui';
 
 const TYPES: (ActionType | '')[] = ['', 'TRANSFER', 'EXPEDITE', 'URGENT_ORDER'];
 const SEVS: (Severity | '')[] = ['', 'CRITICAL', 'HIGH', 'MEDIUM'];
+const SORTS: { k: QueueSort; label: string; title: string; hint: string }[] = [
+  { k: 'impacto', label: 'impacto (R$)', title: 'Ações priorizadas por R$ protegido', hint: 'maior R$ protegido primeiro' },
+  { k: 'criticidade', label: 'criticidade', title: 'Ações por criticidade: o que esvazia primeiro', hint: 'crítico (< 1 dia de estoque) → alto → médio; dentro de cada faixa, maior R$ primeiro' },
+];
 
 export default function Queue() {
   const [type, setType] = useState<ActionType | ''>('');
   const [sev, setSev] = useState<Severity | ''>('');
   const [bulk, setBulk] = useState(false);
   const [limit, setLimit] = useState(24);
+  const [sort, setSort] = useState<QueueSort>('impacto');
+  const order = SORTS.find((s) => s.k === sort)!;
   const [params, setParams] = useSearchParams();
   const store = params.get('loja') ?? '';   // set by "ver na fila" on the store network page
-  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, store_id: store, limit }), 20000, [type, sev, store, limit]);
+  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, store_id: store, sort, limit }), 20000, [type, sev, store, sort, limit]);
   const [decs, reloadDecs] = usePoll(api.decisions, 20000);
   const refresh = () => { reload(); reloadDecs(); };
 
@@ -29,7 +35,7 @@ export default function Queue() {
 
   return (
     <div className="space-y-6">
-      <PageTitle kicker="Fila de ação" title="Ações priorizadas por R$ protegido"
+      <PageTitle kicker="Fila de ação" title={order.title}
         sub="modelo de alerta antecipado + agente de reposição · cada aprovação é gravada na Lakebase com o seu usuário"
         right={pendingCritical.length > 0 && (
           <button onClick={approveCritical} disabled={bulk}
@@ -39,6 +45,13 @@ export default function Queue() {
         )} />
 
       <div className="flex flex-wrap gap-2 items-center">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold mr-1">ordenar por</span>
+        {SORTS.map((s) => <button key={s.k} onClick={() => setSort(s.k)} title={s.hint} className={chip(sort === s.k)}>{s.label}</button>)}
+        <span className="text-[11px] text-zinc-500 ml-1">{order.hint}</span>
+      </div>
+
+      <div className="flex flex-wrap gap-2 items-center">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold mr-1">filtrar</span>
         {TYPES.map((t) => <button key={t || 'all'} onClick={() => setType(t)} className={chip(type === t)}>{t ? ACTION[t].short : 'todas'}</button>)}
         <span className="w-px h-5 bg-zinc-800 mx-1" />
         {SEVS.map((s) => <button key={s || 'all'} onClick={() => setSev(s)} className={chip(sev === s)}>{s ? SEV[s].label : 'qualquer severidade'}</button>)}
