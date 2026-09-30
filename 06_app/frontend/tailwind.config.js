@@ -3,6 +3,11 @@ export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
+      // tokens read by the databricks-arch-diagram components (values live in src/architecture/theme.css)
+      colors: {
+        border: 'var(--border)', card: 'var(--card)', background: 'var(--background)', muted: 'var(--muted)',
+        foreground: 'var(--foreground)', 'muted-foreground': 'var(--muted-foreground)',
+      },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],

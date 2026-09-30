@@ -1,41 +1,18 @@
 import { Link } from 'react-router-dom';
 import { Area, Bar, CartesianGrid, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import { ArrowUpRight, CheckCircle2, Database, GitBranch, Layers, Bot, Brain, Sparkles, ShieldCheck, Workflow } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { api, usePoll, type Journey, type Overview } from '../lib/api';
 import { brl, dateBR, pct, num, dec1, timeBR } from '../lib/format';
 import { ACTION, ErrorBox, Kpi, Loading, Panel, ProductTag } from '../components/ui';
+import JourneyDiagram from '../architecture/JourneyDiagram';
 
-const STEP_ICON = [Workflow, GitBranch, ShieldCheck, Brain, Bot, Database, Sparkles];
-
-function JourneyStrip({ j }: { j: Journey }) {
+function JourneyPanel({ j }: { j: Journey }) {
   const run = j.steps[0];
   return (
-    <Panel title="A jornada de dados · um único job"
-      hint="do dado bruto à decisão aprovada — cada estágio abaixo mostra o que realmente rodou no último run"
+    <Panel pad={false} title="A jornada de dados · um único job"
+      hint="do dado bruto à decisão aprovada — o selo verde marca o que rodou no último run"
       right={run && <div className="text-right text-[10.5px] font-mono text-zinc-500">job run {run.job_run_id}<div>{dateBR(run.updated_at)} · {timeBR(run.updated_at)}</div></div>}>
-      <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3">
-        {j.steps.map((s, i) => {
-          const Icon = STEP_ICON[i] ?? Layers;
-          return (
-            <div key={s.step} className="relative">
-              {i < j.steps.length - 1 && (
-                <div className="hidden xl:block absolute top-6 -right-3 w-3 h-px bg-zinc-700 overflow-visible">
-                  <span className="flow-dot absolute -top-[2px] w-1.5 h-1.5 rounded-full bg-amber-400" style={{ animationDelay: `${i * 0.35}s` }} />
-                </div>
-              )}
-              <div className="h-full rounded-lg border border-zinc-800 bg-zinc-950/60 p-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-7 h-7 rounded-md bg-amber-500/10 border border-amber-500/30 grid place-items-center"><Icon className="w-3.5 h-3.5 text-amber-300" /></div>
-                  <CheckCircle2 className={`w-3.5 h-3.5 ${['ok', 'completed'].includes(s.status) ? 'text-emerald-400' : 'text-amber-400'}`} />
-                </div>
-                <div className="text-[12.5px] font-semibold text-zinc-100 mt-2">{s.stage}</div>
-                <div className="text-[10.5px] text-amber-300/80 font-medium leading-snug">{s.product}</div>
-                <div className="text-[11px] text-zinc-400 mt-1.5 leading-snug">{s.detail}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <JourneyDiagram j={j} />
     </Panel>
   );
 }
@@ -143,7 +120,7 @@ export default function Home() {
             sub={`ruptura hoje ${pct(o.stockout_rate_today)} · 7d ${pct(o.stockout_rate_7d)}`} />
         </div>
       )}
-      {j && <JourneyStrip j={j} />}
+      {j && <JourneyPanel j={j} />}
       {o && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2"><Trend o={o} /></div>

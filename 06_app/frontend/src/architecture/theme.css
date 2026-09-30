@@ -1,0 +1,13 @@
+/* Theme vars for the databricks-arch-diagram components (see the skill's references/theme.css),
+   dark variant tuned to this app's zinc palette and SCOPED to .db-arch so nothing leaks into the
+   host app. Accent, flow dots and two-tone icons keep the Databricks orange house style. */
+.db-arch {
+  --foreground:       #f4f4f5;   /* zinc-100 — stage names */
+  --muted-foreground: #a1a1aa;   /* zinc-400 — subs; connector line at 50% */
+  --background:       transparent;
+  --card:             transparent; /* the host <Panel> already draws the card */
+  --muted:            #18181b;
+  --border:           transparent;
+  --accent:           #EF5B3F;
+  --primary:          #5ADBFF;
+}

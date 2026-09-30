@@ -1,0 +1,20 @@
+{
+  "title": "A jornada de dados · um único job",
+  "kicker": "LojaBR · Centro de Abastecimento",
+  "diagrams": [
+    {
+      "type": "pipeline",
+      "connectorWidth": 96,
+      "steps": [
+        { "icon": "LakeflowIcon", "name": "Ingestão", "sub": "Auto Loader" },
+        { "icon": "LakehouseIcon", "name": "Medallion", "sub": "bronze → gold" },
+        { "icon": "UCIcon", "name": "Governança", "sub": "Unity Catalog" },
+        { "icon": "MLflowRegistryIcon", "name": "Modelo", "sub": "MLflow · UC" },
+        { "icon": "FoundationModelIcon", "name": "Agente", "sub": "FMAPI · tools" },
+        { "icon": "LakebaseIcon", "name": "Serving", "sub": "Lakebase" },
+        { "icon": "GenieIcon", "name": "Linguagem natural", "sub": "Genie" },
+        { "icon": "AppsIcon", "name": "Decisão", "sub": "este app" }
+      ]
+    }
+  ]
+}

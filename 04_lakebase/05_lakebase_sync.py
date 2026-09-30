@@ -82,9 +82,9 @@ journey = [
      f"bronze → silver → gold · update {upd.update_id[:8]}"),
     ("03", "Governança", "Unity Catalog", "ok", f"3 schemas · {n_tables} tabelas · lineage + expectations"),
     ("04", "Modelo", "MLflow · UC Model Registry", "ok",
-     f"stockout_early_warning v{max(versions)} · AUC {metrics['test_auc']:.2f}"),
+     f"stockout_early_warning v{max(versions)} · AUC {metrics['test_auc']:.2f}".replace(".", ",")),
     ("05", "Agente", "Foundation Model API · tool-calling", "ok",
-     f"{int(agent['items_reviewed'])} itens revisados · {agent['avg_tool_calls']:.1f} ferramentas/item"),
+     f"{int(agent['items_reviewed'])} itens revisados · {agent['avg_tool_calls']:.1f} ferramentas/item".replace(".", ",")),
     ("06", "Serving", "Lakebase · Postgres", "ok", "worklist, rede e aprovações em Postgres"),
     ("07", "Linguagem natural", "Genie", "ok", "espaço curado · 5 SQL certificados · entity matching"),
 ]
