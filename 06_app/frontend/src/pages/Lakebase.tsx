@@ -1,6 +1,6 @@
 import { Database, PenLine, Table2 } from 'lucide-react';
 import { api, usePoll } from '../lib/api';
-import { brl, dec1, num, timeBR } from '../lib/format';
+import { brl, dec1, num, whenBR } from '../lib/format';
 import { ErrorBox, Kpi, Loading, PageTitle, Panel, ProductTag } from '../components/ui';
 
 function Sla({ label, v, target }: { label: string; v?: number; target: number }) {
@@ -66,7 +66,7 @@ export default function Lakebase() {
           {s.recent_actions.length === 0 && <div className="px-5 py-6 text-[12px] text-zinc-500">Nenhuma aprovação ainda — aprove uma ação na Fila e ela aparece aqui.</div>}
           {s.recent_actions.map((r, i) => (
             <div key={i} className="px-5 py-2.5 border-b border-zinc-800/60 flex items-center gap-3 text-[12px]">
-              <span className="font-mono text-zinc-500 w-12">{timeBR(r.decided_at)}</span>
+              <span className="font-mono text-zinc-500 w-[88px] shrink-0">{whenBR(r.decided_at)}</span>
               <span className={r.decision === 'APPROVED' ? 'text-emerald-300' : 'text-zinc-500'}>{r.decision === 'APPROVED' ? 'INSERT ✓' : 'INSERT ✕'}</span>
               <span className="flex-1 text-zinc-300 truncate">{r.product_name} · {r.store_name?.replace('LojaBR ', '')}</span>
               <span className="font-mono text-emerald-300">{r.decision === 'APPROVED' ? brl(r.revenue_protected) : ''}</span>
@@ -77,7 +77,7 @@ export default function Lakebase() {
           {s.recent_genie.length === 0 && <div className="px-5 py-6 text-[12px] text-zinc-500">Pergunte algo ao Genie (botão âmbar) e a interação aparece aqui.</div>}
           {s.recent_genie.map((g, i) => (
             <div key={i} className="px-5 py-2.5 border-b border-zinc-800/60 text-[12px]">
-              <div className="flex justify-between"><span className="text-zinc-300 truncate pr-3">{g.question}</span><span className="font-mono text-zinc-500">{timeBR(g.asked_at)}</span></div>
+              <div className="flex justify-between"><span className="text-zinc-300 truncate pr-3">{g.question}</span><span className="font-mono text-zinc-500">{whenBR(g.asked_at)}</span></div>
               <div className="text-[10.5px] text-zinc-500">{g.user_email} · {g.row_count} linhas · {(g.duration_ms / 1000).toFixed(1)} s</div>
             </div>
           ))}

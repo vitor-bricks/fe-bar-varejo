@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { CheckCheck, Loader2 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
+import { CheckCheck, Loader2, X } from 'lucide-react';
 import { api, usePoll, type ActionType, type Severity } from '../lib/api';
-import { brl, timeBR } from '../lib/format';
+import { brl, whenBR } from '../lib/format';
 import ActionCard from '../components/ActionCard';
 import { ACTION, ErrorBox, Loading, PageTitle, Panel, ProductTag, SEV } from '../components/ui';
 
@@ -13,7 +14,9 @@ export default function Queue() {
   const [sev, setSev] = useState<Severity | ''>('');
   const [bulk, setBulk] = useState(false);
   const [limit, setLimit] = useState(24);
-  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, limit }), 20000, [type, sev, limit]);
+  const [params, setParams] = useSearchParams();
+  const store = params.get('loja') ?? '';   // set by "ver na fila" on the store network page
+  const [items, reload, err] = usePoll(() => api.queue({ action_type: type, severity: sev, store_id: store, limit }), 20000, [type, sev, store, limit]);
   const [decs, reloadDecs] = usePoll(api.decisions, 20000);
   const refresh = () => { reload(); reloadDecs(); };
 
@@ -39,6 +42,10 @@ export default function Queue() {
         {TYPES.map((t) => <button key={t || 'all'} onClick={() => setType(t)} className={chip(type === t)}>{t ? ACTION[t].short : 'todas'}</button>)}
         <span className="w-px h-5 bg-zinc-800 mx-1" />
         {SEVS.map((s) => <button key={s || 'all'} onClick={() => setSev(s)} className={chip(sev === s)}>{s ? SEV[s].label : 'qualquer severidade'}</button>)}
+        {store && items?.[0] && <>
+          <span className="w-px h-5 bg-zinc-800 mx-1" />
+          <button onClick={() => setParams({})} className={`${chip(true)} inline-flex items-center gap-1.5`}>loja: {items[0].store_name.replace('LojaBR ', '')} <X className="w-3 h-3" /></button>
+        </>}
       </div>
 
       <ErrorBox err={err} />
@@ -60,7 +67,7 @@ export default function Queue() {
               <div key={`${d.action_id}-${d.decided_at}`} className="px-5 py-3 border-b border-zinc-800/60">
                 <div className="flex items-center justify-between">
                   <span className={`text-[11px] font-bold ${d.decision === 'APPROVED' ? 'text-emerald-300' : 'text-zinc-500'}`}>{d.decision === 'APPROVED' ? '✓ aprovada' : '✕ rejeitada'}</span>
-                  <span className="text-[10.5px] font-mono text-zinc-500">{timeBR(d.decided_at)}</span>
+                  <span className="text-[10.5px] font-mono text-zinc-500">{whenBR(d.decided_at)}</span>
                 </div>
                 <div className="text-[12.5px] text-zinc-200 mt-0.5">{d.product_name}</div>
                 <div className="text-[11px] text-zinc-500">{d.store_name}{d.from_store_name ? ` ← ${d.from_store_name}` : ''} · {d.units} un</div>

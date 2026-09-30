@@ -22,3 +22,11 @@ export function dateBR(iso?: string | null, opts: Intl.DateTimeFormatOptions = {
 }
 export const timeBR = (iso?: string | null) =>
   iso ? new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '—';
+
+/** Time only for today's events, "dd/mm hh:mm" for older ones. */
+export function whenBR(iso?: string | null) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toDateString() === new Date().toDateString() ? timeBR(iso)
+    : `${d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} ${timeBR(iso)}`;
+}

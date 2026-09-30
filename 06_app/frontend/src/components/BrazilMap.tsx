@@ -81,7 +81,8 @@ function SudesteInset({ stores, routes, selected, onSelect }: { stores: Store[];
         {labels.map((l) => (
           <g key={l.id} onClick={() => onSelect(l.id)} className="cursor-pointer">
             {l.leader && <line x1={l.ax} y1={l.ay} x2={l.lx} y2={l.ly} stroke="#52525b" strokeWidth={0.8} />}
-            <text x={l.tx} y={l.ty} textAnchor={l.anchor} fill={selected === l.id ? '#fde68a' : '#a1a1aa'} fontSize={12.5} fontWeight={selected === l.id ? 700 : 500}>{l.text}</text>
+            <text x={l.tx} y={l.ty} textAnchor={l.anchor} fill={selected === l.id ? '#fde68a' : '#a1a1aa'} fontSize={12.5} fontWeight={selected === l.id ? 700 : 500}
+              stroke="#0c0c0e" strokeWidth={4} paintOrder="stroke" strokeLinejoin="round">{l.text}</text>
           </g>
         ))}
       </svg>
@@ -143,12 +144,13 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
             <g key={id} onMouseEnter={() => setHover(id)} onMouseLeave={() => setHover(null)} onClick={() => onSelect(id)} className="cursor-pointer">
               <circle cx={x} cy={y} r={r + 6} fill={c.ring} opacity={sel || hover === id ? 1 : 0.55} />
               <circle cx={x} cy={y} r={r} fill={c.fill} fillOpacity={0.85} stroke={sel ? '#fde68a' : '#09090b'} strokeWidth={sel ? 2.5 : 1.2} />
-              {(hover === id || (sel && s.region !== 'Sudeste')) && (
-                <text x={x + r + 6} y={y + 4} fill="#d4d4d8" fontSize={12} fontWeight={600} className="pointer-events-none">{s.store_name.replace('LojaBR ', '')}</text>
-              )}
             </g>
           );
         })}
+        {Object.values(pts).filter(({ id, s }) => hover === id || (selected === id && s.region !== 'Sudeste')).map(({ id, x, y, r, s }) => (
+          <text key={`l-${id}`} x={x} y={y - r - 9} textAnchor="middle" fill={selected === id ? '#fde68a' : '#e4e4e7'} fontSize={12.5} fontWeight={700}
+            stroke="#09090b" strokeWidth={4} paintOrder="stroke" strokeLinejoin="round" className="pointer-events-none">{s.store_name.replace('LojaBR ', '')}</text>
+        ))}
       </svg>
       {tip && (
         <div className="absolute pointer-events-none rounded-lg border border-zinc-700 bg-zinc-950/95 px-3 py-2 text-[11.5px] shadow-xl"

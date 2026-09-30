@@ -69,8 +69,11 @@ def approve_all(body: Bulk, request: Request):
 @router.get("/api/decisions")
 def decisions(limit: int = 20):
     rows = lb.query("""SELECT a.action_id, a.decision, a.decided_by, a.decided_at, a.units, a.revenue_protected,
-                              q.action_type, q.store_name, q.product_name, q.from_store_name
+                              coalesce(q.action_type, a.action_type) action_type,
+                              coalesce(q.store_name, p.store_name) store_name,
+                              coalesce(q.product_name, p.product_name) product_name, q.from_store_name
                        FROM app.replenishment_actions a LEFT JOIN serving.replenishment_queue q USING (action_id)
+                       LEFT JOIN serving.position p ON p.store_id = a.store_id AND p.sku = a.sku
                        ORDER BY a.decided_at DESC LIMIT %s""", (min(limit, 100),))
     for r in rows:
         r["decided_at"] = r["decided_at"].isoformat()

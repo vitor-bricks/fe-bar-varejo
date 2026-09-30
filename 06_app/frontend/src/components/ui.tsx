@@ -20,7 +20,7 @@ export function PageTitle({ kicker, title, sub, right, tone }: { kicker: string;
   );
 }
 
-export function Panel({ title, hint, right, children, className = '', pad = true }: { title?: ReactNode; hint?: ReactNode; right?: ReactNode; children: ReactNode; className?: string; pad?: boolean }) {
+export function Panel({ title, hint, right, children, className = '', bodyClassName = '', pad = true }: { title?: ReactNode; hint?: ReactNode; right?: ReactNode; children: ReactNode; className?: string; bodyClassName?: string; pad?: boolean }) {
   return (
     <section className={`rounded-xl border border-zinc-800 bg-zinc-900/60 backdrop-blur-sm ${className}`}>
       {(title || right) && (
@@ -32,7 +32,7 @@ export function Panel({ title, hint, right, children, className = '', pad = true
           {right}
         </header>
       )}
-      <div className={pad ? 'p-5' : ''}>{children}</div>
+      <div className={`${pad ? 'p-5' : ''} ${bodyClassName}`}>{children}</div>
     </section>
   );
 }

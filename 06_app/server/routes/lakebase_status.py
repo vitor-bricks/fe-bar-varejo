@@ -18,8 +18,11 @@ def status():
         counts = {r["k"]: r["n"] for r in lb.query(union)}
         for t in tables:
             t["rows"] = counts[f"{t['table_schema']}.{t['table_name']}"]
-    actions = lb.query("""SELECT a.decision, a.decided_by, a.decided_at, a.revenue_protected, q.product_name, q.store_name
+    # the queue is rebuilt daily; older decisions get their names from the store×sku position table
+    actions = lb.query("""SELECT a.decision, a.decided_by, a.decided_at, a.revenue_protected,
+                                 coalesce(q.product_name, p.product_name) product_name, coalesce(q.store_name, p.store_name) store_name
                           FROM app.replenishment_actions a LEFT JOIN serving.replenishment_queue q USING (action_id)
+                          LEFT JOIN serving.position p ON p.store_id = a.store_id AND p.sku = a.sku
                           ORDER BY a.decided_at DESC LIMIT 8""")
     genie = lb.query("""SELECT asked_at, user_email, question, row_count, duration_ms, status
                         FROM app.genie_interactions ORDER BY asked_at DESC LIMIT 6""")

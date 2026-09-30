@@ -1,44 +1,48 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AlertTriangle, MapPin } from 'lucide-react';
-import { api, usePoll, type StoreDetail } from '../lib/api';
+import { api, usePoll, type Store, type StoreDetail } from '../lib/api';
 import { brl, dec1, num, pct } from '../lib/format';
 import BrazilMap, { healthColor } from '../components/BrazilMap';
 import ActionCard from '../components/ActionCard';
 import { ErrorBox, Kpi, Loading, PageTitle, Panel, ProductTag } from '../components/ui';
 
-function Drill({ id, onChange }: { id: string; onChange: () => void }) {
-  const [d, setD] = useState<StoreDetail | null>(null);
-  useEffect(() => { setD(null); api.store(id).then(setD); }, [id]);
-  if (!d) return <Loading />;
-  const s = d.store;
+const SHOWN_ACTIONS = 6;
+
+function Stat({ label, value, tone = 'text-zinc-100' }: { label: string; value: string; tone?: string }) {
+  return (
+    <div className="rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2">
+      <div className="text-[9.5px] uppercase tracking-[0.18em] text-zinc-500 font-semibold">{label}</div>
+      <div className={`font-mono text-[15px] font-bold mt-0.5 ${tone}`}>{value}</div>
+    </div>
+  );
+}
+
+/** Selected store: identity, headline numbers and the items most at risk. Sits next to the map. */
+function StoreSummary({ s, d }: { s: Store; d: StoreDetail }) {
   return (
     <div className="space-y-4">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="text-lg font-semibold text-zinc-100">{s.store_name}</div>
-          <div className="text-[11px] text-zinc-500">{s.city} · {s.uf} · {s.store_format} · {s.region}</div>
-        </div>
-        <div className="text-right font-mono text-[11px] text-zinc-400">ruptura 7d<div className="text-zinc-100 text-base font-bold">{pct(s.stockout_rate_7d)}</div></div>
+      <div>
+        <div className="text-lg font-semibold text-zinc-100">{s.store_name}</div>
+        <div className="text-[11px] text-zinc-500">{s.city} · {s.uf} · {s.store_format} · {s.region}</div>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <Stat label="ruptura 7d" value={pct(s.stockout_rate_7d)} tone={s.stockout_rate_7d >= 0.075 ? 'text-red-300' : 'text-zinc-100'} />
+        <Stat label="em risco 7d" value={brl(s.revenue_at_risk)} tone="text-amber-300" />
+        <Stat label="ações na fila" value={`${s.queue_n}${s.queue_critical ? ` · ${s.queue_critical} crít.` : ''}`} />
       </div>
       <div>
         <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold mb-2">itens com maior R$ em risco</div>
         <table className="w-full text-[11.5px]">
-          <thead className="text-zinc-500"><tr><th className="text-left font-medium pb-1">produto</th><th className="text-right font-medium">cob.</th><th className="text-right font-medium">a caminho</th><th className="text-right font-medium">risco</th></tr></thead>
-          <tbody>{d.at_risk.map((r) => (
-            <tr key={r.product_name} className="border-t border-zinc-800/80">
-              <td className="py-1.5 text-zinc-300 pr-2">{r.product_name}</td>
-              <td className="text-right font-mono text-zinc-300">{dec1(r.days_of_cover)} d</td>
-              <td className="text-right font-mono text-zinc-400">{r.inbound_units ? `${num(r.inbound_units)} un` : '—'}</td>
-              <td className={`text-right font-mono ${r.risk_probability >= 0.5 ? 'text-red-300' : 'text-zinc-400'}`}>{pct(r.risk_probability, 0)}</td>
-            </tr>))}</tbody>
+            <thead className="text-zinc-500"><tr><th className="text-left font-medium pb-1">produto</th><th className="text-right font-medium">cob.</th><th className="text-right font-medium">a caminho</th><th className="text-right font-medium">risco</th></tr></thead>
+            <tbody>{d.at_risk.map((r) => (
+              <tr key={r.product_name} className="border-t border-zinc-800/80">
+                <td className="py-1.5 text-zinc-300 pr-2">{r.product_name}</td>
+                <td className="text-right font-mono text-zinc-300">{dec1(r.days_of_cover)} d</td>
+                <td className="text-right font-mono text-zinc-400">{r.inbound_units ? `${num(r.inbound_units)} un` : '—'}</td>
+                <td className={`text-right font-mono ${r.risk_probability >= 0.5 ? 'text-red-300' : 'text-zinc-400'}`}>{pct(r.risk_probability, 0)}</td>
+              </tr>))}</tbody>
         </table>
-      </div>
-      <div className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 font-semibold">ações para esta loja · {d.actions.length}</div>
-      <div className="space-y-3">
-        {d.actions.slice(0, 4).map((a) => <ActionCard key={a.action_id} it={a} onDecided={onChange} compact />)}
-        {!d.actions.length && <div className="text-[12px] text-zinc-500">nenhuma ação pendente — estoque saudável.</div>}
-        {d.actions.length > 4 && <Link to="/fila" className="block text-center text-[11px] uppercase tracking-[0.18em] text-amber-300 hover:text-amber-200 py-2">ver as {d.actions.length} ações desta loja na fila →</Link>}
       </div>
     </div>
   );
@@ -47,12 +51,25 @@ function Drill({ id, onChange }: { id: string; onChange: () => void }) {
 export default function Network() {
   const [n, reload, err] = usePoll(api.network, 20000);
   const [sel, setSel] = useState<string | null>(null);
+  const [detail, setDetail] = useState<StoreDetail | null>(null);
   useEffect(() => { if (n && !sel && n.stores.length) setSel(n.stores[0].store_id); }, [n, sel]);
+  // the previous store stays on screen (dimmed) until the next one arrives: no layout jump, and
+  // everything shown belongs to the same store. Stale replies are ignored.
+  useEffect(() => {
+    if (!sel) return;
+    let live = true;
+    api.store(sel).then((x) => { if (live) setDetail(x); });
+    return () => { live = false; };
+  }, [sel]);
+  const onDecided = () => { reload(); if (sel) api.store(sel).then(setDetail); };
+
   if (!n) return <><ErrorBox err={err} /><Loading /></>;
   const alert = n.stores.filter((s) => s.stockout_rate_7d >= 0.075);
   const risk = n.stores.reduce((a, s) => a + s.revenue_at_risk, 0);
   const crit = n.stores.reduce((a, s) => a + s.queue_critical, 0);
   const pending = n.routes.filter((r) => !r.decision).length;
+  const store = n.stores.find((s) => s.store_id === detail?.store.store_id);
+  const loading = sel !== detail?.store.store_id;
 
   return (
     <div className="space-y-6">
@@ -71,13 +88,18 @@ export default function Network() {
         </div>
       </section>
 
+      {/* Row 1: map | selected store + ranking. The right column is pinned to the map's height,
+          the ranking absorbs the remaining space and scrolls, so both columns end on the same line. */}
       <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_1fr] gap-6">
-        <Panel className="xl:sticky xl:top-32 self-start" title="Mapa operacional" hint="clique numa loja · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>}>
+        <Panel title="Mapa operacional" hint="clique numa loja · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>}>
           <BrazilMap stores={n.stores} routes={n.routes} selected={sel} onSelect={setSel} />
         </Panel>
-        <div className="space-y-6">
-          <Panel title="Lojas por R$ em risco" hint="próximos 7 dias · ordenado" pad={false}>
-            <div className="max-h-[300px] overflow-y-auto scrollbar-thin">
+        <div className="relative">
+          <div className="flex flex-col gap-6 xl:absolute xl:inset-0">
+            <Panel className={`shrink-0 transition-opacity ${loading ? 'opacity-50' : ''}`} title={<span className="inline-flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-amber-400" />Loja selecionada</span>}>
+              {store && detail ? <StoreSummary s={store} d={detail} /> : <Loading />}
+            </Panel>
+            <Panel className="flex-1 min-h-0 flex flex-col" bodyClassName="flex-1 min-h-0 overflow-y-auto scrollbar-thin max-h-[360px] xl:max-h-none" title="Lojas por R$ em risco" hint="próximos 7 dias · clique para selecionar" pad={false}>
               {n.stores.map((s, i) => (
                 <button key={s.store_id} onClick={() => setSel(s.store_id)}
                   className={`w-full flex items-center gap-3 px-5 py-2.5 text-left border-b border-zinc-800/60 hover:bg-zinc-800/40 ${sel === s.store_id ? 'bg-amber-500/[0.07]' : ''}`}>
@@ -89,13 +111,24 @@ export default function Network() {
                     <span className="block text-[10px] text-zinc-500 font-mono">ruptura {pct(s.stockout_rate_7d)}</span></span>
                 </button>
               ))}
-            </div>
-          </Panel>
-          <Panel title={<span className="inline-flex items-center gap-2"><MapPin className="w-3.5 h-3.5 text-amber-400" />Loja selecionada</span>}>
-            {sel ? <Drill id={sel} onChange={reload} /> : <Loading label="selecione uma loja" />}
-          </Panel>
+            </Panel>
+          </div>
         </div>
       </div>
+
+      {/* Row 2: the selected store's actions, full width */}
+      {store && detail && (
+        <Panel className={`transition-opacity ${loading ? 'opacity-50' : ''}`} title={`Ações para ${store.store_name}`} hint="ordenadas por R$ protegido · aprovar grava a decisão na Lakebase com o seu usuário"
+          right={store.queue_n > SHOWN_ACTIONS && <Link to={`/fila?loja=${store.store_id}`} className="text-[11px] uppercase tracking-[0.18em] text-amber-300 hover:text-amber-200 whitespace-nowrap">ver as {store.queue_n} na fila →</Link>}>
+          {!detail.actions.length ? (
+            <div className="text-[12px] text-zinc-500">Nenhuma ação pendente: estoque saudável nesta loja.</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {detail.actions.slice(0, SHOWN_ACTIONS).map((a) => <ActionCard key={a.action_id} it={a} onDecided={onDecided} />)}
+            </div>
+          )}
+        </Panel>
+      )}
     </div>
   );
 }
