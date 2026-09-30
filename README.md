@@ -46,7 +46,7 @@ raw feeds ──▶ Lakeflow ──▶ Unity Catalog ──▶ ML model ──�
 | **GenAI agent** | Tool-calling agent checks position, nearby donors and supplier history, then decides and explains | `03_ml_genai/04_replenishment_agent.py` |
 | **Lakebase** | `serving` (atomic publish) + `app` (approvals, Genie log); the app reads and writes here | `04_lakebase/05_lakebase_sync.py` |
 | **Genie** | Curated space: entity matching, metric definitions, certified SQL | `05_genie/` |
-| **App** | React + Vite + TS + Tailwind / FastAPI — home, store network map, action queue, agent room, Lakebase live | `06_app/` |
+| **App** | React + Vite + TS + Tailwind / FastAPI — home, store network map, action queue, agent room, Lakebase live, and a live architecture view whose stages open the real notebooks, pipeline, UC objects, Lakebase and Genie in the workspace | `06_app/` |
 | **Orchestration** | Job `fe_bar_varejo_e2e`, 5 tasks, daily 06:00 BRT | `07_orchestration/job_e2e.json` |
 
 ## Live resources

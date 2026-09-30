@@ -1,0 +1,22 @@
+{
+  "_about": "Workspace deep-links for the architecture view (skill databricks-arch-diagram, deep-links.md). ${VAR:default} is resolved from the environment; an empty id makes that tile inert.",
+  "jobId": "${JOB_ID:384370635751593}",
+  "pipelineId": "${PIPELINE_ID:733e5172-5f51-404b-a790-b40cce95f015}",
+  "genieSpaceId": "${GENIE_SPACE_ID:01f1b906cf2d15b4b1c72c3b25ddb2f0}",
+  "lakebaseProjectId": "${LAKEBASE_PROJECT_ID:fe-bar-varejo}",
+  "appName": "${DATABRICKS_APP_NAME:fe-bar-varejo-tower}",
+  "mlModelName": "serverless_stable_xpbmim_catalog.fe_bar_varejo_gold.stockout_early_warning",
+  "data": {
+    "catalog": "serverless_stable_xpbmim_catalog",
+    "bronze": "fe_bar_varejo_bronze",
+    "gold": "fe_bar_varejo_gold",
+    "volume": "landing"
+  },
+  "notebooks": {
+    "ingest": "561894903539841",
+    "pipeline": "561894903539842",
+    "model": "4068321213986550",
+    "agent": "4068321213986545",
+    "sync": "4068321213986551"
+  }
+}

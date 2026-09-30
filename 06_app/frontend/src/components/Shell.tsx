@@ -1,8 +1,9 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Bot, Database, LayoutDashboard, ListChecks, MapPinned, Sparkles } from 'lucide-react';
+import { Bot, Database, LayoutDashboard, ListChecks, MapPinned, Sparkles, Workflow } from 'lucide-react';
 import { LiveDot } from './ui';
 import GenieDrawer from './GenieDrawer';
+import ArchitectureView from '../architecture/ArchitectureView';
 import { dateBR } from '../lib/format';
 
 const NAV = [
@@ -30,6 +31,7 @@ function Clock() {
 
 export default function Shell({ children, asOf }: { children: ReactNode; asOf?: string | null }) {
   const [genie, setGenie] = useState(false);
+  const [arch, setArch] = useState(false);
   return (
     <div className="min-h-screen relative overflow-x-hidden">
       {/* backdrop: slow drifting blobs + moving grid */}
@@ -54,6 +56,15 @@ export default function Shell({ children, asOf }: { children: ReactNode; asOf?: 
             </div>
           </div>
           <div className="flex items-center gap-6">
+            {/* glowing entry point to the live architecture (Databricks orange, like the diagram) */}
+            <button onClick={() => setArch(true)} title="Ver a arquitetura: cada estágio abre no workspace"
+              className="relative inline-flex items-center gap-2 rounded-full border border-[#EF5B3F]/60 bg-gradient-to-r from-[#EF5B3F]/25 to-orange-400/10 px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.18em] text-orange-100 animate-arch-glow hover:from-[#EF5B3F]/40 transition-colors">
+              <span className="relative flex w-2 h-2">
+                <span className="absolute inset-0 rounded-full bg-[#EF5B3F] animate-ping opacity-75" />
+                <span className="relative w-2 h-2 rounded-full bg-[#EF5B3F] shadow-[0_0_8px_#EF5B3F]" />
+              </span>
+              <Workflow className="w-3.5 h-3.5" /><span className="hidden sm:inline">arquitetura</span>
+            </button>
             {asOf && (
               <span className="hidden lg:block text-[10px] uppercase tracking-[0.2em] text-zinc-500">
                 dados até <span className="text-zinc-300 font-mono">{dateBR(asOf)}</span>
@@ -87,6 +98,7 @@ export default function Shell({ children, asOf }: { children: ReactNode; asOf?: 
         <Sparkles className="w-6 h-6 animate-agent-sparkle" />
       </button>
       <GenieDrawer open={genie} onClose={() => setGenie(false)} />
+      <ArchitectureView open={arch} onClose={() => setArch(false)} />
     </div>
   );
 }

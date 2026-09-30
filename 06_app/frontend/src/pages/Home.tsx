@@ -2,20 +2,8 @@ import { Link } from 'react-router-dom';
 import { Area, Bar, CartesianGrid, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ArrowUpRight } from 'lucide-react';
 import { api, usePoll, type Journey, type Overview } from '../lib/api';
-import { brl, dateBR, pct, num, dec1, timeBR } from '../lib/format';
+import { brl, dateBR, pct, num, dec1 } from '../lib/format';
 import { ACTION, ErrorBox, Kpi, Loading, Panel, ProductTag } from '../components/ui';
-import JourneyDiagram from '../architecture/JourneyDiagram';
-
-function JourneyPanel({ j }: { j: Journey }) {
-  const run = j.steps[0];
-  return (
-    <Panel pad={false} title="A jornada de dados · um único job"
-      hint="do dado bruto à decisão aprovada — o selo verde marca o que rodou no último run"
-      right={run && <div className="text-right text-[10.5px] font-mono text-zinc-500">job run {run.job_run_id}<div>{dateBR(run.updated_at)} · {timeBR(run.updated_at)}</div></div>}>
-      <JourneyDiagram j={j} />
-    </Panel>
-  );
-}
 
 function Trend({ o }: { o: Overview }) {
   const data = o.trend.map((t) => ({ ...t, d: dateBR(t.date), rate: +(t.stockout_rate * 100).toFixed(2) }));
@@ -120,8 +108,7 @@ export default function Home() {
             sub={`ruptura hoje ${pct(o.stockout_rate_today)} · 7d ${pct(o.stockout_rate_7d)}`} />
         </div>
       )}
-      {j && <JourneyPanel j={j} />}
-      {o && (
+            {o && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2"><Trend o={o} /></div>
           <Mix o={o} />

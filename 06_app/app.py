@@ -5,10 +5,10 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from server.routes import agent, genie, lakebase_status, network, overview, queue
+from server.routes import agent, genie, lakebase_status, network, overview, queue, resources
 
 app = FastAPI(title="LojaBR · Centro de Abastecimento", version="2.0.0")
-for r in (overview, network, queue, agent, lakebase_status, genie):
+for r in (overview, network, queue, agent, lakebase_status, genie, resources):
     app.include_router(r.router)
 
 

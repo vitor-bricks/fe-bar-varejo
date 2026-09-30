@@ -18,6 +18,7 @@ export default {
         'slide-in-right': 'slide-in-right 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
         'truck': 'truck-bounce 0.9s ease-in-out infinite',
         'agent-glow': 'agent-glow 2.4s ease-in-out infinite',
+        'arch-glow': 'arch-glow 2.6s ease-in-out infinite',
         'agent-sparkle': 'agent-sparkle 2.4s ease-in-out infinite',
         'blob-drift-a': 'blob-drift-a 28s ease-in-out infinite',
         'blob-drift-b': 'blob-drift-b 36s ease-in-out infinite',
@@ -49,6 +50,10 @@ export default {
             boxShadow:
               '0 0 0 8px rgba(251, 191, 36, 0), 0 0 28px -2px rgba(251, 146, 60, 0.9)',
           },
+        },
+        'arch-glow': {
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(239, 91, 63, 0.45), 0 0 14px -4px rgba(239, 91, 63, 0.6)' },
+          '50%':      { boxShadow: '0 0 0 6px rgba(239, 91, 63, 0), 0 0 24px -2px rgba(239, 91, 63, 0.9)' },
         },
         'agent-sparkle': {
           '0%, 100%': { transform: 'rotate(0deg) scale(1)',      opacity: '1' },

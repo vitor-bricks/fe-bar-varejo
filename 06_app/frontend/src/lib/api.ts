@@ -34,6 +34,9 @@ export interface Store {
 }
 export interface Route { action_id: string; from_id: string; store_id: string; product_name: string; units: number; transfer_km: number; revenue_protected: number; severity: Severity; decision: string | null }
 export interface Network { stores: Store[]; routes: Route[] }
+/** Workspace deep-links (skill databricks-arch-diagram): empty url = inert tile. */
+export type Resources = Record<string, { id: string; url: string }>;
+
 export type QueueSort = 'impacto' | 'criticidade';
 
 export interface StoreDetail {
@@ -63,6 +66,7 @@ async function j<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   overview: () => j<Overview>('/api/overview'),
   journey: () => j<Journey>('/api/journey'),
+  resources: () => j<Resources>('/api/resources'),
   network: () => j<Network>('/api/network'),
   store: (id: string) => j<StoreDetail>(`/api/stores/${id}`),
   queue: (p: { action_type?: string; severity?: string; store_id?: string; sort?: QueueSort; limit?: number } = {}) => {
