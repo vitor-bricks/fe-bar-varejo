@@ -91,7 +91,7 @@ export default function Network() {
       {/* Row 1: map | selected store + ranking. The right column is pinned to the map's height,
           the ranking absorbs the remaining space and scrolls, so both columns end on the same line. */}
       <div className="grid grid-cols-1 xl:grid-cols-[1.35fr_1fr] gap-6">
-        <Panel title="Mapa operacional" hint="clique numa loja · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>}>
+        <Panel title="Mapa operacional" hint="clique numa loja · arraste e use + / − para zoom · linhas = transferências sugeridas" right={<ProductTag>Lakebase · serving.store_network</ProductTag>} pad={false} bodyClassName="overflow-hidden rounded-b-xl">
           <BrazilMap stores={n.stores} routes={n.routes} selected={sel} onSelect={setSel} />
         </Panel>
         <div className="relative">
