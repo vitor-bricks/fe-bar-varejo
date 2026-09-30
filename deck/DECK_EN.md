@@ -19,7 +19,7 @@ The Replenishment Center warns **2.9 days ahead** that an item will run out. The
 | | |
 |---|---|
 | **The problem** | 4.1% of sales is lost to stockouts: R$ 2.39 M a year on just 129 high-turnover items across 20 stores. The team finds out **after** the shelf is empty. |
-| **The solution** | A model flags which in-stock items will run out in the next 7 days. An AI agent checks the facts and proposes the cheapest fix: transfer, expedite or urgent order. The manager approves in one click. |
+| **The solution** | A model flags which in-stock items will run out in the next 7 days. An AI agent checks the facts and proposes the cheapest fix: transfer, expedite or urgent order. The manager approves in one click. All on a single platform, Databricks. |
 | **The value** | Up to ⅓ of the loss recovered: R$ 0.4 to 0.8 M a year in the sample, depending on execution. Across the chain, R$ 0.7 to 1.4 M per R$ 100 M of sales. |
 | **The ask** | A 30-day pilot in 4 stores, with 4 control stores. The decision to scale comes from LojaBR's own numbers, not from a projection. |
 
@@ -105,7 +105,19 @@ Auto Loader  bronze→gold  Unity Catalog  MLflow·UC  FMAPI·tools  Lakebase  G
 - **Governed in Unity Catalog.** Lineage for every number, 7 data-quality rules (0 failures in the last run) and least-privilege access for the app.
 - **No copies, no spreadsheets.** The same data feeds the app, Genie and the model. Every stage opens in the workspace straight from the app.
 
-## 11. 30-day pilot: controlled risk, measured result
+## 11. Why Databricks: what the platform changes in the outcome
+
+| | With separate tools | With Databricks |
+|---|---|---|
+| **Integration** | ETL, data warehouse, ML, operational database, LLM, BI and app hosting: 7 pieces to integrate and run | One platform: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie and Apps |
+| **The number** | Copies between systems; the R$ in the app does not always match the report | One governed dataset: the app, Genie and the model read the same number, with lineage |
+| **Time to pilot** | Months of integration and one security review per tool | The prototype already runs end to end; the pilot takes 30 days |
+| **Security** | Permissions and audit spread across every tool | One place: who sees what, and who approved each action |
+| **Cost** | Fixed licences and infrastructure, running or not | Serverless: the whole journey runs in **8.4 min a day**, and only that time is billed |
+
+The same data already serves the next use cases: **demand forecasting**, **markdown of excess stock** and **store-level assortment**.
+
+## 12. 30-day pilot: controlled risk, measured result
 
 | When | What happens | How we measure |
 |---|---|---|
@@ -119,7 +131,7 @@ Auto Loader  bronze→gold  Unity Catalog  MLflow·UC  FMAPI·tools  Lakebase  G
   - *Adoption:* one click, inside the morning routine.
   - *Incomplete supplier data:* the agent states its confidence and the rule covers the rest.
 
-## 12. The ask
+## 13. The ask
 
 **Sponsor a 30-day pilot in 4 stores, with a control group.** Measure stockouts and recovered sales with LojaBR's own numbers, and decide the scale-up on that basis.
 

@@ -25,7 +25,7 @@
   <h2>A resposta em uma página</h2>
   <div class="sum">
     <div class="b"><div class="h red">O problema</div><p><b>4,1% da venda some por ruptura:</b> R$ 2,39 mi por ano só em 129 itens de alto giro, nas 20 lojas. O time descobre <b>depois</b> que a gôndola esvaziou.</p></div>
-    <div class="b"><div class="h teal">A solução</div><p>Um modelo aponta <b>quais itens vão faltar nos próximos 7 dias</b>. Um agente de IA confere os fatos e propõe a ação mais barata: <b>transferir, antecipar ou pedido urgente</b>. O gerente aprova em um clique.</p></div>
+    <div class="b"><div class="h teal">A solução</div><p>Um modelo aponta <b>quais itens vão faltar nos próximos 7 dias</b>. Um agente de IA confere os fatos e propõe a ação mais barata: <b>transferir, antecipar ou pedido urgente</b>. O gerente aprova em um clique. <b>Tudo numa única plataforma, a Databricks.</b></p></div>
     <div class="b"><div class="h emr">O valor</div><p>Até <b>⅓ da perda recuperada</b>: R$ 0,4 a 0,8 mi por ano na amostra, conforme a execução. Na rede inteira, <b>R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda</b>.</p></div>
     <div class="b"><div class="h amb">O pedido</div><p><b>Piloto de 30 dias em 4 lojas</b>, com 4 lojas de controle. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção.</p></div>
   </div>
@@ -206,7 +206,23 @@
   <div class="n">10</div>
 </section>
 
-<!-- 11 · piloto -->
+<!-- 11 · por que a plataforma -->
+<section class="s">
+  <div class="k">Por que Databricks</div>
+  <h2>O que a plataforma muda no resultado</h2>
+  <table class="vs">
+    <tr><th></th><th>Com ferramentas separadas</th><th>Com Databricks</th></tr>
+    <tr><td>Integração</td><td>ETL, data warehouse, ML, banco operacional, LLM, BI e hospedagem do app: 7 peças para integrar e manter</td><td>Uma plataforma: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie e Apps</td></tr>
+    <tr><td>O número</td><td>Cópias entre sistemas; o R$ do app nem sempre bate com o do relatório</td><td>Um dado governado: o app, o Genie e o modelo leem o mesmo número, com linhagem</td></tr>
+    <tr><td>Tempo até o piloto</td><td>Meses de integração e uma revisão de segurança por ferramenta</td><td>O protótipo já roda ponta a ponta; o piloto leva 30 dias</td></tr>
+    <tr><td>Segurança</td><td>Permissões e auditoria espalhadas em cada ferramenta</td><td>Um lugar só: quem vê o quê, e quem aprovou cada ação</td></tr>
+    <tr><td>Custo</td><td>Licenças e infraestrutura fixas, rodando ou não</td><td>Serverless: a jornada inteira roda em <b>8,4 min por dia</b> e só esse tempo é cobrado</td></tr>
+  </table>
+  <div class="next"><b style="color:#e4e4e7">Os mesmos dados já servem os próximos casos:</b><span class="c">previsão de demanda</span><span class="c">markdown do excesso de estoque</span><span class="c">sortimento por loja</span></div>
+  <div class="n">11</div>
+</section>
+
+<!-- 12 · piloto -->
 <section class="s">
   <div class="k">Plano de piloto · 30 dias</div>
   <h2>Risco controlado, resultado medido</h2>
@@ -220,10 +236,10 @@
     <div class="t"><div class="l">critério de sucesso</div><div class="d big">Ruptura nas lojas-piloto <b>≥ 1,5 p.p. abaixo</b> do controle, e R$ recuperado maior que o custo da plataforma.</div></div>
     <div class="t"><div class="l">riscos e mitigação</div><div class="d big">Modelo errar: a lista é priorizada por R$ e o gerente decide. Adoção: um clique, dentro da rotina da manhã. Dado de fornecedor incompleto: o agente declara a confiança e a regra cobre o resto.</div></div>
   </div>
-  <div class="n">11</div>
+  <div class="n">12</div>
 </section>
 
-<!-- 12 · o pedido -->
+<!-- 13 · o pedido -->
 <section class="s">
   <div class="k">O pedido</div>
   <h1 style="margin-top:40px;font-size:56px;max-width:1100px">Patrocinar um <span class="g">piloto de 30 dias em 4 lojas</span>, com grupo de controle.</h1>
@@ -233,7 +249,7 @@
     <div class="t"><div class="l">semana 1 · TI LojaBR + Databricks</div><div class="d big">Liberar os feeds de vendas, estoque e pedidos.</div></div>
     <div class="t"><div class="l">semana 4 · comitê</div><div class="d big">Decidir a escala com o resultado medido na mão.</div></div>
   </div>
-  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">12</div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">13</div>
 </section>
 
 <!-- apêndice técnico -->

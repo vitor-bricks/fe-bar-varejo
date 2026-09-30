@@ -19,7 +19,7 @@ O Centro de Abastecimento avisa **2,9 dias antes** que um item vai faltar. A aç
 | | |
 |---|---|
 | **O problema** | 4,1% da venda some por ruptura: R$ 2,39 mi por ano só em 129 itens de alto giro, nas 20 lojas. O time descobre **depois** que a gôndola esvaziou. |
-| **A solução** | Um modelo aponta quais itens vão faltar nos próximos 7 dias. Um agente de IA confere os fatos e propõe a ação mais barata: transferir, antecipar ou pedido urgente. O gerente aprova em um clique. |
+| **A solução** | Um modelo aponta quais itens vão faltar nos próximos 7 dias. Um agente de IA confere os fatos e propõe a ação mais barata: transferir, antecipar ou pedido urgente. O gerente aprova em um clique. Tudo numa única plataforma, a Databricks. |
 | **O valor** | Até ⅓ da perda recuperada: R$ 0,4 a 0,8 mi por ano na amostra, conforme a execução. Na rede inteira, R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda. |
 | **O pedido** | Piloto de 30 dias em 4 lojas, com 4 lojas de controle. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção. |
 
@@ -105,7 +105,19 @@ Auto Loader  bronze→gold  Unity Catalog  MLflow·UC  FMAPI·tools  Lakebase  G
 - **Governado no Unity Catalog.** Linhagem de cada número, 7 regras de qualidade (0 falhas no último run) e acesso mínimo para o app.
 - **Sem cópia, sem planilha.** O mesmo dado alimenta o app, o Genie e o modelo. Cada estágio abre no workspace direto do app.
 
-## 11. Piloto de 30 dias: risco controlado, resultado medido
+## 11. Por que Databricks: o que a plataforma muda no resultado
+
+| | Com ferramentas separadas | Com Databricks |
+|---|---|---|
+| **Integração** | ETL, data warehouse, ML, banco operacional, LLM, BI e hospedagem do app: 7 peças para integrar e manter | Uma plataforma: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie e Apps |
+| **O número** | Cópias entre sistemas; o R$ do app nem sempre bate com o do relatório | Um dado governado: o app, o Genie e o modelo leem o mesmo número, com linhagem |
+| **Tempo até o piloto** | Meses de integração e uma revisão de segurança por ferramenta | O protótipo já roda ponta a ponta; o piloto leva 30 dias |
+| **Segurança** | Permissões e auditoria espalhadas em cada ferramenta | Um lugar só: quem vê o quê, e quem aprovou cada ação |
+| **Custo** | Licenças e infraestrutura fixas, rodando ou não | Serverless: a jornada inteira roda em **8,4 min por dia** e só esse tempo é cobrado |
+
+Os mesmos dados já servem os próximos casos: **previsão de demanda**, **markdown do excesso de estoque** e **sortimento por loja**.
+
+## 12. Piloto de 30 dias: risco controlado, resultado medido
 
 | Quando | O que acontece | Como medimos |
 |---|---|---|
@@ -119,7 +131,7 @@ Auto Loader  bronze→gold  Unity Catalog  MLflow·UC  FMAPI·tools  Lakebase  G
   - *Adoção:* um clique, dentro da rotina da manhã.
   - *Dado de fornecedor incompleto:* o agente declara a confiança e a regra cobre o resto.
 
-## 12. O pedido
+## 13. O pedido
 
 **Patrocinar um piloto de 30 dias em 4 lojas, com grupo de controle.** Medir ruptura e venda recuperada com os números da própria LojaBR, e decidir a escala com base neles.
 

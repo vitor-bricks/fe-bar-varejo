@@ -45,6 +45,13 @@ table.kpi td,table.kpi th{padding:12px 12px} table.kpi td:nth-child(1){width:27%
 table.kpi td.mono{font-size:16.5px}
 .sens td:not(:first-child),.sens th:not(:first-child){text-align:right} .sens tr.hl td{background:rgba(52,211,153,.07);font-weight:600}
 
+/* why-the-platform comparison */
+table.vs td{vertical-align:top;font-size:16.5px;line-height:1.45;padding:12px 14px} table.vs td:first-child{width:17%;font-weight:700;color:var(--ink)}
+table.vs td:nth-child(2){width:38%;color:var(--mut)} table.vs td:nth-child(3){color:#e4e4e7;background:rgba(52,211,153,.05)}
+table.vs th:nth-child(3){color:var(--emr)}
+.next{margin-top:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:15.5px;color:var(--mut)}
+.next .c{border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.07);color:#fde68a;border-radius:999px;padding:5px 12px;font-size:14px;font-weight:600}
+
 /* quotes, steps, flow */
 .q{border-left:4px solid var(--amb);background:rgba(251,191,36,.06);border-radius:0 12px 12px 0;padding:18px 22px;font-size:20px;line-height:1.55;color:#e4e4e7}
 .step{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;margin-bottom:20px;font-size:19px;line-height:1.5;color:#d4d4d8}

@@ -25,7 +25,7 @@
   <h2>The answer on one page</h2>
   <div class="sum">
     <div class="b"><div class="h red">The problem</div><p><b>4.1% of sales is lost to stockouts:</b> R$ 2.39 M a year on just 129 high-turnover items across 20 stores. The team finds out <b>after</b> the shelf is empty.</p></div>
-    <div class="b"><div class="h teal">The solution</div><p>A model flags <b>which in-stock items will run out in the next 7 days</b>. An AI agent checks the facts and proposes the cheapest fix: <b>transfer, expedite or urgent order</b>. The manager approves in one click.</p></div>
+    <div class="b"><div class="h teal">The solution</div><p>A model flags <b>which in-stock items will run out in the next 7 days</b>. An AI agent checks the facts and proposes the cheapest fix: <b>transfer, expedite or urgent order</b>. The manager approves in one click. <b>All on a single platform, Databricks.</b></p></div>
     <div class="b"><div class="h emr">The value</div><p>Up to <b>⅓ of the loss recovered</b>: R$ 0.4 to 0.8 M a year in the sample, depending on execution. Across the chain, <b>R$ 0.7 to 1.4 M per R$ 100 M of sales</b>.</p></div>
     <div class="b"><div class="h amb">The ask</div><p><b>A 30-day pilot in 4 stores</b>, with 4 control stores. The decision to scale comes from LojaBR's own numbers, not from a projection.</p></div>
   </div>
@@ -206,7 +206,23 @@
   <div class="n">10</div>
 </section>
 
-<!-- 11 · pilot -->
+<!-- 11 · why the platform -->
+<section class="s">
+  <div class="k">Why Databricks</div>
+  <h2>What the platform changes in the outcome</h2>
+  <table class="vs">
+    <tr><th></th><th>With separate tools</th><th>With Databricks</th></tr>
+    <tr><td>Integration</td><td>ETL, data warehouse, ML, operational database, LLM, BI and app hosting: 7 pieces to integrate and run</td><td>One platform: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie and Apps</td></tr>
+    <tr><td>The number</td><td>Copies between systems; the R$ in the app does not always match the report</td><td>One governed dataset: the app, Genie and the model read the same number, with lineage</td></tr>
+    <tr><td>Time to pilot</td><td>Months of integration and one security review per tool</td><td>The prototype already runs end to end; the pilot takes 30 days</td></tr>
+    <tr><td>Security</td><td>Permissions and audit spread across every tool</td><td>One place: who sees what, and who approved each action</td></tr>
+    <tr><td>Cost</td><td>Fixed licences and infrastructure, running or not</td><td>Serverless: the whole journey runs in <b>8.4 min a day</b>, and only that time is billed</td></tr>
+  </table>
+  <div class="next"><b style="color:#e4e4e7">The same data already serves the next use cases:</b><span class="c">demand forecasting</span><span class="c">markdown of excess stock</span><span class="c">store-level assortment</span></div>
+  <div class="n">11</div>
+</section>
+
+<!-- 12 · pilot -->
 <section class="s">
   <div class="k">Pilot plan · 30 days</div>
   <h2>Controlled risk, measured result</h2>
@@ -220,10 +236,10 @@
     <div class="t"><div class="l">success criterion</div><div class="d big">Stockout rate in pilot stores <b>≥ 1.5 p.p. below</b> control, and R$ recovered greater than the platform cost.</div></div>
     <div class="t"><div class="l">risks and mitigation</div><div class="d big">Model is wrong: the list is ranked by R$ and the manager decides. Adoption: one click, inside the morning routine. Incomplete supplier data: the agent states its confidence and the rule covers the rest.</div></div>
   </div>
-  <div class="n">11</div>
+  <div class="n">12</div>
 </section>
 
-<!-- 12 · the ask -->
+<!-- 13 · the ask -->
 <section class="s">
   <div class="k">The ask</div>
   <h1 style="margin-top:40px;font-size:56px;max-width:1100px">Sponsor a <span class="g">30-day pilot in 4 stores</span>, with a control group.</h1>
@@ -233,7 +249,7 @@
     <div class="t"><div class="l">week 1 · LojaBR IT + Databricks</div><div class="d big">Open the sales, stock and purchase-order feeds.</div></div>
     <div class="t"><div class="l">week 4 · steering committee</div><div class="d big">Decide the scale-up with the measured result in hand.</div></div>
   </div>
-  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">12</div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">13</div>
 </section>
 
 <!-- technical appendix -->
