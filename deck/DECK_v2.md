@@ -59,9 +59,9 @@ Premissa: a ruptura cai na mesma proporção da venda recuperada.
 
 1. Abre a fila às 7h: todas as ações do dia, ordenadas por R$ protegido ou pelo que esvazia primeiro.
 2. Lê o card: produto, loja, a ação mais barata, a justificativa do agente e o R$ em jogo.
-3. Aprova com um clique, e o "R$ protegido hoje" sobe na tela.
+3. Aprova com um clique: a decisão fica registrada com o nome dele, e o "R$ protegido hoje" sobe na tela.
 
-**Depois do clique.** *No protótipo:* a decisão fica gravada na Lakebase com autor e horário. *No piloto:* a ordem segue para o ERP da LojaBR, por API ou arquivo de integração, e essa integração é o escopo da semana 1. *(Captura: `img/card.png`.)*
+*(Captura: `img/card.png`.)*
 
 ## 7. Estoque parado numa loja resolve a falta na outra
 

@@ -59,9 +59,9 @@ Assumption: stockouts fall in the same proportion as recovered sales.
 
 1. Opens the queue at 7 am: all of the day's actions, sorted by R$ protected or by what empties first.
 2. Reads the card: product, store, the cheapest fix, the agent's reasoning and the R$ at stake.
-3. Approves in one click, and "R$ protected today" goes up on screen.
+3. Approves in one click: the decision is logged with their name, and "R$ protected today" goes up on screen.
 
-**After the click.** *In the prototype:* the decision is stored in Lakebase with author and time. *In the pilot:* the order goes on to LojaBR's ERP, through an API or an integration file, and that integration is week 1's scope. *(Screenshot: `img/card.png`.)*
+*(Screenshot: `img/card.png`.)*
 
 ## 7. Idle stock in one store fixes the gap in another
 
