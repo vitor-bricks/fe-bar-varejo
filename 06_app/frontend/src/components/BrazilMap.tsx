@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { CircleMarker, GeoJSON, MapContainer, Pane, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet';
-import { latLngBounds, type LatLngBoundsExpression, type Map as LMap } from 'leaflet';
+import { DomEvent, latLngBounds, type LatLngBoundsExpression, type Map as LMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './map.css';
 import brazil from '../lib/brazil.geo.json';
@@ -32,12 +33,20 @@ function FollowSelection({ focus }: { focus: [number, number] | null }) {
 
 /** Store names next to the bubbles, placed greedily so they never overlap a bubble or each other
  *  (selected store first, then by R$ at risk); names that do not fit are left to the hover tooltip.
- *  Recomputed on every move, hidden during the zoom animation. */
+ *  They live in their own map pane: above the bubbles, BELOW the hover tooltips, and they travel with
+ *  the map while dragging. Re-placed after each move, hidden during the zoom animation. */
 function StoreLabels({ stores, selected, radius, onSelect }: { stores: Store[]; selected?: string | null; radius: (s: Store) => number; onSelect: (id: string) => void }) {
   const map = useMap();
+  const pane = useMemo(() => {
+    const el = map.getPane('storeLabels') ?? map.createPane('storeLabels');
+    el.style.zIndex = '620';            // markers 600 < labels < tooltips 650
+    el.style.pointerEvents = 'none';
+    DomEvent.disableClickPropagation(el);
+    return el;
+  }, [map]);
   const [, redraw] = useState(0);
   const [zooming, setZooming] = useState(false);
-  useMapEvents({ move: () => redraw((n) => n + 1), zoomstart: () => setZooming(true), zoomend: () => { setZooming(false); redraw((n) => n + 1); }, resize: () => redraw((n) => n + 1) });
+  useMapEvents({ moveend: () => redraw((n) => n + 1), zoomstart: () => setZooming(true), zoomend: () => { setZooming(false); redraw((n) => n + 1); }, resize: () => redraw((n) => n + 1) });
   if (zooming) return null;
   const { x: W, y: H } = map.getSize();
   type Box = { x0: number; y0: number; x1: number; y1: number };
@@ -48,23 +57,24 @@ function StoreLabels({ stores, selected, radius, onSelect }: { stores: Store[]; 
   const labels: { id: string; text: string; x: number; y: number; sel: boolean }[] = [];
   for (const { s, p, r } of order) {
     const text = s.store_name.replace('LojaBR ', ''), sel = s.store_id === selected;
-    const w = text.length * (sel ? 7.3 : 6.6) + 6, h = 15, g = r + 5;
+    const w = text.length * (sel ? 7 : 6.3) + 6, h = 15, g = r + 5;
     const spots = [[p.x + g, p.y - h / 2], [p.x - g - w, p.y - h / 2], [p.x - w / 2, p.y - g - h], [p.x - w / 2, p.y + g]];
     for (const [x, y] of spots) {
       const b = { x0: x, y0: y, x1: x + w, y1: y + h };
-      if (free(b)) { taken.push(b); labels.push({ id: s.store_id, text, x, y, sel }); break; }
+      if (free(b)) { taken.push(b); const lp = map.containerPointToLayerPoint([x, y]); labels.push({ id: s.store_id, text, x: lp.x, y: lp.y, sel }); break; }
     }
   }
-  return (
-    <div className="absolute inset-0 z-[450] pointer-events-none">
+  return createPortal(
+    <>
       {labels.map((l) => (
         <button key={l.id} onClick={() => onSelect(l.id)} style={{ left: l.x, top: l.y }}
-          className={`absolute pointer-events-auto whitespace-nowrap leading-[15px] px-[3px] [text-shadow:0_0_3px_#000,0_0_6px_#000,0_0_10px_#000] ${
-            l.sel ? 'text-[12.5px] font-bold text-amber-200' : 'text-[11.5px] font-medium text-zinc-200 hover:text-amber-200'}`}>
+          className={`absolute pointer-events-auto whitespace-nowrap leading-[15px] px-[3px] tracking-[0.01em] [text-shadow:0_0_2px_#09090b,0_0_5px_#09090b,0_0_9px_#09090b] ${
+            l.sel ? 'text-[12px] font-semibold text-amber-200' : 'text-[11px] font-medium text-zinc-300 hover:text-amber-200'}`}>
           {l.text}
         </button>
       ))}
-    </div>
+    </>,
+    pane,
   );
 }
 
@@ -123,10 +133,13 @@ export default function BrazilMap({ stores, routes, selected, onSelect }: {
               pathOptions={{ color: isSel ? '#fde68a' : '#09090b', weight: isSel ? 2.5 : 1.2, fillColor: c.fill, fillOpacity: 0.9 }}>
               {!isSel && (
                 <Tooltip direction="top" offset={[0, -r - 2]} className="lb-tip" opacity={1}>
-                  <div className="font-semibold text-zinc-100">{s.store_name}</div>
-                  <div className="text-zinc-500">{s.city} · {s.uf} · {s.store_format}</div>
-                  <div className="mt-1 font-mono text-zinc-300">ruptura 7d {pct(s.stockout_rate_7d)} · em risco {brl(s.revenue_at_risk)}</div>
-                  <div className="font-mono text-zinc-400">{s.queue_n} ações na fila</div>
+                  <div className="text-[12.5px] font-semibold text-zinc-100">{s.store_name}</div>
+                  <div className="text-[11px] text-zinc-500">{s.city} · {s.uf} · {s.store_format}</div>
+                  <div className="mt-2 flex gap-5 text-[9.5px] uppercase tracking-[0.14em] text-zinc-500">
+                    <span>ruptura 7d<b className="block font-mono text-[12px] normal-case tracking-normal text-zinc-100">{pct(s.stockout_rate_7d)}</b></span>
+                    <span>em risco<b className="block font-mono text-[12px] normal-case tracking-normal text-amber-300">{brl(s.revenue_at_risk)}</b></span>
+                    <span>na fila<b className="block font-mono text-[12px] normal-case tracking-normal text-zinc-100">{s.queue_n} ações</b></span>
+                  </div>
                 </Tooltip>
               )}
             </CircleMarker>,
