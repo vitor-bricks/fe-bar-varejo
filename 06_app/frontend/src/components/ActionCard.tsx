@@ -65,23 +65,32 @@ export default function ActionCard({ it, onDecided, compact = false }: { it: Que
         </div>
         {it.rationale}
       </div>
-      <div className="flex items-center justify-between gap-3 mt-auto">
-        <div>
-          <div className="text-[10px] uppercase tracking-[0.18em] text-zinc-500">protege</div>
-          <div className="font-mono text-emerald-300 font-bold tabular-nums text-[15px]">{brl(it.revenue_protected)}</div>
-        </div>
-        {decision ? (
-          <div className={`text-[11px] font-semibold text-right ${decision === 'APPROVED' ? 'text-emerald-300' : 'text-zinc-500'}`}>
-            {decision === 'APPROVED' ? '✓ aprovada' : '✕ rejeitada'}<div className="text-[10px] text-zinc-500 font-normal">{by}</div>
+      {/* impact band: the money is the headline of every card, and it sits next to the decision */}
+      <div className={`mt-auto rounded-lg border px-3.5 py-3 flex items-center justify-between gap-3 ${
+        decision === 'REJECTED' ? 'border-zinc-800 bg-zinc-800/30'
+          : decision === 'APPROVED' ? 'border-emerald-400/50 bg-emerald-500/[0.16]'
+          : 'border-emerald-500/25 bg-gradient-to-r from-emerald-500/[0.13] via-emerald-500/[0.06] to-transparent'}`}>
+        <div className="min-w-0">
+          <div className={`text-[9.5px] uppercase tracking-[0.2em] font-bold ${decision === 'REJECTED' ? 'text-zinc-500' : 'text-emerald-400/90'}`}>
+            {decision === 'APPROVED' ? 'protegido · próximos 7 dias' : 'protege · próximos 7 dias'}
           </div>
-        ) : (
-          <div className="flex gap-2">
+          <div className={`font-mono font-bold tabular-nums text-[26px] leading-tight ${decision === 'REJECTED' ? 'text-zinc-500 line-through decoration-1' : 'text-emerald-300 drop-shadow-[0_0_12px_rgba(52,211,153,0.35)]'}`}>
+            {brl(it.revenue_protected)}
+          </div>
+          <div className="text-[10.5px] text-zinc-500">
+            {decision ? `${decision === 'APPROVED' ? '✓ aprovada' : '✕ rejeitada'} · ${by ?? ''}`
+              : it.revenue_protected >= it.revenue_at_risk * 0.995 ? 'cobre todo o risco previsto do item'
+              : `cobre ${pct(it.revenue_protected / it.revenue_at_risk, 0)} dos ${brl(it.revenue_at_risk)} em risco`}
+          </div>
+        </div>
+        {!decision && (
+          <div className="flex gap-2 shrink-0">
             <button onClick={() => decide('REJECTED')} disabled={!!busy} title="Rejeitar"
-              className="px-2.5 py-1.5 rounded-md border border-zinc-700 text-zinc-400 hover:text-zinc-200 hover:border-zinc-500 disabled:opacity-50">
+              className="px-2.5 py-2 rounded-md border border-zinc-700 text-zinc-400 hover:text-zinc-200 hover:border-zinc-500 disabled:opacity-50">
               {busy === 'REJECTED' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <X className="w-3.5 h-3.5" />}
             </button>
             <button onClick={() => decide('APPROVED')} disabled={!!busy}
-              className="px-3 py-1.5 rounded-md text-[11px] font-bold uppercase tracking-wider bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/25 hover:text-emerald-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
+              className="px-3.5 py-2 rounded-md text-[11px] font-bold uppercase tracking-wider bg-emerald-500 text-zinc-950 hover:bg-emerald-400 shadow-[0_0_18px_rgba(16,185,129,0.35)] transition-colors disabled:opacity-50 inline-flex items-center gap-1.5">
               {busy === 'APPROVED' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />} Aprovar
             </button>
           </div>
