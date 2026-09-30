@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LojaBR · Replenishment Center · v2</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck_v2.css">
+</head><body>
+
+<!-- 01 · cover: the outcome first, and where the numbers come from -->
+<section class="s">
+  <div class="k"><span class="logo">L</span>LojaBR · Replenishment Center</div>
+  <h1 style="margin-top:44px;max-width:1120px">Win back up to <span class="g">R$ 0.8 M a year</span> in sales that vanish from the shelf today</h1>
+  <p style="font-size:23px;max-width:1000px;margin-top:20px">The Replenishment Center warns <b>2.9 days ahead</b> that an item will run out. The cheapest fix for each case comes ready, and the replenishment manager approves it <b>in one click</b>.</p>
+  <div class="tiles c3" style="margin-top:30px">
+    <div class="t"><div class="l">today</div><div class="v red">4.1%</div><div class="d">of sales lost to stockouts: R$ 2.39 M/yr in the simulation</div></div>
+    <div class="t"><div class="l">chain-wide</div><div class="v emr">~R$ 1.4 M</div><div class="d">recoverable per R$ 100 M of sales (⅓ of the loss)</div></div>
+    <div class="t"><div class="l">the ask</div><div class="v amb">30 days</div><div class="d">pilot in 4 stores, with 4 control stores</div></div>
+  </div>
+  <div class="sim"><b>Where the numbers come from:</b> a prototype already running on Databricks, on a <b>calibrated simulation of the chain</b>: 20 stores × 129 high-turnover items × 120 days, with synthetic data. The pilot swaps the simulation for LojaBR's real data.</div>
+  <div class="f">for the VP of Operations &amp; Supply Chain · Replenishment Manager</div><div class="n">01</div>
+</section>
+
+<!-- 02 · executive summary -->
+<section class="s">
+  <div class="k">Executive summary</div>
+  <h2>The answer on one page</h2>
+  <div class="sum">
+    <div class="b"><div class="h red">The problem</div><p>In the chain simulation (20 stores, 129 high-turnover items), <b>4.1% of sales is lost to stockouts: R$ 2.39 M a year</b>, in line with retail's ~4%. The team finds out <b>after</b> the shelf is empty.</p></div>
+    <div class="b"><div class="h teal">The solution</div><p>A model flags <b>which in-stock items will run out in the next 7 days</b>. An AI agent checks the facts and proposes the cheapest fix: <b>transfer, expedite or urgent order</b>. The manager approves in one click. <b>All on a single platform, Databricks.</b></p></div>
+    <div class="b"><div class="h emr">The value</div><p>Up to <b>⅓ of the loss recovered</b>: R$ 0.4 to 0.8 M a year in the simulation, depending on execution; <b>R$ 0.7 to 1.4 M per R$ 100 M of sales</b>. Measured platform cost: <b>~US$ 440 a month</b>, at list price.</p></div>
+    <div class="b"><div class="h amb">The ask</div><p><b>A 30-day pilot in 4 stores</b>, with 4 control stores, on real data. The decision to scale comes from LojaBR's own numbers, not from a projection.</p></div>
+  </div>
+  <div class="n">02</div>
+</section>
+
+<!-- 03 · the problem in reais -->
+<section class="s">
+  <div class="k">The problem, in reais · calibrated simulation</div>
+  <h2>An empty shelf is a sale that goes to the competitor</h2>
+  <div class="split" style="grid-template-columns:1fr 1.05fr">
+    <div>
+      <div class="tiles c2" style="margin-top:0">
+        <div class="t"><div class="l">sales lost</div><div class="v red">4.1%</div><div class="d">of sales, to stockouts</div></div>
+        <div class="t"><div class="l">per year</div><div class="v red">R$ 2.39 M</div><div class="d">20 stores × 129 items</div></div>
+        <div class="t"><div class="l">availability · 7 days</div><div class="v amb">93.5%</div><div class="d">6.5% stockout rate (store × item × day)</div></div>
+        <div class="t"><div class="l">worst supplier</div><div class="v amb">63%</div><div class="d">of deliveries on time</div></div>
+      </div>
+      <p class="mut" style="font-size:14px;margin-top:14px">The simulation replays, day by day, demand, orders, each supplier's delays and each store's stocking policy. Stockouts emerge from those dynamics; they are not drawn at random.</p>
+    </div>
+    <div>
+      <div class="lbl">stockout rate by category · 120 days · chain average 5.3%</div>
+      <div class="bars">
+        <div class="r"><span>Cleaning</span><i style="width:100%" class="hot"></i><em>11.3%</em></div>
+        <div class="r"><span>Personal care</span><i style="width:81%" class="hot"></i><em>9.2%</em></div>
+        <div class="r"><span>Frozen</span><i style="width:71%"></i><em>8.1%</em></div>
+        <div class="r"><span>Grocery</span><i style="width:46%"></i><em>5.2%</em></div>
+        <div class="r"><span>Beverages</span><i style="width:40%"></i><em>4.5%</em></div>
+        <div class="r"><span>Dairy</span><i style="width:37%"></i><em>4.2%</em></div>
+        <div class="r"><span>Produce</span><i style="width:11%"></i><em>1.2%</em></div>
+        <div class="r"><span>Bakery</span><i style="width:5%"></i><em>0.6%</em></div>
+        <div class="avg" style="left:calc(110px + (100% - 170px) * 0.469)"></div>
+      </div>
+      <p class="small" style="margin-top:16px"><b>The loss is concentrated:</b> cleaning and personal care run out ~2× the average. Their suppliers deliver on time only <b>63% and 68%</b> of the time.</p>
+    </div>
+  </div>
+  <div class="n">03</div>
+</section>
+
+<!-- 04 · buyer KPIs, as a range by execution -->
+<section class="s">
+  <div class="k">The buyer's KPIs</div>
+  <h2>What moves in the numbers LojaBR already tracks</h2>
+  <table class="kpi tight">
+    <tr><th>KPI</th><th>Today</th><th>With the Center · 50% to 100% executed</th><th>Who tracks it</th></tr>
+    <tr><td>On-shelf availability</td><td class="mono">93.5%</td><td class="mono emr">94.7% to 95.8%</td><td class="mut">VP of Operations</td></tr>
+    <tr><td>Stockout rate (store × item × day)</td><td class="mono">6.5%</td><td class="mono emr">5.3% to 4.2%</td><td class="mut">VP and manager</td></tr>
+    <tr><td>Sales lost to stockouts</td><td class="mono">4.1% · R$ 2.39 M/yr</td><td class="mono emr">−18% to −35% · R$ 0.42 to 0.84 M/yr back</td><td class="mut">VP and finance</td></tr>
+    <tr><td>Warning before the shelf empties</td><td class="mono">none (reactive)</td><td class="mono emr">~2.9 days · 75% ≥ 2 days</td><td class="mut">Replenishment manager</td></tr>
+    <tr><td>Items to review per day</td><td class="mono">29% of assortment · 38% right</td><td class="mono emr">8% · 84% right</td><td class="mut">Replenishment manager</td></tr>
+  </table>
+  <p class="small" style="margin-top:16px">Ranges go from 50% to 100% of actions executed on time (slide 9). Assumption: stockouts fall in the same proportion as recovered sales. Rule of thumb: every <b>R$ 100 M of sales</b> loses ~R$ 4 M to stockouts; recovering a third is worth <b class="emr">~R$ 1.4 M</b>.</p>
+  <div class="n">04</div>
+</section>
+
+<!-- 05 · value for each audience -->
+<section class="s">
+  <div class="k">Value for the sponsor and for the owner</div>
+  <h2>What changes for each of them</h2>
+  <div class="who">
+    <div class="p">
+      <div class="ph"><span class="pt amb">executive sponsor</span>VP of Operations &amp; Supply Chain</div>
+      <ul>
+        <li><b>Sales back on the P&amp;L:</b> R$ 0.42 to 0.84 M/yr in the simulation, ~R$ 1.4 M per R$ 100 M of sales.</li>
+        <li><b>The value comes cheap:</b> 80% of it comes from expediting orders already on their way, with no new purchase and no freight.</li>
+        <li><b>Risk under control:</b> the manager decides, and every decision is logged with author and time.</li>
+        <li><b>Measured cost:</b> ~US$ 440 a month to run everything, at list price.</li>
+      </ul>
+    </div>
+    <div class="p">
+      <div class="ph"><span class="pt teal">domain owner</span>Replenishment Manager</div>
+      <ul>
+        <li><b>A short list:</b> 8% of items, 3.6× fewer than today's rule, sorted by R$ or by urgency.</li>
+        <li><b>2.9 days of warning:</b> time to transfer or expedite, instead of firefighting.</li>
+        <li><b>The reasoning, ready:</b> stock, donor store and supplier punctuality on the card itself.</li>
+        <li><b>One click approves,</b> and data questions go to Genie in plain Portuguese, no ticket needed.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="n">05</div>
+</section>
+
+<!-- 06 · the manager's morning (real screen) + what happens after the click -->
+<section class="s">
+  <div class="k">What the manager sees in the morning</div>
+  <h2>An action queue, not a report</h2>
+  <div class="split" style="grid-template-columns:1fr 500px;align-items:start;gap:36px">
+    <div>
+      <div class="step"><span>1</span><div><b>Opens the queue at 7 am.</b> All of the day's actions, sorted by R$ protected or by what empties first.</div></div>
+      <div class="step"><span>2</span><div><b>Reads the card.</b> Product, store, the cheapest fix, the agent's reasoning and the R$ at stake.</div></div>
+      <div class="step"><span>3</span><div><b>Approves in one click.</b> <b class="emr">"R$ protected today"</b> goes up on screen.</div></div>
+      <div class="box" style="margin-top:6px"><div class="l">after the click</div><b>In the prototype:</b> the decision is stored in Lakebase with author and time. <b>In the pilot:</b> the order goes on to LojaBR's ERP, through an API or an integration file. That integration is week 1's scope.</div>
+      <div class="acts3" style="margin-top:14px">
+        <div><b class="teal">Transfer</b> from a nearby store with excess</div>
+        <div><b class="sky">Expedite</b> the order already on its way</div>
+        <div><b class="amb">Urgent order</b> when there is no alternative</div>
+      </div>
+    </div>
+    <figure><img class="shot" src="img/card.png" alt="Action card in the app" style="width:500px"><figcaption>app screen (in Portuguese) · synthetic data</figcaption></figure>
+  </div>
+  <div class="n">06</div>
+</section>
+
+<!-- 07 · where to act (map) + transfer economics -->
+<section class="s">
+  <div class="k">Where to act first</div>
+  <div class="split" style="grid-template-columns:500px 1fr;align-items:start;gap:44px">
+    <figure style="margin-top:6px"><img class="shot" src="img/map.png" alt="Store network map" style="height:560px"><figcaption>app screen · Southeast zoom</figcaption></figure>
+    <div>
+      <h2 style="margin-top:4px">Idle stock in one store fixes the gap in another</h2>
+      <ul class="small">
+        <li><b>39 transfers</b> suggested in a single day, using other stores' excess.</li>
+        <li>Only within <b>450 km</b>, never leaving the donor with less than <b>10 days</b> of stock, and arriving in <b>1 to 2 days</b>.</li>
+        <li>The map shows stockouts per store and the routes. One click opens the store and its actions.</li>
+      </ul>
+      <div class="box" style="margin-top:22px;border-color:rgba(251,191,36,.4)"><div class="l">when a transfer pays off</div>Each transfer protects <b class="amb">R$ 74</b> on average. It only pays off if the marginal freight costs less than that. So in the pilot we only transfer on routes that already run, such as the DC delivery, or by grouping the items of the same store pair.</div>
+      <p class="mut" style="font-size:14px;margin-top:12px">Transfers are 18% of the value. Most of it (80%) comes from expediting orders already on their way.</p>
+    </div>
+  </div>
+  <div class="n">07</div>
+</section>
+
+<!-- 08 · why trust it: validation size, errors and retraining -->
+<section class="s">
+  <div class="k">Why trust the alert</div>
+  <h2>The model is right more than twice as often as today's rule</h2>
+  <div class="tiles">
+    <div class="t"><div class="l">precision · daily list</div><div class="v emr">84%</div><div class="d">vs 38% for the rule "cover &lt; lead time"</div></div>
+    <div class="t"><div class="l">warning lead</div><div class="v amb">2.9 days</div><div class="d">3,691 correct alerts in the test; 75% ≥ 2 days ahead</div></div>
+    <div class="t"><div class="l">AUC</div><div class="v">0.85</div><div class="d">validated on 49,733 cases from 4 weeks the model never saw</div></div>
+    <div class="t"><div class="l">list size</div><div class="v">8%</div><div class="d">of in-stock items, vs 29% for the rule</div></div>
+  </div>
+  <div class="split" style="grid-template-columns:1fr 1fr;margin-top:24px;gap:28px">
+    <div class="box"><div class="l">and when it is wrong?</div>A wrong alert does not become a loss. The donor keeps at least 10 days of stock, and the transferred item sells at the destination store. The worst case is the freight, hence the route rule on slide 7.</div>
+    <div class="box"><div class="l">how it stays good</div>The model is <b>retrained every day</b> in the same job, with a new version registered in Unity Catalog. The agent looks up stock, nearby stores and the supplier before recommending, and the system rejects any decision made before that lookup.</div>
+  </div>
+  <div class="n">08</div>
+</section>
+
+<!-- 09 · business case with sensitivity, composition and cost -->
+<section class="s">
+  <div class="k">Business case</div>
+  <h2>What it is worth, by execution, and what it costs</h2>
+  <table class="sens tight">
+    <tr><th>Actions approved and executed on time</th><th>50%</th><th>75%</th><th>100%</th></tr>
+    <tr><td>Sales protected per week · simulation</td><td class="mono">R$ 8.1 k</td><td class="mono">R$ 12.1 k</td><td class="mono">R$ 16.2 k</td></tr>
+    <tr><td>Per year · 20 stores × 129 items</td><td class="mono">R$ 0.42 M</td><td class="mono">R$ 0.63 M</td><td class="mono emr">R$ 0.84 M</td></tr>
+    <tr><td>Share of the annual loss recovered</td><td class="mono">18%</td><td class="mono">26%</td><td class="mono">35%</td></tr>
+    <tr class="hl"><td>Per R$ 100 M of chain sales</td><td class="mono">R$ 0.7 M</td><td class="mono">R$ 1.1 M</td><td class="mono emr">R$ 1.4 M</td></tr>
+    <tr><td>Measured platform cost (list price)</td><td class="mono" colspan="3" style="text-align:right">~US$ 440 a month in every scenario</td></tr>
+  </table>
+  <div class="lbl" style="margin-top:18px;margin-bottom:0">where one day's queue gets its value</div>
+  <div class="mix"><span style="width:79.7%;background:#7dd3fc">expedite · 80% · R$ 12.9 k</span><span style="width:17.7%;background:#5eead4">transfer · 18%</span><span style="width:2.6%;background:#fbbf24"></span></div>
+  <div class="mixl"><span>142 expedites</span><span>39 transfers (R$ 2.9 k)</span><span>7 urgent orders (R$ 0.4 k)</span></div>
+  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Assumptions:</b> <b style="color:#d4d4d8">expected</b> value (risk-weighted), not guaranteed; based on the queue of the 2026-09-28 run (R$ 16.2 k over 7 days, ≈ 27% of the previous week's loss); simulation of high-turnover items; transfer freight left out, hence the route rule.</p>
+  <div class="n">09</div>
+</section>
+
+<!-- 10 · one platform -->
+<section class="s">
+  <div class="k">How it works · one platform</div>
+  <h2>From raw data to a decision, in one daily job</h2>
+  <figure style="margin:8px 0 0"><img class="shot" src="img/arch.png" alt="Data journey on the Databricks platform" style="width:100%"><figcaption>architecture view in the app (labels in Portuguese) · every stage opens in the workspace</figcaption></figure>
+  <div class="tiles c3" style="margin-top:22px">
+    <div class="t"><div class="l">one job, every day at 06:00</div><div class="d big">With data through yesterday, the queue is ready before stores open. Ingestion, quality, model, agent and publishing run together in 8.4 min.</div></div>
+    <div class="t"><div class="l">governed in Unity Catalog</div><div class="d big">Lineage for every number, 7 data-quality rules (0 failures in the last run) and least-privilege access for the app.</div></div>
+    <div class="t"><div class="l">no copies, no spreadsheets</div><div class="d big">The same data feeds the app, Genie and the model. Every stage opens in the workspace straight from the app.</div></div>
+  </div>
+  <div class="trace"><b>Every number in this deck is traceable:</b> it comes from the 2026-09-28 evidence run and the workspace's billing tables. The executed notebooks, with their outputs, and the cost queries are in the repository as text (<span class="mono">evidence/</span>).</div>
+  <div class="n">10</div>
+</section>
+
+<!-- 11 · why the platform, with measured cost and exit -->
+<section class="s">
+  <div class="k">Why Databricks</div>
+  <h2>What the platform changes in the outcome</h2>
+  <table class="vs v2">
+    <tr><th></th><th>With separate tools</th><th>With Databricks</th></tr>
+    <tr><td>Integration</td><td>ETL, data warehouse, ML, operational database, LLM, BI and app hosting: 7 pieces to integrate and run</td><td>One platform: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie and Apps</td></tr>
+    <tr><td>The number</td><td>Copies between systems; the R$ in the app does not always match the report</td><td>One governed dataset: the app, Genie and the model read the same number, with lineage</td></tr>
+    <tr><td>Time to pilot</td><td>Months of integration and one security review per tool</td><td>The prototype already runs end to end; the pilot takes 30 days</td></tr>
+    <tr><td>Security</td><td>Permissions and audit spread across every tool</td><td>One place: who sees what, and who approved each action</td></tr>
+    <tr><td>Cost</td><td>Fixed licences and infrastructure, running or not</td><td>Measured: <b>~US$ 440 a month</b> at list price; the daily batch journey costs <b>US$ 0.52 a day</b></td></tr>
+    <tr><td>Exit</td><td>Closed formats; migrating is a project</td><td>Open formats: Delta tables (and Iceberg via UniForm), standard Postgres, MLflow and code in Git</td></tr>
+  </table>
+  <div class="next"><b style="color:#e4e4e7">The same data already serves the next use cases:</b><span class="c">demand forecasting</span><span class="c">markdown of excess stock</span><span class="c">store-level assortment</span></div>
+  <div class="n">11</div>
+</section>
+
+<!-- 12 · pilot -->
+<section class="s">
+  <div class="k">Pilot plan · 30 days</div>
+  <h2>Controlled risk, measured result</h2>
+  <table class="tight">
+    <tr><th style="width:15%">When</th><th style="width:50%">What happens</th><th>How we measure</th></tr>
+    <tr><td>Week 1</td><td>Connect sales, stock and orders for the 4 pilot stores; wire the approval into the ERP</td><td>data arriving daily, quality ≥ 99%</td></tr>
+    <tr><td>Weeks 2–4</td><td>Action queue in the 4 stores; 4 similar stores as <b>control</b></td><td>stockouts and lost sales, pilot vs control</td></tr>
+    <tr><td>End</td><td>Decision to scale</td><td>R$ recovered per store, against cost</td></tr>
+  </table>
+  <div class="tiles c3" style="margin-top:20px">
+    <div class="t"><div class="l">success criterion</div><div class="d big">Cumulative stockout rate over weeks 2–4 <b>≥ 1.5 p.p. below</b> control, and R$ recovered greater than the cost.</div></div>
+    <div class="t"><div class="l">choosing the stores</div><div class="d big">4 stores with above-average stockouts, across 2 regions and 2 formats. Control is matched on format, region and stockout rate and lives the same month, so seasonality and promotions cancel out.</div></div>
+    <div class="t"><div class="l">risks and mitigation</div><div class="d big">Model is wrong: the manager decides. Adoption: one click, in the morning routine. Freight: existing routes only. Incomplete supplier data: the rule covers it.</div></div>
+  </div>
+  <div class="n">12</div>
+</section>
+
+<!-- 13 · the ask -->
+<section class="s">
+  <div class="k">The ask</div>
+  <h1 style="margin-top:36px;font-size:56px;max-width:1100px">Sponsor a <span class="g">30-day pilot in 4 stores</span>, with a control group.</h1>
+  <p style="margin-top:18px;max-width:1000px">Measure stockouts and recovered sales with LojaBR's real numbers, and decide the scale-up on that basis. The platform costs ~US$ 440 a month at list price.</p>
+  <div class="tiles c3" style="margin-top:30px">
+    <div class="t"><div class="l">week 0 · sponsor</div><div class="d big">Pick the 4 pilot stores and the 4 control stores.</div></div>
+    <div class="t"><div class="l">week 1 · LojaBR IT + Databricks</div><div class="d big">Open the sales, stock and purchase-order feeds, and wire the approval into the ERP.</div></div>
+    <div class="t"><div class="l">week 4 · steering committee</div><div class="d big">Decide the scale-up with the measured result in hand.</div></div>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">13</div>
+</section>
+
+<!-- A1 · technical appendix -->
+<section class="s">
+  <div class="k">Appendix · for the technical team</div>
+  <h2>What sits behind each number</h2>
+  <div class="split" style="grid-template-columns:1fr 1fr;gap:36px">
+    <ul class="small">
+      <li><b>Lakeflow Declarative Pipelines:</b> Auto Loader on 7 raw feeds; medallion with 7 data-quality expectations, 0 failures in the last run.</li>
+      <li><b>Model:</b> gradient boosting on <i>point-in-time</i> features (the open order with its <b>expected</b> arrival, not the actual one). Trained on 153 k cases and tested on 49.7 k from later dates; AUC 0.85; retrained and registered in Unity Catalog on every run.</li>
+      <li><b>Agent:</b> tool-calling on the Foundation Model API; it queries 3 tools, and the system rejects a decision made before them.</li>
+    </ul>
+    <ul class="small">
+      <li><b>Lakebase:</b> <span class="mono">serving</span> schema published atomically and <span class="mono">app</span> schema with approvals, rejections and the Genie log; reads in ~3 ms.</li>
+      <li><b>Genie:</b> entity matching, metric definitions and 5 certified SQL queries.</li>
+      <li><b>App:</b> React + TypeScript / FastAPI; service principal with least privilege; sign-in through the workspace SSO.</li>
+      <li><b>Evidence as text:</b> executed notebooks with outputs, data-quality results, Genie and app responses, and the cost queries in <span class="mono">evidence/</span>.</li>
+    </ul>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">A1</div>
+</section>
+
+<!-- A2 · measured cost and operations -->
+<section class="s">
+  <div class="k">Appendix · measured cost and operations</div>
+  <h2>What it costs to run, and how it is operated</h2>
+  <div class="split" style="grid-template-columns:1.05fr 1fr;gap:34px">
+    <div>
+      <table class="cost">
+        <tr><th>Component</th><th>Usage on 2026-09-29</th><th>US$/day</th></tr>
+        <tr><td>Serverless job (4 tasks)</td><td class="mono">0.35 DBU</td><td class="mono">0.16</td></tr>
+        <tr><td>Lakeflow pipeline</td><td class="mono">0.39 DBU</td><td class="mono">0.17</td></tr>
+        <tr><td>Agent (LLM, 24 calls)</td><td class="mono">2.72 DBU</td><td class="mono">0.19</td></tr>
+        <tr><td>Lakebase (scales to zero)</td><td class="mono">5.11 DBU</td><td class="mono">2.66</td></tr>
+        <tr><td>App (always on)</td><td class="mono">12 DBU</td><td class="mono">11.40</td></tr>
+        <tr class="tot"><td>Total</td><td class="mono">~US$ 440 / 30 days</td><td class="mono">14.58</td></tr>
+      </table>
+      <p class="mut" style="font-size:13.5px;margin-top:10px">Source: <span class="mono">system.billing.usage</span> × <span class="mono">list_prices</span>, on a day with only the scheduled run. The app is 78% of the cost and can be stopped outside business hours. Contract discounts lower these figures.</p>
+    </div>
+    <ul class="small">
+      <li><b>Latency:</b> daily batch at 06:00 with data through yesterday. A 2.9-day warning fits a daily batch, and Auto Loader can run through the day if needed.</li>
+      <li><b>Retraining and feedback:</b> the model is retrained every day. Approvals and rejections are stored with their author and become an evaluation signal in the pilot.</li>
+      <li><b>Scale:</b> compute is serverless. In the pilot we measure time and cost with the full assortment of the 4 stores.</li>
+      <li><b>Security:</b> role-based permissions in Unity Catalog, least-privilege access for the app, and every decision auditable.</li>
+    </ul>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo · evidence/run_08_platform_cost.md</div><div class="n">A2</div>
+</section>
+
+</body></html>

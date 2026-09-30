@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LojaBR · Centro de Abastecimento · v2</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck_v2.css">
+</head><body>
+
+<!-- 01 · capa: o resultado primeiro, e de onde vêm os números -->
+<section class="s">
+  <div class="k"><span class="logo">L</span>LojaBR · Centro de Abastecimento</div>
+  <h1 style="margin-top:44px;max-width:1120px">Recuperar até <span class="g">R$ 0,8 mi por ano</span> em vendas que hoje somem da gôndola</h1>
+  <p style="font-size:23px;max-width:1000px;margin-top:20px">O Centro de Abastecimento avisa <b>2,9 dias antes</b> que um item vai faltar. A ação mais barata para cada caso chega pronta, e o gerente de reposição aprova <b>em um clique</b>.</p>
+  <div class="tiles c3" style="margin-top:30px">
+    <div class="t"><div class="l">hoje</div><div class="v red">4,1%</div><div class="d">da venda se perde por ruptura: R$ 2,39 mi/ano na simulação</div></div>
+    <div class="t"><div class="l">na rede</div><div class="v emr">~R$ 1,4 mi</div><div class="d">recuperáveis a cada R$ 100 mi de venda (⅓ da perda)</div></div>
+    <div class="t"><div class="l">o pedido</div><div class="v amb">30 dias</div><div class="d">piloto em 4 lojas, com 4 lojas de controle</div></div>
+  </div>
+  <div class="sim"><b>De onde vêm os números:</b> um protótipo que já roda na Databricks, sobre uma <b>simulação calibrada da rede</b>: 20 lojas × 129 itens de alto giro × 120 dias, com dados sintéticos. O piloto troca a simulação pelos dados reais da LojaBR.</div>
+  <div class="f">para VP de Operações &amp; Supply Chain · Gerente de Reposição</div><div class="n">01</div>
+</section>
+
+<!-- 02 · resumo executivo -->
+<section class="s">
+  <div class="k">Resumo executivo</div>
+  <h2>A resposta em uma página</h2>
+  <div class="sum">
+    <div class="b"><div class="h red">O problema</div><p>Na simulação da rede (20 lojas, 129 itens de alto giro), <b>4,1% da venda some por ruptura: R$ 2,39 mi por ano</b>, em linha com os ~4% do varejo. O time descobre <b>depois</b> que a gôndola esvaziou.</p></div>
+    <div class="b"><div class="h teal">A solução</div><p>Um modelo aponta <b>quais itens vão faltar nos próximos 7 dias</b>. Um agente de IA confere os fatos e propõe a ação mais barata: <b>transferir, antecipar ou pedido urgente</b>. O gerente aprova em um clique. <b>Tudo numa única plataforma, a Databricks.</b></p></div>
+    <div class="b"><div class="h emr">O valor</div><p>Até <b>⅓ da perda recuperada</b>: R$ 0,4 a 0,8 mi por ano na simulação, conforme a execução; <b>R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda</b>. Custo medido da plataforma: <b>~US$ 440 por mês</b>, a preço de lista.</p></div>
+    <div class="b"><div class="h amb">O pedido</div><p><b>Piloto de 30 dias em 4 lojas</b>, com 4 lojas de controle, sobre os dados reais. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção.</p></div>
+  </div>
+  <div class="n">02</div>
+</section>
+
+<!-- 03 · o problema em reais -->
+<section class="s">
+  <div class="k">O problema, em reais · simulação calibrada</div>
+  <h2>Produto fora da gôndola é venda que vai para o concorrente</h2>
+  <div class="split" style="grid-template-columns:1fr 1.05fr">
+    <div>
+      <div class="tiles c2" style="margin-top:0">
+        <div class="t"><div class="l">venda perdida</div><div class="v red">4,1%</div><div class="d">da venda, por ruptura</div></div>
+        <div class="t"><div class="l">por ano</div><div class="v red">R$ 2,39 mi</div><div class="d">20 lojas × 129 itens</div></div>
+        <div class="t"><div class="l">disponibilidade · 7 dias</div><div class="v amb">93,5%</div><div class="d">ruptura de 6,5% (loja × item × dia)</div></div>
+        <div class="t"><div class="l">pior fornecedor</div><div class="v amb">63%</div><div class="d">das entregas no prazo</div></div>
+      </div>
+      <p class="mut" style="font-size:14px;margin-top:14px">A simulação reproduz dia a dia a demanda, os pedidos, os atrasos de cada fornecedor e a política de estoque de cada loja. A ruptura surge dessa dinâmica, não é sorteada.</p>
+    </div>
+    <div>
+      <div class="lbl">ruptura por categoria · 120 dias · média da rede 5,3%</div>
+      <div class="bars">
+        <div class="r"><span>Limpeza</span><i style="width:100%" class="hot"></i><em>11,3%</em></div>
+        <div class="r"><span>Higiene</span><i style="width:81%" class="hot"></i><em>9,2%</em></div>
+        <div class="r"><span>Congelados</span><i style="width:71%"></i><em>8,1%</em></div>
+        <div class="r"><span>Mercearia</span><i style="width:46%"></i><em>5,2%</em></div>
+        <div class="r"><span>Bebidas</span><i style="width:40%"></i><em>4,5%</em></div>
+        <div class="r"><span>Laticínios</span><i style="width:37%"></i><em>4,2%</em></div>
+        <div class="r"><span>Hortifruti</span><i style="width:11%"></i><em>1,2%</em></div>
+        <div class="r"><span>Padaria</span><i style="width:5%"></i><em>0,6%</em></div>
+        <div class="avg" style="left:calc(110px + (100% - 170px) * 0.469)"></div>
+      </div>
+      <p class="small" style="margin-top:16px"><b>A perda é concentrada:</b> Limpeza e Higiene rompem ~2× a média. Os fornecedores dessas categorias entregam no prazo só <b>63% e 68%</b> das vezes.</p>
+    </div>
+  </div>
+  <div class="n">03</div>
+</section>
+
+<!-- 04 · KPIs do comprador, em faixa conforme a execução -->
+<section class="s">
+  <div class="k">Os KPIs do comprador</div>
+  <h2>O que muda nos números que a LojaBR já acompanha</h2>
+  <table class="kpi tight">
+    <tr><th>KPI</th><th>Hoje</th><th>Com o Centro · 50% a 100% executado</th><th>Quem acompanha</th></tr>
+    <tr><td>Disponibilidade em gôndola</td><td class="mono">93,5%</td><td class="mono emr">94,7% a 95,8%</td><td class="mut">VP de Operações</td></tr>
+    <tr><td>Taxa de ruptura (loja × item × dia)</td><td class="mono">6,5%</td><td class="mono emr">5,3% a 4,2%</td><td class="mut">VP e gerente</td></tr>
+    <tr><td>Venda perdida por ruptura</td><td class="mono">4,1% · R$ 2,39 mi/ano</td><td class="mono emr">−18% a −35% · R$ 0,42 a 0,84 mi/ano de volta</td><td class="mut">VP e financeiro</td></tr>
+    <tr><td>Aviso antes de a gôndola esvaziar</td><td class="mono">nenhum (reativo)</td><td class="mono emr">~2,9 dias · 75% com ≥ 2 dias</td><td class="mut">Gerente de reposição</td></tr>
+    <tr><td>Itens para revisar por dia</td><td class="mono">29% do sortimento · 38% de acerto</td><td class="mono emr">8% · 84% de acerto</td><td class="mut">Gerente de reposição</td></tr>
+  </table>
+  <p class="small" style="margin-top:16px">As faixas vão de 50% a 100% das ações executadas no prazo (slide 9). Premissa: a ruptura cai na mesma proporção da venda recuperada. Regra de bolso: a cada <b>R$ 100 mi de venda</b>, ~R$ 4 mi se perdem em ruptura; recuperar um terço vale <b class="emr">~R$ 1,4 mi</b>.</p>
+  <div class="n">04</div>
+</section>
+
+<!-- 05 · valor para cada público -->
+<section class="s">
+  <div class="k">Valor para quem patrocina e para quem opera</div>
+  <h2>O que muda para cada um</h2>
+  <div class="who">
+    <div class="p">
+      <div class="ph"><span class="pt amb">patrocinador</span>VP de Operações &amp; Supply Chain</div>
+      <ul>
+        <li><b>Venda de volta no P&amp;L:</b> R$ 0,42 a 0,84 mi/ano na simulação, ~R$ 1,4 mi a cada R$ 100 mi de venda.</li>
+        <li><b>O valor sai barato:</b> 80% dele vem de antecipar pedidos que já estão a caminho, sem compra nova nem frete.</li>
+        <li><b>Risco sob controle:</b> quem decide é o gerente, e cada decisão fica registrada com autor e horário.</li>
+        <li><b>Custo medido:</b> ~US$ 440 por mês para rodar tudo, a preço de lista.</li>
+      </ul>
+    </div>
+    <div class="p">
+      <div class="ph"><span class="pt teal">dono do domínio</span>Gerente de Reposição</div>
+      <ul>
+        <li><b>Uma lista curta:</b> 8% dos itens, 3,6× menos que a regra atual, ordenada por R$ ou por criticidade.</li>
+        <li><b>2,9 dias de aviso:</b> tempo de transferir ou antecipar o pedido, em vez de apagar incêndio.</li>
+        <li><b>A justificativa pronta:</b> estoque, loja doadora e pontualidade do fornecedor no próprio card.</li>
+        <li><b>Um clique aprova,</b> e as perguntas sobre os dados vão ao Genie, em português, sem abrir chamado.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="n">05</div>
+</section>
+
+<!-- 06 · a manhã do gerente (tela real) + o que acontece depois do clique -->
+<section class="s">
+  <div class="k">O que o gerente vê de manhã</div>
+  <h2>Uma fila de ação, não um relatório</h2>
+  <div class="split" style="grid-template-columns:1fr 500px;align-items:start;gap:36px">
+    <div>
+      <div class="step"><span>1</span><div><b>Abre a fila às 7h.</b> Todas as ações do dia, ordenadas por R$ protegido ou pelo que esvazia primeiro.</div></div>
+      <div class="step"><span>2</span><div><b>Lê o card.</b> Produto, loja, a ação mais barata, a justificativa do agente e o R$ em jogo.</div></div>
+      <div class="step"><span>3</span><div><b>Aprova com um clique.</b> O <b class="emr">"R$ protegido hoje"</b> sobe na tela.</div></div>
+      <div class="box" style="margin-top:6px"><div class="l">depois do clique</div><b>No protótipo:</b> a decisão fica gravada na Lakebase com autor e horário. <b>No piloto:</b> a ordem segue para o ERP da LojaBR, por API ou arquivo de integração. Essa integração é o escopo da semana 1.</div>
+      <div class="acts3" style="margin-top:14px">
+        <div><b class="teal">Transferir</b> de uma loja próxima com excesso</div>
+        <div><b class="sky">Antecipar</b> o pedido que já está a caminho</div>
+        <div><b class="amb">Pedido urgente</b> quando não há alternativa</div>
+      </div>
+    </div>
+    <figure><img class="shot" src="img/card.png" alt="Card de ação do app" style="width:500px"><figcaption>tela do app · dados sintéticos</figcaption></figure>
+  </div>
+  <div class="n">06</div>
+</section>
+
+<!-- 07 · onde agir (mapa) + economia da transferência -->
+<section class="s">
+  <div class="k">Onde agir primeiro</div>
+  <div class="split" style="grid-template-columns:500px 1fr;align-items:start;gap:44px">
+    <figure style="margin-top:6px"><img class="shot" src="img/map.png" alt="Mapa da rede de lojas" style="height:560px"><figcaption>tela do app · zoom no Sudeste</figcaption></figure>
+    <div>
+      <h2 style="margin-top:4px">Estoque parado numa loja resolve a falta na outra</h2>
+      <ul class="small">
+        <li><b>39 transferências</b> sugeridas num único dia, com o excesso de outras lojas.</li>
+        <li>Só a até <b>450 km</b>, sem deixar a doadora com menos de <b>10 dias</b> de estoque, e chegando em <b>1 a 2 dias</b>.</li>
+        <li>O mapa mostra a ruptura por loja e as rotas. Um clique abre a loja e as ações dela.</li>
+      </ul>
+      <div class="box" style="margin-top:22px;border-color:rgba(251,191,36,.4)"><div class="l">quando a transferência compensa</div>Cada transferência protege, em média, <b class="amb">R$ 74</b>. Ela só compensa se o frete marginal custar menos que isso. Por isso, no piloto, transferimos só em rotas que já existem, como a entrega do CD, ou agrupando os itens do mesmo par de lojas.</div>
+      <p class="mut" style="font-size:14px;margin-top:12px">As transferências são 18% do valor. A maior parte (80%) vem de antecipar pedidos que já estão a caminho.</p>
+    </div>
+  </div>
+  <div class="n">07</div>
+</section>
+
+<!-- 08 · por que confiar: tamanho da validação, erro e re-treino -->
+<section class="s">
+  <div class="k">Por que confiar no alerta</div>
+  <h2>O modelo acerta mais que o dobro da regra atual</h2>
+  <div class="tiles">
+    <div class="t"><div class="l">acerto · lista diária</div><div class="v emr">84%</div><div class="d">contra 38% da regra "cobertura &lt; prazo de entrega"</div></div>
+    <div class="t"><div class="l">antecedência</div><div class="v amb">2,9 dias</div><div class="d">3.691 alertas corretos no teste; 75% com ≥ 2 dias</div></div>
+    <div class="t"><div class="l">AUC</div><div class="v">0,85</div><div class="d">validado em 49.733 casos de 4 semanas que o modelo não viu</div></div>
+    <div class="t"><div class="l">tamanho da lista</div><div class="v">8%</div><div class="d">dos itens em gôndola, contra 29% da regra</div></div>
+  </div>
+  <div class="split" style="grid-template-columns:1fr 1fr;margin-top:24px;gap:28px">
+    <div class="box"><div class="l">e quando ele erra?</div>Um alerta errado não vira perda. A doadora continua com ao menos 10 dias de estoque, e o item transferido vende na loja de destino. O prejuízo máximo é o frete, e por isso a regra de rota do slide 7.</div>
+    <div class="box"><div class="l">como ele se mantém bom</div>O modelo é <b>re-treinado todo dia</b> no mesmo job, com uma nova versão registrada no Unity Catalog. O agente consulta estoque, lojas vizinhas e fornecedor antes de recomendar, e o sistema rejeita qualquer decisão tomada antes dessa consulta.</div>
+  </div>
+  <div class="n">08</div>
+</section>
+
+<!-- 09 · business case com sensibilidade, composição e custo -->
+<section class="s">
+  <div class="k">Business case</div>
+  <h2>Quanto vale, conforme a execução, e quanto custa</h2>
+  <table class="sens tight">
+    <tr><th>Ações aprovadas e executadas no prazo</th><th>50%</th><th>75%</th><th>100%</th></tr>
+    <tr><td>Venda protegida por semana · simulação</td><td class="mono">R$ 8,1 mil</td><td class="mono">R$ 12,1 mil</td><td class="mono">R$ 16,2 mil</td></tr>
+    <tr><td>Por ano · 20 lojas × 129 itens</td><td class="mono">R$ 0,42 mi</td><td class="mono">R$ 0,63 mi</td><td class="mono emr">R$ 0,84 mi</td></tr>
+    <tr><td>Parcela da perda anual recuperada</td><td class="mono">18%</td><td class="mono">26%</td><td class="mono">35%</td></tr>
+    <tr class="hl"><td>A cada R$ 100 mi de venda na rede</td><td class="mono">R$ 0,7 mi</td><td class="mono">R$ 1,1 mi</td><td class="mono emr">R$ 1,4 mi</td></tr>
+    <tr><td>Custo medido da plataforma (preço de lista)</td><td class="mono" colspan="3" style="text-align:right">~US$ 440 por mês em qualquer cenário</td></tr>
+  </table>
+  <div class="lbl" style="margin-top:18px;margin-bottom:0">de onde vem o valor da fila de um dia</div>
+  <div class="mix"><span style="width:79.7%;background:#7dd3fc">antecipar · 80% · R$ 12,9 mil</span><span style="width:17.7%;background:#5eead4">transferir · 18%</span><span style="width:2.6%;background:#fbbf24"></span></div>
+  <div class="mixl"><span>142 antecipações</span><span>39 transferências (R$ 2,9 mil)</span><span>7 pedidos urgentes (R$ 0,4 mil)</span></div>
+  <p class="mut" style="font-size:14.5px;margin-top:12px"><b style="color:#d4d4d8">Premissas:</b> valor <b style="color:#d4d4d8">esperado</b> (ponderado pelo risco), não garantido; base na fila do run de 28/09 (R$ 16,2 mil em 7 dias, ≈ 27% da perda da semana anterior); simulação de itens de alto giro; frete das transferências fora da conta, por isso a regra de rota.</p>
+  <div class="n">09</div>
+</section>
+
+<!-- 10 · uma plataforma -->
+<section class="s">
+  <div class="k">Como funciona · uma plataforma</div>
+  <h2>Do dado bruto à decisão, num único job diário</h2>
+  <figure style="margin:8px 0 0"><img class="shot" src="img/arch.png" alt="Jornada de dados na plataforma Databricks" style="width:100%"><figcaption>visão de arquitetura do app · cada estágio abre no workspace</figcaption></figure>
+  <div class="tiles c3" style="margin-top:22px">
+    <div class="t"><div class="l">um job, todo dia às 06:00</div><div class="d big">Com o dado até ontem, a fila fica pronta antes de a loja abrir. Ingestão, qualidade, modelo, agente e publicação rodam juntos em 8,4 min.</div></div>
+    <div class="t"><div class="l">governado no Unity Catalog</div><div class="d big">Linhagem de cada número, 7 regras de qualidade (0 falhas no último run) e acesso mínimo para o app.</div></div>
+    <div class="t"><div class="l">sem cópia, sem planilha</div><div class="d big">O mesmo dado alimenta o app, o Genie e o modelo. Cada estágio abre no workspace direto do app.</div></div>
+  </div>
+  <div class="trace"><b>Todo número deste deck é rastreável:</b> vem do run de evidência de 28/09/2026 e das tabelas de billing do workspace. Os notebooks executados, com as saídas, e as consultas de custo estão em texto no repositório (<span class="mono">evidence/</span>).</div>
+  <div class="n">10</div>
+</section>
+
+<!-- 11 · por que a plataforma, com custo medido e saída -->
+<section class="s">
+  <div class="k">Por que Databricks</div>
+  <h2>O que a plataforma muda no resultado</h2>
+  <table class="vs v2">
+    <tr><th></th><th>Com ferramentas separadas</th><th>Com Databricks</th></tr>
+    <tr><td>Integração</td><td>ETL, data warehouse, ML, banco operacional, LLM, BI e hospedagem do app: 7 peças para integrar e manter</td><td>Uma plataforma: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie e Apps</td></tr>
+    <tr><td>O número</td><td>Cópias entre sistemas; o R$ do app nem sempre bate com o do relatório</td><td>Um dado governado: o app, o Genie e o modelo leem o mesmo número, com linhagem</td></tr>
+    <tr><td>Tempo até o piloto</td><td>Meses de integração e uma revisão de segurança por ferramenta</td><td>O protótipo já roda ponta a ponta; o piloto leva 30 dias</td></tr>
+    <tr><td>Segurança</td><td>Permissões e auditoria espalhadas em cada ferramenta</td><td>Um lugar só: quem vê o quê, e quem aprovou cada ação</td></tr>
+    <tr><td>Custo</td><td>Licenças e infraestrutura fixas, rodando ou não</td><td>Medido: <b>~US$ 440 por mês</b> a preço de lista; a jornada em lote custa <b>US$ 0,52 por dia</b></td></tr>
+    <tr><td>Saída</td><td>Formatos fechados; migrar é um projeto</td><td>Formatos abertos: tabelas Delta (e Iceberg via UniForm), Postgres padrão, MLflow e código em Git</td></tr>
+  </table>
+  <div class="next"><b style="color:#e4e4e7">Os mesmos dados já servem os próximos casos:</b><span class="c">previsão de demanda</span><span class="c">markdown do excesso de estoque</span><span class="c">sortimento por loja</span></div>
+  <div class="n">11</div>
+</section>
+
+<!-- 12 · piloto -->
+<section class="s">
+  <div class="k">Plano de piloto · 30 dias</div>
+  <h2>Risco controlado, resultado medido</h2>
+  <table class="tight">
+    <tr><th style="width:15%">Quando</th><th style="width:50%">O que acontece</th><th>Como medimos</th></tr>
+    <tr><td>Semana 1</td><td>Conectar vendas, estoque e pedidos das 4 lojas-piloto; integrar a aprovação ao ERP</td><td>dados chegando todo dia, qualidade ≥ 99%</td></tr>
+    <tr><td>Semanas 2–4</td><td>Fila de ação nas 4 lojas; 4 lojas parecidas como <b>controle</b></td><td>ruptura e venda perdida, piloto contra controle</td></tr>
+    <tr><td>Fim</td><td>Decisão de escalar</td><td>R$ recuperado por loja, comparado ao custo</td></tr>
+  </table>
+  <div class="tiles c3" style="margin-top:20px">
+    <div class="t"><div class="l">critério de sucesso</div><div class="d big">Ruptura acumulada das semanas 2–4 <b>≥ 1,5 p.p. abaixo</b> do controle, e R$ recuperado maior que o custo.</div></div>
+    <div class="t"><div class="l">escolha das lojas</div><div class="d big">4 lojas com ruptura acima da média, em 2 regiões e 2 formatos. O controle é pareado por formato, região e ruptura e vive o mesmo mês, então sazonalidade e promoções se anulam.</div></div>
+    <div class="t"><div class="l">riscos e mitigação</div><div class="d big">Modelo errar: o gerente decide. Adoção: um clique, na rotina da manhã. Frete: só rota existente. Dado de fornecedor incompleto: a regra cobre.</div></div>
+  </div>
+  <div class="n">12</div>
+</section>
+
+<!-- 13 · o pedido -->
+<section class="s">
+  <div class="k">O pedido</div>
+  <h1 style="margin-top:36px;font-size:56px;max-width:1100px">Patrocinar um <span class="g">piloto de 30 dias em 4 lojas</span>, com grupo de controle.</h1>
+  <p style="margin-top:18px;max-width:1000px">Medir ruptura e venda recuperada com os números reais da LojaBR, e decidir a escala com base neles. A plataforma custa ~US$ 440 por mês a preço de lista.</p>
+  <div class="tiles c3" style="margin-top:30px">
+    <div class="t"><div class="l">semana 0 · patrocinador</div><div class="d big">Escolher as 4 lojas-piloto e as 4 de controle.</div></div>
+    <div class="t"><div class="l">semana 1 · TI LojaBR + Databricks</div><div class="d big">Liberar os feeds de vendas, estoque e pedidos, e a integração da aprovação com o ERP.</div></div>
+    <div class="t"><div class="l">semana 4 · comitê</div><div class="d big">Decidir a escala com o resultado medido na mão.</div></div>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">13</div>
+</section>
+
+<!-- A1 · apêndice técnico -->
+<section class="s">
+  <div class="k">Apêndice · para o time técnico</div>
+  <h2>O que está por trás de cada número</h2>
+  <div class="split" style="grid-template-columns:1fr 1fr;gap:36px">
+    <ul class="small">
+      <li><b>Lakeflow Declarative Pipelines:</b> Auto Loader em 7 feeds brutos; medallion com 7 expectativas de qualidade, 0 falhas no último run.</li>
+      <li><b>Modelo:</b> gradient boosting com features <i>point-in-time</i> (pedido em aberto com a chegada <b>prevista</b>, não a real). Treino em 153 mil casos e teste em 49,7 mil de datas posteriores; AUC 0,85; re-treinado e registrado no Unity Catalog a cada run.</li>
+      <li><b>Agente:</b> tool-calling na Foundation Model API; consulta 3 ferramentas, e o sistema rejeita decisão sem consulta prévia.</li>
+    </ul>
+    <ul class="small">
+      <li><b>Lakebase:</b> schema <span class="mono">serving</span> publicado de forma atômica e schema <span class="mono">app</span> com aprovações, rejeições e log do Genie; leitura em ~3 ms.</li>
+      <li><b>Genie:</b> entity matching, definições de métrica e 5 SQL certificados.</li>
+      <li><b>App:</b> React + TypeScript / FastAPI; service principal com acesso mínimo; login pelo SSO do workspace.</li>
+      <li><b>Evidência em texto:</b> notebooks executados com saídas, resultados de qualidade, respostas do Genie e do app, e consultas de custo em <span class="mono">evidence/</span>.</li>
+    </ul>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">A1</div>
+</section>
+
+<!-- A2 · custo medido e operação -->
+<section class="s">
+  <div class="k">Apêndice · custo medido e operação</div>
+  <h2>Quanto custa rodar, e como se opera</h2>
+  <div class="split" style="grid-template-columns:1.05fr 1fr;gap:34px">
+    <div>
+      <table class="cost">
+        <tr><th>Componente</th><th>Consumo em 29/09</th><th>US$/dia</th></tr>
+        <tr><td>Job serverless (4 tarefas)</td><td class="mono">0,35 DBU</td><td class="mono">0,16</td></tr>
+        <tr><td>Pipeline Lakeflow</td><td class="mono">0,39 DBU</td><td class="mono">0,17</td></tr>
+        <tr><td>Agente (LLM, 24 chamadas)</td><td class="mono">2,72 DBU</td><td class="mono">0,19</td></tr>
+        <tr><td>Lakebase (escala até zero)</td><td class="mono">5,11 DBU</td><td class="mono">2,66</td></tr>
+        <tr><td>App (sempre ligado)</td><td class="mono">12 DBU</td><td class="mono">11,40</td></tr>
+        <tr class="tot"><td>Total</td><td class="mono">~US$ 440 / 30 dias</td><td class="mono">14,58</td></tr>
+      </table>
+      <p class="mut" style="font-size:13.5px;margin-top:10px">Fonte: <span class="mono">system.billing.usage</span> × <span class="mono">list_prices</span>, num dia só com o run agendado. O app é 78% do custo e pode ser desligado fora do horário. Descontos contratuais reduzem esses valores.</p>
+    </div>
+    <ul class="small">
+      <li><b>Latência:</b> lote diário às 06:00 com o dado até ontem. Um aviso de 2,9 dias cabe num lote diário, e o Auto Loader pode rodar ao longo do dia se precisar.</li>
+      <li><b>Re-treino e feedback:</b> o modelo é re-treinado todo dia. Aprovações e rejeições ficam gravadas com autor e viram sinal de avaliação no piloto.</li>
+      <li><b>Escala:</b> o compute é serverless. No piloto, medimos tempo e custo com o sortimento completo das 4 lojas.</li>
+      <li><b>Segurança:</b> permissões por papel no Unity Catalog, app com acesso mínimo e toda decisão auditável.</li>
+    </ul>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo · evidence/run_08_platform_cost.md</div><div class="n">A2</div>
+</section>
+
+</body></html>
