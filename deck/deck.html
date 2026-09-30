@@ -3,163 +3,257 @@
 <title>LojaBR · Centro de Abastecimento</title>
 <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{--bg:#09090b;--card:#111114;--bd:#27272a;--ink:#f4f4f5;--mut:#a1a1aa;--dim:#71717a;--amb:#fbbf24;--org:#f97316;--emr:#34d399;--red:#f87171;--teal:#5eead4}
-  *{box-sizing:border-box} body{margin:0;background:#050506;color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-  .s{width:1280px;height:720px;margin:24px auto;background:radial-gradient(1200px 600px at 100% 0%,rgba(251,191,36,.10),transparent 60%),radial-gradient(900px 500px at 0% 100%,rgba(249,115,22,.07),transparent 60%),var(--bg);border:1px solid var(--bd);border-radius:18px;padding:56px 68px;position:relative;overflow:hidden}
-  .s::before{content:"";position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
-  .s>*{position:relative}
-  .k{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--amb);font-weight:800}
-  h1{font-size:64px;line-height:1.02;margin:14px 0 0;letter-spacing:-.02em;font-weight:800}
-  h2{font-size:40px;line-height:1.1;margin:12px 0 26px;letter-spacing:-.015em;font-weight:700}
-  .g{background:linear-gradient(90deg,#fcd34d,#fbbf24,#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
-  p,li{font-size:21px;line-height:1.5;color:#d4d4d8} li{margin-bottom:10px} ul{padding-left:24px;margin:0}
-  b{color:var(--ink)} .mut{color:var(--mut)} .mono{font-family:"JetBrains Mono",monospace}
-  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
-  .t{border:1px solid var(--bd);background:rgba(24,24,27,.7);border-radius:14px;padding:18px}
-  .t .l{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);font-weight:700}
-  .t .v{font-family:"JetBrains Mono",monospace;font-size:34px;font-weight:700;margin-top:8px}
-  .t .d{font-size:13px;color:var(--dim);margin-top:6px}
-  .red{color:var(--red)} .amb{color:var(--amb)} .emr{color:var(--emr)} .teal{color:var(--teal)}
-  table{width:100%;border-collapse:collapse;font-size:20px} th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--bd)}
-  th{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
-  .q{border-left:4px solid var(--amb);background:rgba(251,191,36,.06);border-radius:0 12px 12px 0;padding:20px 24px;font-size:21px;line-height:1.55;color:#e4e4e7}
-  .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
-  .a{border:1px solid var(--bd);border-radius:14px;padding:22px;background:rgba(24,24,27,.7)} .a .h{font-size:22px;font-weight:700;margin-bottom:8px}
-  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
-  .st{border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.07);border-radius:10px;padding:12px 14px;font-size:15px;font-weight:600}
-  .st small{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-top:3px;font-weight:700}
-  .ar{color:var(--dim);font-size:22px}
-  .n{position:absolute;bottom:26px;left:68px;font-size:12px;color:var(--dim);letter-spacing:.2em}
-  .f{position:absolute;bottom:26px;right:68px;font-size:12px;color:var(--dim);letter-spacing:.2em;text-transform:uppercase}
-  .logo{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#fcd34d,#f97316);color:#09090b;font-weight:900;font-size:22px;vertical-align:middle;margin-right:12px}
-  @page{size:1280px 720px;margin:0} @media print{body{background:var(--bg)}.s{margin:0;border:none;border-radius:0;page-break-after:always}}
-</style></head><body>
+<link rel="stylesheet" href="deck.css">
+</head><body>
 
+<!-- 01 · capa: o resultado primeiro -->
 <section class="s">
-  <div class="k"><span class="logo">L</span>LojaBR · Field Engineering Databricks</div>
-  <h1 style="margin-top:70px">Centro de <span class="g">Abastecimento</span></h1>
-  <p style="font-size:26px;max-width:900px;margin-top:22px">Ruptura: de reativo a preditivo, com <b>a ação certa na mão de quem decide</b> antes de a gôndola esvaziar.</p>
-  <p class="mut" style="margin-top:60px;font-size:17px">Para <b>VP de Operações &amp; Supply Chain</b> (patrocinador) · <b>Gerente de Reposição</b> (dono do domínio)</p>
-  <div class="f">dados sintéticos · demonstração</div><div class="n">01</div>
+  <div class="k"><span class="logo">L</span>LojaBR · Centro de Abastecimento</div>
+  <h1 style="margin-top:54px;max-width:1100px">Recuperar até <span class="g">R$ 0,8 mi por ano</span> em vendas que hoje somem da gôndola</h1>
+  <p style="font-size:24px;max-width:1000px;margin-top:22px">O Centro de Abastecimento avisa <b>2,9 dias antes</b> que um item vai faltar. A ação mais barata para cada caso chega pronta, e o gerente de reposição aprova <b>em um clique</b>.</p>
+  <div class="tiles c3" style="margin-top:40px">
+    <div class="t"><div class="l">hoje</div><div class="v red">4,1%</div><div class="d">da venda se perde por ruptura: R$ 2,39 mi/ano na amostra</div></div>
+    <div class="t"><div class="l">na rede</div><div class="v emr">~R$ 1,4 mi</div><div class="d">recuperáveis a cada R$ 100 mi de venda (⅓ da perda)</div></div>
+    <div class="t"><div class="l">o pedido</div><div class="v amb">30 dias</div><div class="d">piloto em 4 lojas, com 4 lojas de controle</div></div>
+  </div>
+  <div class="f">para VP de Operações &amp; Supply Chain · Gerente de Reposição · dados sintéticos</div><div class="n">01</div>
 </section>
 
+<!-- 02 · resumo executivo -->
 <section class="s">
-  <div class="k">O problema, em reais</div>
-  <h2>Produto fora da gôndola é venda que vai para o concorrente</h2>
-  <div class="tiles">
-    <div class="t"><div class="l">venda perdida</div><div class="v red">4,1%</div><div class="d">da venda, por ruptura</div></div>
-    <div class="t"><div class="l">por ano · amostra</div><div class="v red">R$ 2,39 mi</div><div class="d">129 itens de alto giro × 20 lojas</div></div>
-    <div class="t"><div class="l">ruptura · 7 dias</div><div class="v amb">6,5%</div><div class="d">loja × item × dia</div></div>
-    <div class="t"><div class="l">fornecedor pior</div><div class="v amb">63%</div><div class="d">das entregas no prazo</div></div>
+  <div class="k">Resumo executivo</div>
+  <h2>A resposta em uma página</h2>
+  <div class="sum">
+    <div class="b"><div class="h red">O problema</div><p><b>4,1% da venda some por ruptura:</b> R$ 2,39 mi por ano só em 129 itens de alto giro, nas 20 lojas. O time descobre <b>depois</b> que a gôndola esvaziou.</p></div>
+    <div class="b"><div class="h teal">A solução</div><p>Um modelo aponta <b>quais itens vão faltar nos próximos 7 dias</b>. Um agente de IA confere os fatos e propõe a ação mais barata: <b>transferir, antecipar ou pedido urgente</b>. O gerente aprova em um clique.</p></div>
+    <div class="b"><div class="h emr">O valor</div><p>Até <b>⅓ da perda recuperada</b>: R$ 0,4 a 0,8 mi por ano na amostra, conforme a execução. Na rede inteira, <b>R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda</b>.</p></div>
+    <div class="b"><div class="h amb">O pedido</div><p><b>Piloto de 30 dias em 4 lojas</b>, com 4 lojas de controle. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção.</p></div>
   </div>
-  <ul style="margin-top:34px">
-    <li>O time de reposição descobre <b>depois</b> que a gôndola esvaziou.</li>
-    <li>A causa é concentrada: <b>Limpeza e Higiene rompem 2–3× mais</b>, puxadas por fornecedores impontuais.</li>
-  </ul>
   <div class="n">02</div>
 </section>
 
+<!-- 03 · o problema em reais -->
 <section class="s">
-  <div class="k">O resultado que buscamos</div>
-  <h2>Menos ruptura, antes de acontecer</h2>
-  <table>
-    <tr><th>KPI do comprador</th><th>Hoje</th><th>Meta</th></tr>
-    <tr><td>Taxa de ruptura</td><td class="mono">6,5%</td><td class="mono emr">&lt; 4,5%</td></tr>
-    <tr><td>Venda perdida por ruptura</td><td class="mono">4,1% da venda</td><td class="emr">recuperar ~⅓</td></tr>
-    <tr><td>Antecedência do alerta</td><td>nenhuma</td><td class="mono emr">~2,9 dias</td></tr>
-    <tr><td>Lista de trabalho</td><td>sortimento inteiro</td><td class="emr">8% dos itens, por R$</td></tr>
-  </table>
-  <p style="margin-top:26px">Regra de bolso: a cada <b>R$ 100 mi de venda</b>, ~R$ 4 mi se perdem em ruptura. Recuperar um terço = <b class="emr">~R$ 1,4 mi</b>.</p>
+  <div class="k">O problema, em reais</div>
+  <h2>Produto fora da gôndola é venda que vai para o concorrente</h2>
+  <div class="split" style="grid-template-columns:1fr 1.05fr">
+    <div class="tiles c2" style="margin-top:0">
+      <div class="t"><div class="l">venda perdida</div><div class="v red">4,1%</div><div class="d">da venda, por ruptura</div></div>
+      <div class="t"><div class="l">por ano · amostra</div><div class="v red">R$ 2,39 mi</div><div class="d">129 itens × 20 lojas</div></div>
+      <div class="t"><div class="l">disponibilidade · 7 dias</div><div class="v amb">93,5%</div><div class="d">ruptura de 6,5% (loja × item × dia)</div></div>
+      <div class="t"><div class="l">pior fornecedor</div><div class="v amb">63%</div><div class="d">das entregas no prazo</div></div>
+    </div>
+    <div>
+      <div class="lbl">ruptura por categoria · 120 dias · média da rede 5,3%</div>
+      <div class="bars">
+        <div class="r"><span>Limpeza</span><i style="width:100%" class="hot"></i><em>11,3%</em></div>
+        <div class="r"><span>Higiene</span><i style="width:81%" class="hot"></i><em>9,2%</em></div>
+        <div class="r"><span>Congelados</span><i style="width:71%"></i><em>8,1%</em></div>
+        <div class="r"><span>Mercearia</span><i style="width:46%"></i><em>5,2%</em></div>
+        <div class="r"><span>Bebidas</span><i style="width:40%"></i><em>4,5%</em></div>
+        <div class="r"><span>Laticínios</span><i style="width:37%"></i><em>4,2%</em></div>
+        <div class="r"><span>Hortifruti</span><i style="width:11%"></i><em>1,2%</em></div>
+        <div class="r"><span>Padaria</span><i style="width:5%"></i><em>0,6%</em></div>
+        <div class="avg" style="left:calc(110px + (100% - 170px) * 0.469)"></div>
+      </div>
+      <p class="small" style="margin-top:16px"><b>A perda é concentrada:</b> Limpeza e Higiene rompem ~2× a média. Os fornecedores dessas categorias entregam no prazo só <b>63% e 68%</b> das vezes.</p>
+    </div>
+  </div>
   <div class="n">03</div>
 </section>
 
+<!-- 04 · KPIs do comprador -->
 <section class="s">
-  <div class="k">O que o gerente vê de manhã</div>
-  <h2>Uma fila de ação — a solução mais barata, item a item</h2>
-  <div class="acts">
-    <div class="a"><div class="h teal">⇄ Transferir</div><p style="font-size:18px">de uma loja próxima com excesso (≤ 450 km). Chega em 1–2 dias.</p></div>
-    <div class="a"><div class="h" style="color:#7dd3fc">◷ Antecipar</div><p style="font-size:18px">o pedido que já está a caminho, mas chegaria depois de a gôndola esvaziar.</p></div>
-    <div class="a"><div class="h amb">＋ Pedido urgente</div><p style="font-size:18px">quando não há transferência nem pedido em trânsito.</p></div>
-  </div>
-  <p style="margin-top:30px"><b>Um clique aprova.</b> A decisão fica registrada com o nome de quem aprovou, e o <b class="emr">"R$ protegido hoje"</b> sobe na tela.</p>
+  <div class="k">Os KPIs do comprador</div>
+  <h2>O que muda nos números que a LojaBR já acompanha</h2>
+  <table class="kpi">
+    <tr><th>KPI</th><th>Hoje</th><th>Com o Centro de Abastecimento</th><th>Quem acompanha</th></tr>
+    <tr><td>Disponibilidade em gôndola</td><td class="mono">93,5%</td><td class="mono emr">≥ 95,5%</td><td class="mut">VP de Operações</td></tr>
+    <tr><td>Taxa de ruptura (loja × item × dia)</td><td class="mono">6,5%</td><td class="mono emr">&lt; 4,5%</td><td class="mut">VP e gerente</td></tr>
+    <tr><td>Venda perdida por ruptura</td><td class="mono">4,1% · R$ 2,39 mi/ano</td><td class="mono emr">até −⅓ · ≈ R$ 0,8 mi/ano de volta</td><td class="mut">VP e financeiro</td></tr>
+    <tr><td>Aviso antes de a gôndola esvaziar</td><td class="mono">nenhum (reativo)</td><td class="mono emr">~2,9 dias · 75% com ≥ 2 dias</td><td class="mut">Gerente de reposição</td></tr>
+    <tr><td>Itens para revisar por dia</td><td class="mono">29% do sortimento · 38% de acerto</td><td class="mono emr">8% · 84% de acerto</td><td class="mut">Gerente de reposição</td></tr>
+  </table>
+  <p class="small" style="margin-top:20px">Regra de bolso: a cada <b>R$ 100 mi de venda</b>, ~R$ 4 mi se perdem em ruptura. Recuperar um terço vale <b class="emr">~R$ 1,4 mi</b>.</p>
   <div class="n">04</div>
 </section>
 
+<!-- 05 · valor para cada público -->
+<section class="s">
+  <div class="k">Valor para quem patrocina e para quem opera</div>
+  <h2>O que muda para cada um</h2>
+  <div class="who">
+    <div class="p">
+      <div class="ph"><span class="pt amb">patrocinador</span>VP de Operações &amp; Supply Chain</div>
+      <ul>
+        <li><b>Venda de volta no P&amp;L:</b> ≈ R$ 0,8 mi/ano na amostra, ~R$ 1,4 mi a cada R$ 100 mi de venda.</li>
+        <li><b>Estoque parado vira venda:</b> 39 transferências num único dia usaram o excesso de outra loja, sem compra nova.</li>
+        <li><b>Risco sob controle:</b> quem decide é o gerente, e cada decisão fica registrada com autor e horário.</li>
+        <li><b>Escala sem projeto novo:</b> a mesma plataforma cobre a rede toda e novas categorias.</li>
+      </ul>
+    </div>
+    <div class="p">
+      <div class="ph"><span class="pt teal">dono do domínio</span>Gerente de Reposição</div>
+      <ul>
+        <li><b>Uma lista curta:</b> 8% dos itens, 3,6× menos que a regra atual, ordenada por R$ ou por criticidade.</li>
+        <li><b>2,9 dias de aviso:</b> tempo de transferir ou antecipar o pedido, em vez de apagar incêndio.</li>
+        <li><b>A justificativa pronta:</b> estoque, loja doadora e pontualidade do fornecedor no próprio card.</li>
+        <li><b>Um clique aprova,</b> e as perguntas sobre os dados vão ao Genie, em português, sem abrir chamado.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="n">05</div>
+</section>
+
+<!-- 06 · a manhã do gerente (tela real) -->
+<section class="s">
+  <div class="k">O que o gerente vê de manhã</div>
+  <h2>Uma fila de ação, não um relatório</h2>
+  <div class="split" style="grid-template-columns:1fr 520px;align-items:start">
+    <div>
+      <div class="step"><span>1</span><div><b>Abre a fila às 7h.</b> Todas as ações do dia, ordenadas por R$ protegido ou pelo que esvazia primeiro.</div></div>
+      <div class="step"><span>2</span><div><b>Lê o card.</b> Produto, loja, a ação mais barata, a justificativa do agente e o R$ em jogo.</div></div>
+      <div class="step"><span>3</span><div><b>Aprova com um clique.</b> A decisão vai para o banco com o nome dele, e o <b class="emr">"R$ protegido hoje"</b> sobe na tela.</div></div>
+      <div class="acts3">
+        <div><b class="teal">Transferir</b> de uma loja próxima com excesso</div>
+        <div><b class="sky">Antecipar</b> o pedido que já está a caminho</div>
+        <div><b class="amb">Pedido urgente</b> quando não há alternativa</div>
+      </div>
+    </div>
+    <figure><img class="shot" src="img/card.png" alt="Card de ação do app" style="width:520px"><figcaption>tela do app · dados sintéticos</figcaption></figure>
+  </div>
+  <div class="n">06</div>
+</section>
+
+<!-- 07 · onde agir (mapa) -->
+<section class="s">
+  <div class="k">Onde agir primeiro</div>
+  <div class="split" style="grid-template-columns:500px 1fr;align-items:start;gap:44px">
+    <figure style="margin-top:6px"><img class="shot" src="img/map.png" alt="Mapa da rede de lojas" style="height:560px"><figcaption>tela do app · zoom no Sudeste</figcaption></figure>
+    <div>
+      <h2 style="margin-top:4px">Estoque parado numa loja resolve a falta na outra</h2>
+      <ul class="small">
+        <li><b>39 transferências</b> sugeridas num único dia, com o excesso de outras lojas.</li>
+        <li>Só a até <b>450 km</b> e sem deixar a doadora com menos de <b>10 dias</b> de estoque.</li>
+        <li>Chegam em <b>1 a 2 dias</b>, antes do pedido do fornecedor.</li>
+        <li>O mapa mostra a ruptura por loja e as rotas. Um clique abre a loja e as ações dela.</li>
+      </ul>
+      <div class="q" style="margin-top:26px;font-size:18px">"A loja Tatuapé está com apenas 1 unidade em estoque. A LojaBR Barra da Tijuca tem excedente de 39 unidades, permitindo transferir 18 unidades sem comprometer seu próprio estoque."</div>
+      <p class="mut small" style="margin-top:8px">trecho da justificativa do agente no card do slide anterior</p>
+    </div>
+  </div>
+  <div class="n">07</div>
+</section>
+
+<!-- 08 · por que confiar -->
 <section class="s">
   <div class="k">Por que confiar no alerta</div>
   <h2>O modelo acerta mais que o dobro da regra atual</h2>
   <div class="tiles">
-    <div class="t"><div class="l">acerto · lista diária</div><div class="v emr">84%</div><div class="d">vs 38% da regra "cobertura &lt; lead time"</div></div>
-    <div class="t"><div class="l">antecedência</div><div class="v amb">2,9 d</div><div class="d">75% dos alertas com ≥ 2 dias</div></div>
-    <div class="t"><div class="l">AUC</div><div class="v">0,85</div><div class="d">validado em datas futuras</div></div>
-    <div class="t"><div class="l">tamanho da fila</div><div class="v">8%</div><div class="d">dos itens em gôndola</div></div>
+    <div class="t"><div class="l">acerto · lista diária</div><div class="v emr">84%</div><div class="d">contra 38% da regra "cobertura &lt; prazo de entrega"</div></div>
+    <div class="t"><div class="l">antecedência</div><div class="v amb">2,9 dias</div><div class="d">75% dos alertas com 2 dias ou mais</div></div>
+    <div class="t"><div class="l">AUC</div><div class="v">0,85</div><div class="d">validado em datas que o modelo não viu</div></div>
+    <div class="t"><div class="l">tamanho da lista</div><div class="v">8%</div><div class="d">dos itens em gôndola, contra 29% da regra</div></div>
   </div>
-  <p style="margin-top:34px">Só olhamos itens <b>ainda na gôndola</b>, porque prever o que já zerou não evita nenhuma venda perdida.</p>
-  <div class="n">05</div>
-</section>
-
-<section class="s">
-  <div class="k">Agente de IA · confere antes de recomendar</div>
-  <h2>Consulta os fatos, depois decide</h2>
-  <div class="flow"><span class="st">Posição do item<small>estoque · venda · a caminho</small></span><span class="ar">→</span><span class="st">Lojas vizinhas<small>excesso ≤ 450 km</small></span><span class="ar">→</span><span class="st">Fornecedor<small>pontualidade</small></span><span class="ar">→</span><span class="st">Decisão<small>ação + justificativa</small></span></div>
-  <div class="q" style="margin-top:32px">"A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias, insuficiente para evitar ruptura. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades e cobertura de 18,2 dias, permitindo transferir 46 unidades sem comprometer seu próprio estoque."</div>
-  <p class="mut" style="font-size:15px;margin-top:10px">justificativa real do agente · Café Pilão 500g · run de evidência de 28/09/2026</p>
-  <div class="n">06</div>
-</section>
-
-<section class="s">
-  <div class="k">Business case</div>
-  <h2>O que a fila de um dia vale — e as premissas</h2>
-  <div class="tiles" style="grid-template-columns:repeat(3,1fr)">
-    <div class="t"><div class="l">protegível · 7 dias · run de 28/09</div><div class="v emr">R$ 16,2 mil</div><div class="d">≈ 27% da perda da última semana</div></div>
-    <div class="t"><div class="l">anualizado · amostra</div><div class="v emr">≈ R$ 0,84 mi</div><div class="d">≈ 35% da perda anual</div></div>
-    <div class="t"><div class="l">por R$ 100 mi de venda</div><div class="v emr">~R$ 1,4 mi</div><div class="d">recuperando ⅓ da perda</div></div>
+  <div class="split" style="grid-template-columns:1.12fr 1fr;margin-top:30px;gap:32px">
+    <div>
+      <div class="lbl">o agente confere antes de recomendar</div>
+      <div class="flow">
+        <span class="st">Posição do item<small>estoque · venda · a caminho</small></span><span class="ar">→</span>
+        <span class="st">Lojas vizinhas<small>excesso ≤ 450 km</small></span><span class="ar">→</span>
+        <span class="st">Fornecedor<small>pontualidade</small></span>
+      </div>
+      <p class="small" style="margin-top:14px">Se ele tentar decidir antes de consultar os fatos, o sistema rejeita a decisão.</p>
+    </div>
+    <div>
+      <div class="lbl">o que ele escreve</div>
+      <div class="q" style="font-size:16.5px;padding:16px 20px">"A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades, permitindo transferir 46 unidades sem comprometer seu próprio estoque."</div>
+      <p class="mut" style="font-size:13px;margin-top:6px">Café Pilão 500g · run de evidência de 28/09/2026</p>
+    </div>
   </div>
-  <ul style="margin-top:32px;font-size:18px">
-    <li><b>Premissas:</b> ações aprovadas são executadas; o valor é <b>esperado</b> (ponderado pelo risco), não garantido; a amostra é de itens de alto giro.</li>
-    <li>Tudo isso é medido no piloto, com grupo de controle (próximo slide).</li>
-  </ul>
-  <div class="n">07</div>
-</section>
-
-<section class="s">
-  <div class="k">Plano de piloto · 30 dias</div>
-  <h2>Risco controlado, resultado medido</h2>
-  <table style="font-size:18px">
-    <tr><th>Quando</th><th>O que acontece</th><th>Como medimos</th></tr>
-    <tr><td>Semana 1</td><td>Conectar POS, estoque e pedidos de 4 lojas-piloto</td><td>dados fluindo, qualidade ≥ 99%</td></tr>
-    <tr><td>Semanas 2–4</td><td>Fila de ação nas 4 lojas; 4 lojas similares como <b>controle</b></td><td>ruptura e venda perdida, piloto vs controle</td></tr>
-    <tr><td>Fim</td><td>Decisão de escalar</td><td>R$ recuperado por loja × custo</td></tr>
-  </table>
-  <p style="font-size:17px;margin-top:24px"><b>Riscos:</b> modelo errar → fila por R$, o gerente decide · adoção → um clique, na rotina da manhã · dado de fornecedor incompleto → o agente declara a confiança e a regra cobre a base.</p>
   <div class="n">08</div>
 </section>
 
+<!-- 09 · business case com sensibilidade -->
 <section class="s">
-  <div class="k">Como funciona · uma plataforma</div>
-  <h2>Do dado bruto à decisão, num único job diário</h2>
-  <div class="flow">
-    <span class="st">Lakeflow<small>ingestão + medallion</small></span><span class="ar">→</span>
-    <span class="st">Unity Catalog<small>governança · linhagem</small></span><span class="ar">→</span>
-    <span class="st">MLflow · modelo<small>alerta antecipado</small></span><span class="ar">→</span>
-    <span class="st">Agente de IA<small>foundation model api</small></span><span class="ar">→</span>
-    <span class="st">Lakebase<small>postgres operacional</small></span><span class="ar">→</span>
-    <span class="st">App<small>aprovar · registrar</small></span>
-  </div>
-  <ul style="margin-top:34px;font-size:19px">
-    <li><b>Genie</b> responde perguntas em português sobre os mesmos dados governados.</li>
-    <li>Qualidade de dados verificada a cada run (7 regras, 0 falhas); permissões mínimas para o app.</li>
-    <li>Roda todo dia às 06:00. Sem planilha exportada, sem cópia de dados.</li>
+  <div class="k">Business case</div>
+  <h2>Quanto vale, conforme a execução</h2>
+  <table class="sens">
+    <tr><th>Ações aprovadas e executadas no prazo</th><th>50%</th><th>75%</th><th>100%</th></tr>
+    <tr><td>Venda protegida por semana · amostra</td><td class="mono">R$ 8,1 mil</td><td class="mono">R$ 12,1 mil</td><td class="mono">R$ 16,2 mil</td></tr>
+    <tr><td>Por ano · amostra (129 itens × 20 lojas)</td><td class="mono">R$ 0,42 mi</td><td class="mono">R$ 0,63 mi</td><td class="mono emr">R$ 0,84 mi</td></tr>
+    <tr><td>Parcela da perda anual recuperada</td><td class="mono">18%</td><td class="mono">26%</td><td class="mono">35%</td></tr>
+    <tr class="hl"><td>A cada R$ 100 mi de venda na rede</td><td class="mono">R$ 0,7 mi</td><td class="mono">R$ 1,1 mi</td><td class="mono emr">R$ 1,4 mi</td></tr>
+  </table>
+  <ul class="small" style="margin-top:24px">
+    <li><b>Base:</b> a fila de um dia (run de 28/09) protege R$ 16,2 mil nos 7 dias seguintes, ≈ 27% da perda da semana anterior.</li>
+    <li><b>Premissas:</b> é valor <b>esperado</b> (ponderado pelo risco), não garantido; a amostra é de itens de alto giro; o custo da plataforma (serverless, pago pelo uso) é medido no piloto.</li>
   </ul>
   <div class="n">09</div>
 </section>
 
+<!-- 10 · uma plataforma -->
+<section class="s">
+  <div class="k">Como funciona · uma plataforma</div>
+  <h2>Do dado bruto à decisão, num único job diário</h2>
+  <figure style="margin:8px 0 0"><img class="shot" src="img/arch.png" alt="Jornada de dados na plataforma Databricks" style="width:100%"><figcaption>visão de arquitetura do app · cada estágio abre no workspace</figcaption></figure>
+  <div class="tiles c3" style="margin-top:26px">
+    <div class="t"><div class="l">um job, todo dia às 06:00</div><div class="d big">Ingestão, qualidade, modelo, agente e publicação para o app rodam juntos, com um único registro de execução.</div></div>
+    <div class="t"><div class="l">governado no Unity Catalog</div><div class="d big">Linhagem de cada número, 7 regras de qualidade (0 falhas no último run) e acesso mínimo para o app.</div></div>
+    <div class="t"><div class="l">sem cópia, sem planilha</div><div class="d big">O mesmo dado alimenta o app, o Genie e o modelo. Cada estágio abre no workspace direto do app.</div></div>
+  </div>
+  <div class="trace"><b>Todo número deste deck é rastreável:</b> vem do run de evidência de 28/09/2026 do job diário. Os notebooks executados, com as saídas, estão em texto no repositório (<span class="mono">evidence/</span>).</div>
+  <div class="n">10</div>
+</section>
+
+<!-- 11 · piloto -->
+<section class="s">
+  <div class="k">Plano de piloto · 30 dias</div>
+  <h2>Risco controlado, resultado medido</h2>
+  <table>
+    <tr><th>Quando</th><th>O que acontece</th><th>Como medimos</th></tr>
+    <tr><td>Semana 1</td><td>Conectar vendas, estoque e pedidos das 4 lojas-piloto</td><td>dados chegando todo dia, qualidade ≥ 99%</td></tr>
+    <tr><td>Semanas 2–4</td><td>Fila de ação nas 4 lojas; 4 lojas parecidas como <b>controle</b></td><td>ruptura e venda perdida, piloto contra controle</td></tr>
+    <tr><td>Fim</td><td>Decisão de escalar</td><td>R$ recuperado por loja, comparado ao custo</td></tr>
+  </table>
+  <div class="split" style="grid-template-columns:1fr 1fr;gap:28px;margin-top:26px">
+    <div class="t"><div class="l">critério de sucesso</div><div class="d big">Ruptura nas lojas-piloto <b>≥ 1,5 p.p. abaixo</b> do controle, e R$ recuperado maior que o custo da plataforma.</div></div>
+    <div class="t"><div class="l">riscos e mitigação</div><div class="d big">Modelo errar: a lista é priorizada por R$ e o gerente decide. Adoção: um clique, dentro da rotina da manhã. Dado de fornecedor incompleto: o agente declara a confiança e a regra cobre o resto.</div></div>
+  </div>
+  <div class="n">11</div>
+</section>
+
+<!-- 12 · o pedido -->
 <section class="s">
   <div class="k">O pedido</div>
-  <h1 style="font-size:52px;margin-top:80px;max-width:1000px">Patrocinar um <span class="g">piloto de 30 dias em 4 lojas</span>, com grupo de controle.</h1>
-  <p style="font-size:24px;margin-top:28px;max-width:950px">Medir ruptura e venda recuperada com os números da própria LojaBR, e decidir a escala com base neles.</p>
-  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">10</div>
+  <h1 style="margin-top:40px;font-size:56px;max-width:1100px">Patrocinar um <span class="g">piloto de 30 dias em 4 lojas</span>, com grupo de controle.</h1>
+  <p style="margin-top:20px;max-width:980px">Medir ruptura e venda recuperada com os números da própria LojaBR, e decidir a escala com base neles.</p>
+  <div class="tiles c3" style="margin-top:34px">
+    <div class="t"><div class="l">semana 0 · patrocinador</div><div class="d big">Escolher as 4 lojas-piloto e as 4 de controle.</div></div>
+    <div class="t"><div class="l">semana 1 · TI LojaBR + Databricks</div><div class="d big">Liberar os feeds de vendas, estoque e pedidos.</div></div>
+    <div class="t"><div class="l">semana 4 · comitê</div><div class="d big">Decidir a escala com o resultado medido na mão.</div></div>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">12</div>
+</section>
+
+<!-- apêndice técnico -->
+<section class="s">
+  <div class="k">Apêndice · para o time técnico</div>
+  <h2>O que está por trás de cada número</h2>
+  <div class="split" style="grid-template-columns:1fr 1fr;gap:36px">
+    <ul class="small">
+      <li><b>Lakeflow Declarative Pipelines:</b> Auto Loader em 7 feeds brutos; medallion com 7 expectativas de qualidade, 0 falhas no último run.</li>
+      <li><b>Modelo:</b> gradient boosting com features <i>point-in-time</i> (pedido em aberto com a chegada <b>prevista</b>, não a real); AUC 0,85; registrado no Unity Catalog via MLflow.</li>
+      <li><b>Agente:</b> tool-calling na Foundation Model API; consulta 3 ferramentas e o sistema rejeita decisão sem consulta prévia.</li>
+    </ul>
+    <ul class="small">
+      <li><b>Lakebase:</b> schema <span class="mono">serving</span> publicado de forma atômica e schema <span class="mono">app</span> com aprovações e log do Genie; leitura em ~3 ms.</li>
+      <li><b>Genie:</b> entity matching, definições de métrica e 5 SQL certificados.</li>
+      <li><b>App:</b> React + TypeScript / FastAPI, service principal com acesso mínimo.</li>
+      <li><b>Evidência em texto:</b> notebooks executados com saídas, resultados de qualidade, respostas do Genie e do app em <span class="mono">evidence/</span>.</li>
+    </ul>
+  </div>
+  <div class="f">github.com/vitor-bricks/fe-bar-varejo</div><div class="n">A</div>
 </section>
 
 </body></html>

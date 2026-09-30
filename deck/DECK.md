@@ -1,115 +1,139 @@
-# LojaBR · Centro de Abastecimento
-### Ruptura: de reativo a preditivo — com a ação certa na mão de quem decide
+# LojaBR · Centro de Abastecimento — deck de negócio (versão em texto)
 
-**Para:** VP de Operações & Supply Chain (patrocinador) · Gerente de Reposição (dono do domínio)
-**Por:** Field Engineering · Databricks — *dados 100% sintéticos*
-
----
-
-## 1. O problema, em reais
-
-- **4,1% da venda some por ruptura**: o cliente não acha o produto e compra no concorrente.
-- Na amostra de 129 itens de alto giro × 20 lojas: **R$ 2,39 mi por ano**.
-- Hoje o time descobre **depois** que a gôndola esvaziou.
-- A causa está concentrada: **Limpeza e Higiene rompem 2–3× mais**, e dois fornecedores entregam no prazo só **63–67%** das vezes.
-
-> *"Quanto estou perdendo agora, e o que eu faço hoje para não perder amanhã?"*
+> PDF: `LojaBR_Centro_de_Abastecimento.pdf` · English: `DECK_EN.md` / `LojaBR_Replenishment_Center_EN.pdf`
+> Público: **VP de Operações & Supply Chain** (patrocinador) e **Gerente de Reposição** (dono do domínio).
+> Dados 100% sintéticos. Todos os números vêm do run de evidência de 28/09/2026 (`evidence/`).
 
 ---
 
-## 2. O resultado que buscamos
+## 1. Recuperar até R$ 0,8 mi por ano em vendas que hoje somem da gôndola
 
-| KPI do comprador | Hoje | Meta |
-|---|---|---|
-| Taxa de ruptura (loja × item × dia) | 6,5% | **< 4,5%** |
-| Venda perdida por ruptura | 4,1% da venda | **recuperar ~⅓** |
-| Antecedência do alerta | nenhuma | **~2,9 dias** |
-| Lista de trabalho | sortimento inteiro | **8% dos itens, ordenados por R$** |
+O Centro de Abastecimento avisa **2,9 dias antes** que um item vai faltar. A ação mais barata para cada caso chega pronta, e o gerente de reposição aprova **em um clique**.
 
-**Regra de bolso:** a cada **R$ 100 mi de venda**, ~R$ 4 mi se perdem em ruptura; recuperar um terço = **~R$ 1,4 mi**.
+- **Hoje:** 4,1% da venda se perde por ruptura, ou R$ 2,39 mi/ano na amostra.
+- **Na rede:** ~R$ 1,4 mi recuperáveis a cada R$ 100 mi de venda (⅓ da perda).
+- **O pedido:** piloto de 30 dias em 4 lojas, com 4 lojas de controle.
 
----
+## 2. Resumo executivo
 
-## 3. O que o gerente vê de manhã
+| | |
+|---|---|
+| **O problema** | 4,1% da venda some por ruptura: R$ 2,39 mi por ano só em 129 itens de alto giro, nas 20 lojas. O time descobre **depois** que a gôndola esvaziou. |
+| **A solução** | Um modelo aponta quais itens vão faltar nos próximos 7 dias. Um agente de IA confere os fatos e propõe a ação mais barata: transferir, antecipar ou pedido urgente. O gerente aprova em um clique. |
+| **O valor** | Até ⅓ da perda recuperada: R$ 0,4 a 0,8 mi por ano na amostra, conforme a execução. Na rede inteira, R$ 0,7 a 1,4 mi a cada R$ 100 mi de venda. |
+| **O pedido** | Piloto de 30 dias em 4 lojas, com 4 lojas de controle. A decisão de escalar sai dos números da própria LojaBR, não de uma projeção. |
 
-Uma **fila de ação** com o produto, a loja, o risco e o R$ em jogo, e a solução mais barata para cada item:
+## 3. O problema, em reais
 
-- **Transferir** de uma loja próxima com excesso (≤ 450 km, chega em 1–2 dias).
-- **Antecipar** o pedido que já está a caminho, mas chegaria tarde.
-- **Pedido urgente** quando não há alternativa.
+- **4,1%** da venda perdida por ruptura, ou **R$ 2,39 mi/ano** em 129 itens × 20 lojas.
+- Disponibilidade em gôndola de **93,5%** nos últimos 7 dias (ruptura de 6,5%, por loja × item × dia).
+- A perda é concentrada. Por categoria (120 dias; média da rede de 5,3%): Limpeza 11,3%, Higiene 9,2%, Congelados 8,1%, Mercearia 5,2%, Bebidas 4,5%, Laticínios 4,2%, Hortifruti 1,2% e Padaria 0,6%.
+- Os fornecedores de Limpeza e Higiene entregam no prazo só **63% e 68%** das vezes.
 
-**Um clique aprova.** A decisão fica registrada com o nome de quem aprovou, e o **"R$ protegido hoje"** sobe na tela.
+## 4. Os KPIs do comprador
 
----
+| KPI | Hoje | Com o Centro de Abastecimento | Quem acompanha |
+|---|---|---|---|
+| Disponibilidade em gôndola | 93,5% | ≥ 95,5% | VP de Operações |
+| Taxa de ruptura (loja × item × dia) | 6,5% | < 4,5% | VP e gerente |
+| Venda perdida por ruptura | 4,1% · R$ 2,39 mi/ano | até −⅓ · ≈ R$ 0,8 mi/ano de volta | VP e financeiro |
+| Aviso antes de a gôndola esvaziar | nenhum (reativo) | ~2,9 dias · 75% com ≥ 2 dias | Gerente de reposição |
+| Itens para revisar por dia | 29% do sortimento · 38% de acerto | 8% · 84% de acerto | Gerente de reposição |
 
-## 4. Por que confiar no alerta
+Regra de bolso: a cada R$ 100 mi de venda, ~R$ 4 mi se perdem em ruptura. Recuperar um terço vale ~R$ 1,4 mi.
 
-- O modelo só olha itens **ainda na gôndola**, porque prever o que já zerou não evita nada.
-- **Acerta 84% da lista diária, contra 38% da regra "cobertura < lead time"** usada hoje.
-- Avisa **~2,9 dias antes** (75% dos alertas com 2 dias ou mais).
-- Validado em datas futuras, que o modelo não viu no treino.
+## 5. O que muda para cada um
 
----
+**Patrocinador: VP de Operações & Supply Chain**
+- **Venda de volta no P&L:** ≈ R$ 0,8 mi/ano na amostra, ou ~R$ 1,4 mi a cada R$ 100 mi de venda.
+- **Estoque parado vira venda:** 39 transferências num único dia usaram o excesso de outra loja, sem compra nova.
+- **Risco sob controle:** quem decide é o gerente, e cada decisão fica registrada com autor e horário.
+- **Escala sem projeto novo:** a mesma plataforma cobre a rede toda e novas categorias.
 
-## 5. Um agente que confere antes de recomendar
+**Dono do domínio: Gerente de Reposição**
+- **Uma lista curta:** 8% dos itens, 3,6× menos que a regra atual, ordenada por R$ ou por criticidade.
+- **2,9 dias de aviso:** tempo de transferir ou antecipar o pedido, em vez de apagar incêndio.
+- **A justificativa pronta:** estoque, loja doadora e pontualidade do fornecedor no próprio card.
+- **Um clique aprova,** e as perguntas sobre os dados vão ao Genie, em português, sem abrir chamado.
 
-Para os itens de maior valor, um agente de IA **consulta os fatos** (estoque e venda, lojas vizinhas com excesso, histórico do fornecedor) e só então confirma ou muda a ação:
+## 6. Uma fila de ação, não um relatório
 
-> *"A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias, insuficiente para evitar ruptura. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades e cobertura de 18,2 dias, permitindo transferir 46 unidades sem comprometer seu próprio estoque."*
-> — justificativa real do agente, Café Pilão 500g, run de evidência de 28/09/2026
+1. **Abre a fila às 7h.** Todas as ações do dia, ordenadas por R$ protegido ou pelo que esvazia primeiro.
+2. **Lê o card.** Produto, loja, a ação mais barata, a justificativa do agente e o R$ em jogo.
+3. **Aprova com um clique.** A decisão vai para o banco com o nome dele, e o "R$ protegido hoje" sobe na tela.
 
----
+As ações são três: **transferir** de uma loja próxima com excesso, **antecipar** o pedido que já está a caminho, ou fazer um **pedido urgente** quando não há alternativa. *(Captura do app: `img/card.png`.)*
 
-## 6. Business case — e as premissas
+## 7. Estoque parado numa loja resolve a falta na outra
 
-- **Fila do run de 28/09** (dados até 27/09): protege **R$ 16,2 mil nos próximos 7 dias** (valor esperado, ponderado pelo risco), ≈ 27% da perda da última semana.
-- **Anualizado**, com as ações aprovadas: **≈ R$ 0,84 mi/ano** na amostra (≈ 35% da perda).
-- **Premissas:** as ações aprovadas são executadas; o valor é esperado, não garantido; a amostra é de itens de alto giro. Tudo isso é medido no piloto (slide 8).
+- **39 transferências** sugeridas num único dia, com o excesso de outras lojas.
+- Só a até **450 km** e sem deixar a doadora com menos de **10 dias** de estoque.
+- Chegam em **1 a 2 dias**, antes do pedido do fornecedor.
+- O mapa mostra a ruptura por loja e as rotas. Um clique abre a loja e as ações dela. *(Captura do app: `img/map.png`.)*
 
----
+## 8. O modelo acerta mais que o dobro da regra atual
 
-## 7. Como funciona — uma plataforma, uma execução por dia
+- **84%** de acerto na lista diária, contra **38%** da regra "cobertura < prazo de entrega".
+- **2,9 dias** de antecedência, com 75% dos alertas chegando 2 dias antes ou mais.
+- **AUC 0,85**, validado em datas que o modelo não viu.
+- A lista tem **8%** dos itens em gôndola; a regra marcaria 29%.
+- O agente consulta a posição do item, as lojas vizinhas e o histórico do fornecedor antes de recomendar. Se tentar decidir antes, o sistema rejeita a decisão.
+
+> "A LojaBR Campinas tem apenas 9 unidades em estoque (cobertura de 0,6 dia) e o pedido de reposição só chega em 2 dias. A LojaBR Ribeirão Preto, a 207 km, possui excedente de 61 unidades, permitindo transferir 46 unidades sem comprometer seu próprio estoque."
+> — Café Pilão 500g, run de evidência de 28/09/2026
+
+## 9. Quanto vale, conforme a execução
+
+| Ações aprovadas e executadas no prazo | 50% | 75% | 100% |
+|---|---|---|---|
+| Venda protegida por semana · amostra | R$ 8,1 mil | R$ 12,1 mil | R$ 16,2 mil |
+| Por ano · amostra (129 itens × 20 lojas) | R$ 0,42 mi | R$ 0,63 mi | R$ 0,84 mi |
+| Parcela da perda anual recuperada | 18% | 26% | 35% |
+| **A cada R$ 100 mi de venda na rede** | **R$ 0,7 mi** | **R$ 1,1 mi** | **R$ 1,4 mi** |
+
+- **Base:** a fila de um dia (run de 28/09) protege R$ 16,2 mil nos 7 dias seguintes, ≈ 27% da perda da semana anterior.
+- **Premissas:** é valor **esperado** (ponderado pelo risco), não garantido; a amostra é de itens de alto giro; o custo da plataforma (serverless, pago pelo uso) é medido no piloto.
+
+## 10. Do dado bruto à decisão, num único job diário
 
 ```
-dados brutos → Lakeflow → Unity Catalog → modelo → agente de IA → Lakebase → app
-                                   └──────────→ Genie (perguntas em português)
+Ingestão → Medallion → Governança → Modelo → Agente → Serving → Linguagem natural → Decisão
+Auto Loader  bronze→gold  Unity Catalog  MLflow·UC  FMAPI·tools  Lakebase  Genie     este app
 ```
 
-Um único job roda tudo, todo dia às 06:00, governado no Unity Catalog: linhagem, qualidade e permissões mínimas. Não há planilha exportada nem cópia de dados.
+- **Um job, todo dia às 06:00.** Ingestão, qualidade, modelo, agente e publicação para o app rodam juntos, com um único registro de execução.
+- **Governado no Unity Catalog.** Linhagem de cada número, 7 regras de qualidade (0 falhas no último run) e acesso mínimo para o app.
+- **Sem cópia, sem planilha.** O mesmo dado alimenta o app, o Genie e o modelo. Cada estágio abre no workspace direto do app.
 
----
+## 11. Piloto de 30 dias: risco controlado, resultado medido
 
-## 8. Plano de piloto — 30 dias, risco controlado
-
-| Semana | O que acontece | Como medimos |
+| Quando | O que acontece | Como medimos |
 |---|---|---|
-| 1 | Conectar POS, estoque e pedidos das 4 lojas-piloto | dados fluindo, qualidade ≥ 99% |
-| 2–4 | Fila de ação em 4 lojas; 4 lojas similares como **controle** | ruptura e venda perdida, piloto vs controle |
-| Fim | Decisão de escalar | R$ recuperado por loja × custo |
+| Semana 1 | Conectar vendas, estoque e pedidos das 4 lojas-piloto | dados chegando todo dia, qualidade ≥ 99% |
+| Semanas 2–4 | Fila de ação nas 4 lojas; 4 lojas parecidas como controle | ruptura e venda perdida, piloto contra controle |
+| Fim | Decisão de escalar | R$ recuperado por loja, comparado ao custo |
 
-**Riscos e mitigação:** o modelo errar → a fila é priorizada por R$ e o gerente decide; adoção → um clique, dentro da rotina da manhã; dados de fornecedor incompletos → o agente declara a confiança e a regra cobre a base.
+- **Critério de sucesso:** ruptura nas lojas-piloto ≥ 1,5 p.p. abaixo do controle, e R$ recuperado maior que o custo da plataforma.
+- **Riscos e mitigação:**
+  - *Modelo errar:* a lista é priorizada por R$ e o gerente decide.
+  - *Adoção:* um clique, dentro da rotina da manhã.
+  - *Dado de fornecedor incompleto:* o agente declara a confiança e a regra cobre o resto.
 
----
+## 12. O pedido
 
-## 9. Por que Databricks
+**Patrocinar um piloto de 30 dias em 4 lojas, com grupo de controle.** Medir ruptura e venda recuperada com os números da própria LojaBR, e decidir a escala com base neles.
 
-- **Uma plataforma**, do dado bruto à decisão: ingestão, governança, ML, agente de IA, Postgres operacional, perguntas em linguagem natural e app.
-- **Governança nativa**: quem vê o quê, de onde veio cada número.
-- **Pronto para piloto hoje**: já roda ponta a ponta; não é slideware.
-
----
-
-## 10. O pedido
-
-**Patrocinar um piloto de 30 dias em 4 lojas**, com grupo de controle, para medir ruptura e venda recuperada, e decidir a escala com números da própria LojaBR.
+- **Semana 0 (patrocinador):** escolher as 4 lojas-piloto e as 4 de controle.
+- **Semana 1 (TI LojaBR + Databricks):** liberar os feeds de vendas, estoque e pedidos.
+- **Semana 4 (comitê):** decidir a escala com o resultado medido na mão.
 
 ---
 
-### Apêndice técnico (stakeholder técnico)
-- Lakeflow Declarative Pipeline: Auto Loader em 7 feeds brutos; medallion com 7 expectativas de qualidade (0 falhas no último run).
-- ML: gradient boosting, features *point-in-time* (pedido em aberto com chegada **prevista**), AUC 0,85, registrado no UC.
-- Agente: tool-calling na Foundation Model API; rejeita decisão sem consulta prévia.
-- Lakebase: schema `serving` (publicação atômica) + `app` (aprovações, log do Genie); leitura em ms.
-- Genie: entity matching, definições de métrica, SQL certificado.
-- App: React + Vite + TypeScript + Tailwind / FastAPI, service principal com acesso mínimo.
-- Evidência de execução em texto: github.com/vitor-bricks/fe-bar-varejo → `evidence/`
+### Apêndice: para o time técnico
+- **Lakeflow Declarative Pipelines:** Auto Loader em 7 feeds brutos; medallion com 7 expectativas de qualidade e 0 falhas no último run.
+- **Modelo:** gradient boosting com features *point-in-time* (pedido em aberto com a chegada **prevista**, não a real); AUC 0,85; registrado no Unity Catalog via MLflow.
+- **Agente:** tool-calling na Foundation Model API. Consulta 3 ferramentas, e o sistema rejeita qualquer decisão tomada antes da consulta.
+- **Lakebase:** schema `serving` publicado de forma atômica e schema `app` com aprovações e log do Genie; leitura em ~3 ms.
+- **Genie:** entity matching, definições de métrica e 5 SQL certificados.
+- **App:** React + TypeScript / FastAPI, service principal com acesso mínimo.
+- **Evidência em texto:** github.com/vitor-bricks/fe-bar-varejo → `evidence/`
