@@ -16,7 +16,7 @@
     <div class="t"><div class="l">chain-wide</div><div class="v emr">~R$ 1.4 M</div><div class="d">recoverable per R$ 100 M of sales (⅓ of the loss)</div></div>
     <div class="t"><div class="l">the ask</div><div class="v amb">30 days</div><div class="d">pilot in 4 stores, with 4 control stores</div></div>
   </div>
-  <div class="sim"><b>Where the numbers come from:</b> a prototype already running on Databricks, on the <b>last 120 days of history from all 20 stores</b>, for the 129 top-selling items. The pilot measures the result in store operations.</div>
+  <div class="sim"><b>Where the numbers come from:</b> the solution runs on Databricks, over the <b>last 120 days of history from all 20 stores</b>, for the 129 top-selling items. The pilot measures the result in store operations.</div>
   <div class="f">for the VP of Operations &amp; Supply Chain · Replenishment Manager</div><div class="n">01</div>
 </section>
 
@@ -206,7 +206,7 @@
     <tr><th></th><th>With separate tools</th><th>With Databricks</th></tr>
     <tr><td>Integration</td><td>ETL, data warehouse, ML, operational database, LLM, BI and app hosting: 7 pieces to integrate and run</td><td>One platform: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie and Apps</td></tr>
     <tr><td>The number</td><td>Copies between systems; the R$ in the app does not always match the report</td><td>One governed dataset: the app, Genie and the model read the same number, with lineage</td></tr>
-    <tr><td>Time to pilot</td><td>Months of integration and one security review per tool</td><td>The prototype already runs end to end; the pilot takes 30 days</td></tr>
+    <tr><td>Time to pilot</td><td>Months of integration and one security review per tool</td><td>The solution already runs end to end on Databricks; the pilot takes 30 days</td></tr>
     <tr><td>Security</td><td>Permissions and audit spread across every tool</td><td>One place: who sees what, and who approved each action</td></tr>
     <tr><td>Cost</td><td>Fixed licences and infrastructure, running or not</td><td>Measured: <b>~US$ 440 a month</b> at list price; the daily batch journey costs <b>US$ 0.52 a day</b></td></tr>
     <tr><td>Exit</td><td>Closed formats; migrating is a project</td><td>Open formats: Delta tables (and Iceberg via UniForm), standard Postgres, MLflow and code in Git</td></tr>

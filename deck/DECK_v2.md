@@ -2,7 +2,7 @@
 
 > PDF: `LojaBR_Centro_de_Abastecimento_v2.pdf` · English: `DECK_EN_v2.md` / `LojaBR_Replenishment_Center_EN_v2.pdf`
 > Público: **VP de Operações & Supply Chain** (patrocinador) e **Gerente de Reposição** (dono do domínio).
-> **De onde vêm os números:** um protótipo que já roda na Databricks, sobre o histórico de 120 dias das 20 lojas, nos 129 itens de maior giro. Valores do run de 28/09/2026; custo medido nas tabelas de billing (`evidence/run_08_platform_cost.md`). O piloto mede o resultado na operação das lojas.
+> **De onde vêm os números:** a solução executa na Databricks sobre o histórico de 120 dias das 20 lojas, nos 129 itens de maior giro. Valores do run de 28/09/2026; custo medido nas tabelas de billing (`evidence/run_08_platform_cost.md`). O piloto mede o resultado na operação das lojas.
 
 ---
 
@@ -115,7 +115,7 @@ Premissa: a ruptura cai na mesma proporção da venda recuperada.
 |---|---|---|
 | **Integração** | 7 peças para integrar e manter | Uma plataforma: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie e Apps |
 | **O número** | Cópias entre sistemas | Um dado governado, com linhagem |
-| **Tempo até o piloto** | Meses de integração e revisões de segurança | O protótipo já roda; o piloto leva 30 dias |
+| **Tempo até o piloto** | Meses de integração e revisões de segurança | A solução já executa ponta a ponta na Databricks; o piloto leva 30 dias |
 | **Segurança** | Espalhada em cada ferramenta | Um lugar só: quem vê o quê, e quem aprovou cada ação |
 | **Custo** | Licenças fixas | Medido: ~US$ 440/mês; a jornada em lote custa US$ 0,52/dia |
 | **Saída** | Formatos fechados | Formatos abertos: Delta (e Iceberg via UniForm), Postgres padrão, MLflow e código em Git |

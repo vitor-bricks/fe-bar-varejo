@@ -2,7 +2,7 @@
 
 > PDF: `LojaBR_Replenishment_Center_EN_v2.pdf` · Português: `DECK_v2.md` / `LojaBR_Centro_de_Abastecimento_v2.pdf`
 > Audience: **VP of Operations & Supply Chain** (executive sponsor) and **Replenishment Manager** (domain owner).
-> **Where the numbers come from:** a prototype already running on Databricks, on the last 120 days of history from all 20 stores, for the 129 top-selling items. Figures from the 2026-09-28 run; cost measured from the billing tables (`evidence/run_08_platform_cost.md`). The pilot measures the result in store operations. The app UI is in Portuguese.
+> **Where the numbers come from:** the solution runs on Databricks, over the last 120 days of history from all 20 stores, for the 129 top-selling items. Figures from the 2026-09-28 run; cost measured from the billing tables (`evidence/run_08_platform_cost.md`). The pilot measures the result in store operations. The app UI is in Portuguese.
 
 ---
 
@@ -115,7 +115,7 @@ Assumption: stockouts fall in the same proportion as recovered sales.
 |---|---|---|
 | **Integration** | 7 pieces to integrate and run | One platform: Lakeflow, Unity Catalog, MLflow, Foundation Model API, Lakebase, Genie and Apps |
 | **The number** | Copies between systems | One governed dataset, with lineage |
-| **Time to pilot** | Months of integration and security reviews | The prototype already runs; the pilot takes 30 days |
+| **Time to pilot** | Months of integration and security reviews | The solution already runs end to end on Databricks; the pilot takes 30 days |
 | **Security** | Spread across every tool | One place: who sees what, and who approved each action |
 | **Cost** | Fixed licences | Measured: ~US$ 440/month; the daily batch journey costs US$ 0.52/day |
 | **Exit** | Closed formats | Open formats: Delta (and Iceberg via UniForm), standard Postgres, MLflow and code in Git |

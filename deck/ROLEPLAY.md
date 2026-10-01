@@ -3,6 +3,9 @@
 20–30 min, dois personas na sala: **negócio** (VP de Operações, quem financia) e **técnico**
 (arquiteto/data lead, quem vai conviver com a solução). Uma apresentação; depois, objeções.
 
+> O roteiro completo de 20–30 min (deck v2 + app + workspace) está em [`PITCH.md`](PITCH.md). Este
+> arquivo é a versão curta da demo e o banco de objeções.
+
 > Regra de ouro: comece e termine no **R$**. Mostre só o que prova um ponto de negócio. Quando o
 > técnico cavar fundo, responda o mecanismo e **suba de volta para o dinheiro numa frase**.
 
@@ -31,8 +34,8 @@ os dados fecham num domingo, ou seja, no run de segunda-feira, o app mostra exat
 **A) Início**
 - *Tell:* "Primeiro, o tamanho do problema e o que está em jogo esta semana."
 - *Show:* os 4 KPIs: R$ 2,39 mi/ano perdidos, **R$ 16,8 mil em risco nos próximos 7 dias**,
-  **Protegido hoje: R$ 0**, 3 de 20 lojas em alerta. Aponte a faixa da jornada: "cada caixinha é
-  um estágio que rodou hoje às 6h, num único job".
+  **Protegido hoje: R$ 0**, 3 de 20 lojas em alerta. Abra o botão **arquitetura**: "cada caixinha
+  é um estágio que rodou hoje às 6h, num único job, e abre no workspace".
 - *Tell:* "Guardem esse **R$ 0**. Vamos mudar esse número daqui a pouco."
 
 **B) Rede de lojas**
@@ -67,9 +70,9 @@ os dados fecham num domingo, ou seja, no run de segunda-feira, o app mostra exat
 ### 🟠 Negócio — custo, risco, tempo até o valor
 | Pergunta | Resposta |
 |---|---|
-| *Quanto custa?* | "Serverless: paga pelo uso, sem infraestrutura dedicada. O piloto mede R$ recuperado por loja contra o custo antes de qualquer escala." |
+| *Quanto custa?* | "Medido nas tabelas de billing: ~US$ 440 por mês a preço de lista, para rodar tudo. O piloto mede R$ recuperado por loja contra o custo antes de qualquer escala." |
 | *E se o modelo errar?* | "Ele acerta **84% da lista diária, contra 38% da regra usada hoje**. E ele não decide sozinho: prioriza por R$, e o gerente aprova." |
-| *Quanto tempo até ver resultado?* | "O protótipo já roda ponta a ponta. O piloto leva 30 dias, e a ruptura é medida desde a primeira semana." |
+| *Quanto tempo até ver resultado?* | "A solução já executa ponta a ponta na Databricks. O piloto leva 30 dias, e a ruptura é medida desde a primeira semana." |
 | *Esses R$ 16 mil são garantidos?* | "É valor esperado, ponderado pelo risco, e está declarado assim. É exatamente o que o grupo de controle do piloto vai confirmar ou corrigir." |
 | *Meu time vai usar?* | "É um clique dentro da rotina da manhã, e a lista tem 8% dos itens, não o sortimento inteiro." |
 

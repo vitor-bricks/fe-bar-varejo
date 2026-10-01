@@ -77,7 +77,7 @@ with generated SQL, and live app API responses, all as text.
 
 - **[`DECISIONS.md`](DECISIONS.md)**: trade-offs, including a correction to this build's first version.
 - **[`AI_USAGE.md`](AI_USAGE.md)**: how AI was used as a teammate (planner / generator / evaluator).
-- **[`deck/`](deck/)**: business deck, leading with the outcome and the buyer's KPIs, for the executive sponsor and the domain owner. English: [`LojaBR_Replenishment_Center_EN.pdf`](deck/LojaBR_Replenishment_Center_EN.pdf) ([text](deck/DECK_EN.md)); Portuguese: [`LojaBR_Centro_de_Abastecimento.pdf`](deck/LojaBR_Centro_de_Abastecimento.pdf) ([text](deck/DECK.md)). Roleplay prep in [`deck/ROLEPLAY.md`](deck/ROLEPLAY.md).
+- **[`deck/`](deck/)**: business deck (v2), leading with the outcome and the buyer's KPIs, for the executive sponsor and the domain owner, with the measured platform cost. English: [`LojaBR_Replenishment_Center_EN_v2.pdf`](deck/LojaBR_Replenishment_Center_EN_v2.pdf) ([text](deck/DECK_EN_v2.md)); Portuguese: [`LojaBR_Centro_de_Abastecimento_v2.pdf`](deck/LojaBR_Centro_de_Abastecimento_v2.pdf) ([text](deck/DECK_v2.md)). The first version is kept alongside for comparison. 20–30 min pitch script (deck + live app + workspace) in [`deck/PITCH.md`](deck/PITCH.md); roleplay prep in [`deck/ROLEPLAY.md`](deck/ROLEPLAY.md).
 
 Isolation: everything uses the `fe_bar_varejo` / `fe-bar-varejo` prefix; no pre-existing asset in
 the workspace was modified.
